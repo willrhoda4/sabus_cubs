@@ -9,7 +9,7 @@
 import   Map             from './components/Map';
 import   EmailForm       from './components/EmailForm';
 import   Social          from './components/Social';
-import   ButtonBank      from '../../common/ButtonBank';
+import   ButtonBank      from '../../common/buttons/ButtonBank';
 
 import { useState }      from 'react';
 

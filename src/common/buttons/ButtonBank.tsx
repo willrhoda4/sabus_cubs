@@ -6,41 +6,12 @@
 
 
 
-
-
-// shared type alias for common button arguments
-type ButtonArgs = [ 
-                        string, 
-                        SvgIcon | null, 
-                        (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void, 
-                        boolean | null | undefined,
-                        number
-
-                  ];
-
-//  intersectiomn type for the button function
-// type ButtonFunctionArgs = ButtonArgs & number; // Add the index argument
+import { ButtonArgs, ButtonBankProps } from "../../types/button";
 
 
 
-// Define a type or interface for an SVG icon
-interface SvgIcon {
-    svgContent: string;
-    key?: string;
-  }
 
 
-// catalogue prop types for the component
-interface ButtonBankProps {
-    
-    names         : string[];
-    icons?        : SvgIcon[];
-    onClicks      : ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)[];
-    conditions?   : boolean[];
-    wrapStyle?    : string;
-    currentState? : string;
-    
-}
 
 
 // this one works by accepting arrays of names, icons, onClicks, 

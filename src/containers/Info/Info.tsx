@@ -7,52 +7,41 @@
 
 
 
-import   Axios       from 'axios';
-import { useState, 
-         useEffect } from 'react';
+import copy from './copy';
+                   
 
-import   FAQBuffet from '../../common/FAQBuffet';
+
+import   CloudImg  from '../../common/images/CloudImg';
+
+import   FAQBuffet from './components/FAQBuffet';
+import   Mission   from './components/Mission';
+
+
+
+
 
 
 
 export default function Info (): JSX.Element {
 
 
-    interface FAQ {
-        id:       number;
-        question: string;
-        answer:   string;
-        rank:     number;
-    }
 
 
+    return (
+        
+        <div className={`
+                            w-full h-fit
+                            flex flex-col
+                       `}
+        >
 
-    const [ faqs,       setFaqs       ] = useState<FAQ[]>([]);
-    const [ displayed,  setDisplayed  ] = useState<number | boolean>(false);
-
-
-
-
-
-
-    // requests FAQ data from server amd sets it to state
-    function getFAQs() {
-
-        const reqBody = [ 'faq', undefined, { orderBy: 'rank' } ];
-
-        Axios.post(`${import.meta.env.VITE_API_URL}getData`, reqBody )
-             .then(   res => setFaqs(res.data)                       )
-             .catch(  err => console.log(err)                        );
-    }
-
-    // get FAQS on initial load
-    useEffect(() => { getFAQs() }, [] )
-
-
-    return (<>
+            <Mission text={copy.mission} />
     
-        <FAQBuffet faqs={faqs} displayed={displayed} setDisplayed={setDisplayed} />
+            <FAQBuffet />
     
+           <CloudImg id='baby_ember' wrapStyle='w-1/2 h-auto' />
+
     
-    </>)
+        </div>
+    )
 }

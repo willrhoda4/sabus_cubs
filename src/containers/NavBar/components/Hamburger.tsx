@@ -4,16 +4,14 @@
 
 
 
+ 
+
+import { useState       } from "react";
+
+import { HamburgerProps } from "../../../types/menu";
 
 
-import { useState } from "react";
 
-
-
-interface HamburgerProps {
-
-    setMenuDisplayed: (func: (prev: boolean) => boolean) => void;
-}
 
 
 

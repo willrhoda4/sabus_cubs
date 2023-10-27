@@ -8,33 +8,112 @@
 
 
 
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements   } from '@stripe/react-stripe-js';
+
+
+
+
 
 import                      './App.css'
 import { Route,
          Routes,  
          useLocation } from 'react-router-dom';
 
-import { useState }    from 'react'
+import { useState    }    from 'react'
+
+import   useIGData     from './hooks/useIGData.ts';
+
+import { Field, FormState, NewStatusFunction }       from './types/form';
 
 import   Admin         from './containers/Admin/Admin.tsx';
 import   Home          from './containers/Home/Home.tsx';
 import   Contact       from './containers/Contact/Contact.tsx';
 import   Info          from './containers/Info/Info.tsx';
+import   Support       from './containers/Support/Support.tsx';
+import   Gallery       from './containers/Gallery/Gallery.tsx';
 
+import   Updater        from './containers/Updater/Updater.tsx';
+ 
 import   Navbar        from './containers/NavBar/NavBar.tsx';
 import   Menu          from './containers/Menu/Menu.tsx';
+
+import   Form          from './common/forms/Form.tsx';
 
 
 function App() {
 
 
+
+
+  const   stripePromise                     = loadStripe( import.meta.env.VITE_PUBLISHABLE_KEY as string );
+
   const [ menuDisplayed, setMenuDisplayed ] = useState(false);
   const [ editing,       setEditing       ] = useState('faq');
 
-  const   location = useLocation().pathname;
+  const   photoData                         = useIGData();
 
-  const   pages : string[] = location !== '/simba' ? [ 'home', 'info', 'support', 'gallery', 'contact', 'news' ]
-                                                   : [ 'faq',  'items', ];
+  const   location                          = useLocation().pathname;
+
+  const   pages : string[] = location !== '/simba' ? [ 'home', 'info',  'support', 'gallery', 'contact', 'news' ]
+                                                   : [ 'faq',  'items', 'board', ];
+
+
+
+
+
+
+  const fields : Field[] =  [
+                                  {
+                                    name:             'name',
+                                    type:             'text',
+                                    validation:      ['length', 5, 15],
+                                    errorMsg:         'wrong'
+                                  },
+
+                                  
+                                  {
+                                    name:             'email',
+                                    type:             'text',
+                                    validation:       'email',
+                                    errorMsg:         'wrong'
+                                  },
+
+                                  {
+                                    name:             'ask_my_job',
+                                    type:             'check',
+                                    validation:       'exists',
+                                    errorMsg:         'wrong',
+                                    isController:      true
+                                  },
+
+                                  {
+                                    name:             'title',
+                                    type:             'select',
+                                    validation:       'exists',
+                                    errorMsg:         'wrong',
+                                    control:          'ask_my_job',
+                                    options:          [ 1, 5, 'Mr', 'Mrs', 'Ms', 'Dr', 'Prof'] 
+                                  },
+
+                                  {
+                                    name:             'range',
+                                    type:             'select',
+                                    validation:       'exists',
+                                    errorMsg:         'wrong',
+                                    control:          'ask_my_job',
+                                    options:          [ 1, 5 ] 
+                                  },
+
+
+                            ];
+
+
+  const submitter = (state: FormState, newStatus: NewStatusFunction) => {console.log(state); newStatus('submitted'); return Promise.resolve(true) }
+
+
+
+
 
 
   return (
@@ -63,24 +142,41 @@ function App() {
       <div     id='pageContainer'
         className={`
                       w-full h-fit
-                      px-4
                       flex flex-col
                       justify-start items-center
                       relative,
                    `}
       >
-        <Routes>
-          <Route path="/"        element={<Home />} />
-          <Route path="/simba"   element={<Admin editing={editing}/>} />
-          <Route path="/info"    element={<Info />} />
-          <Route path="/support" element={<p>support</p>} />
-          <Route path="/gallery" element={<p>gallery</p>} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/news"    element={<p>news</p>} />
-        </Routes>
+        <Elements stripe={stripePromise}>
+          <Routes>
+            <Route path="/"                       element={<Home />} />
+            <Route path="/simba"                  element={<Admin editing={editing}/>} />
+            <Route path="/info"                   element={<Info />} />
+            <Route path="/support"                element={<Support />} />
+            <Route path="/gallery"                element={<Gallery photoData={photoData} />} />
+            <Route path="/contact"                element={<Contact />} />
+            <Route path="/news"                   element={<Form fields={fields} onSubmit={submitter} />} />
+            <Route path="/subscription-update"    element={<Updater />} />
+          </Routes>
+        </Elements>
       </div>
     </div>
   )
 }
 
 export default App
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
+

@@ -3,6 +3,10 @@
 
 
 
+import { ButtonProps } from '../../types/button'
+
+
+
 
 
 
@@ -10,10 +14,7 @@
 
 
 // Catalogue prop types for the component
-interface ButtonProps< T = void > {
-    text: string;
-    onClick: (e: React.SyntheticEvent) => T; 
-  }
+
     
 // flexible button component
 export default function Button ({ text, onClick } : ButtonProps) : JSX.Element {
@@ -30,8 +31,25 @@ export default function Button ({ text, onClick } : ButtonProps) : JSX.Element {
                                         border-b-2 border-gray-400
                                     `}
                             onClick={onClick} 
-                >  {text}</button>                     
+                > {text}</button>                     
     
     );
 }
-          
+       
+
+
+
+/**
+ * interface ButtonProps {
+
+  text: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onClick: (event: any) => any;
+}
+
+const MyButton: React.FC<ButtonProps> = ({ text, onClick }) => {
+  return <button onClick={(event) => onClick(event)}>{text}</button>;
+};
+
+export default MyButton;
+ */

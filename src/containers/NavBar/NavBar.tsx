@@ -2,7 +2,7 @@
 
 
 
-import Button        from "../../common/Button";
+import Button        from "../../common/buttons/Button";
 import HamburgerMenu from "./components/Hamburger";
 
 

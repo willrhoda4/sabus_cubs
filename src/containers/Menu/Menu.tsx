@@ -14,14 +14,8 @@ import { Link,
 
 
 
-// catalogue prop types for the component
-interface MenuProps {
+import { MenuProps   } from '../../types/menu';
 
-        pages            : string[];
-        setMenuDisplayed : (func: (prev: boolean) => boolean) => void;
-        setEditing       : (newState: string) => void;
-    }
-    
 // pop-out menu for left side of screen
 export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProps) : JSX.Element {
     
@@ -74,7 +68,7 @@ export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProp
                                                                                 Argument of type '(prev: string) => boolean' is not assignable to parameter of type '(prev: string) => string'.
                                                                                   Type 'boolean' is not assignable to type 'string'
                                                                                     vvvvvvvvvvvvvvvvv*/
-        const link = editing ? <div  {...commonProps} onClick={() => setEditing(title)}>{title}</div>
+        const link = editing ? <div  {...commonProps} onClick={() => setEditing(page)}>{title}</div>
                              : <Link {...commonProps} to={path}                                           >{title}</Link>   
 
 

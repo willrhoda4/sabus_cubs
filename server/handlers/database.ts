@@ -1,11 +1,16 @@
 
 
 
-// configure your environment variables
-import dotenv from 'dotenv';
-       dotenv.config();
 
-import pkg, { PoolClient } from 'pg';
+
+
+
+
+// configure your environment variables
+import   dotenv from 'dotenv';
+         dotenv.config();
+
+import   pkg, { PoolClient } from 'pg';
 
 const  { Pool  }  = pkg
 
@@ -270,7 +275,7 @@ const deleteData = ( request : Request, response : Response ) => {
     const rank   : number = request.body[3];
 
     const query1  = `DELETE FROM "${table}" WHERE ${pkName} =$1`;
-    const query2 = `UPDATE "${table}" SET rank = rank-1 WHERE rank > $1`;
+    const query2  = `UPDATE "${table}" SET rank = rank-1 WHERE rank > $1`;
 
     if (rank) {
 
@@ -457,35 +462,70 @@ const reRankData = (request: Request, response: Response) => {
     //     [  headline,    link,   imageUrl, description    ],              <== parameters
     //   [ [ 'article_id', articleId                        ] ]             <== conditions
     // ]
-const updateData = (request : Request, response : Response) => {
+// const updateData = (request : Request, response : Response) => {
 
     
+//     // destructure the request body.
+//     const table      : string      = request.body[0];
+//     const columns    : string[]    = request.body[1];
+//     const parameters : unknown[]   = request.body[2];
+//     const conditions : unknown[][] = request.body[3];
+    
+//     // log to the console before starting query
+//     console.log(`Updating table ${table} \n`);
+
+//     // build a string of comma-separated column names and parameter placeholders for the SET clause.
+//     const colString : string  = columns.map( (column, index)    => `${column} = $${index+1}`).join(', ');
+
+//     // build a string of AND-separated column names and parameter placeholders for the WHERE clause.
+//     const conString : string   = conditions.map( (condition, index) => `${condition[0]} = $${index+1+columns.length}`).join(' AND ');
+
+//     // build the query.
+//     const query     : string   = `UPDATE ${table} SET ${colString} WHERE ${conString};`;
+
+//     // log the query to the console.
+//     console.log(`${query}\n`);
+
+//     // combine the parameters and condition values into a single array.
+//     const values   : unknown[] =  !conditions? parameters : parameters.concat( conditions.map( condition => condition[1] ) );
+
+//     // execute the query.
+//     simpleQuery(response, query, values);
+// }
+
+
+const updateData = (request: Request, response: Response) => {                  console.log('here it is : ',request.body[1]);
+
+
+
     // destructure the request body.
-    const table      : string      = request.body[0];
-    const columns    : string[]    = request.body[1];
-    const parameters : unknown[]   = request.body[2];
-    const conditions : unknown[][] = request.body[3];
-    
-    // log to the console before starting query
-    console.log(`Updating table ${table} \n`);
+    const table         : string                     = request.body[0];
+    const updateObj     : { [key: string]: unknown } = request.body[1];
+    const conditions    : unknown[][]                = request.body[2];
 
-    // build a string of comma-separated column names and parameter placeholders for the SET clause.
-    const colString : string  = columns.map( (column, index)    => `${column} = $${index+1}`).join(', ');
+    console.log(`Updating table ${table} \n`);          
 
-    // build a string of AND-separated column names and parameter placeholders for the WHERE clause.
-    const conString : string   = conditions.map( (condition, index) => `${condition[0]} = $${index+1+columns.length}`).join(' AND ');
+    // Extract columns and values from the updateObj
+    const columns         = Object.keys(updateObj);
+    const values          = Object.values(updateObj);
 
-    // build the query.
-    const query     : string   = `UPDATE ${table} SET ${colString} WHERE ${conString};`;
+    // Build the SET clause string
+    const setClause       = columns.map((col, index) => `"${col}" = $${index + 1}`).join(", ");
 
-    // log the query to the console.
+    // Build the WHERE clause string and extract condition values
+    const whereClause     = conditions.map((condition, index) => `${condition[0]} = $${index + 1 + columns.length}`).join(' AND ');
+    const conditionValues = conditions.map(condition => condition[1]);
+
+    // Combine values for the query
+    const allValues       = values.concat(conditionValues);
+
+    // Build the query string
+    const query           = `UPDATE "${table}" SET ${setClause} WHERE ${whereClause};`;
+
     console.log(`${query}\n`);
 
-    // combine the parameters and condition values into a single array.
-    const values    : unknown[] = parameters.concat( conditions.map( condition => condition[1] ) );
-
-    // execute the query.
-    simpleQuery(response, query, values);
+    // Execute the query
+    simpleQuery(response, query, allValues);
 }
 
 
