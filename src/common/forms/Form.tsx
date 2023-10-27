@@ -12,6 +12,7 @@ import { useState,
 
 import   useNewStatus     from '../../hooks/useNewStatus';  
 import   useThumbnails    from '../../hooks/useThumbnails';
+import   useToggleRef     from '../../hooks/useToggleRef';
 import   validate         from '../../utils/validate';
 
 import { Field,
@@ -41,7 +42,9 @@ export default function Form ({ fields, onSubmit, initialValues,  } : FormProps)
    
     const [ statusRef,     newStatus        ] = useNewStatus();
     const [ thumbnailUrls, thumbnailFor     ] = useThumbnails(formState);
+    const [ isClicked,     setIsClicked     ] = useToggleRef();
 
+    const   exitForm                          =  (msg : string) => { newStatus(msg); return setIsClicked(false); }
 
 
 
@@ -89,39 +92,48 @@ export default function Form ({ fields, onSubmit, initialValues,  } : FormProps)
 
 
 
-    // click handler for the submit button.
-    // if there are no errors, the onSubmit callback is called with the form state.  
-    const handleFormSubmit = (e: React.FormEvent) => {              console.log(controlState, formState, errorState);
+        // click handler for the submit button.
+        // if there are no errors, the onSubmit callback is called with the form state.  
+    // Define resetForm function
+    const handleFormSubmit = async (e: React.FormEvent) => {
+
+
+        if (isClicked()) { return; }
 
         e.preventDefault();
 
+        setIsClicked(true);
+
         setAttempted(true);
 
+
+        const resetForm = () => {
+
+            setAttempted(false);
+            setFormState({});
+        };
+    
         const hasError = Object.values(errorState).some(error => error === true);
+    
+        if (hasError) { return exitForm('Looks like your form still needs a little work...');  }
+    
+        try           { 
+                        await onSubmit( formState, newStatus, resetForm, controlState );       
+                        setIsClicked(false);   
+                      }
+        catch (error) {
+                        console.error('Submission error:', error);
+                        newStatus('An error occurred during submission.');
+                      }
+    };
 
-        if   (hasError) { newStatus('Looks like your form still needs a little work...'); return; }    
-
-        else            { onSubmit( formState, newStatus, controlState, )
-                             .then(  success => {
-                                if ( success )  {
-                                    setAttempted(false);
-                                    setFormState({});       // reset form if onSubmit returns true.
-                                }})                         // (generally for non-update forms)
-                            .catch(error => {
-                                console.error('Submission error:', error);
-                                newStatus('An error occurred during submission.');
-                            });                 
-                    
-                        }
-
-        }
 
 
     /**
      * Inputs will be displayed if:
      *      - no control is specified
      *      - a control is specified and the control state is true
-     *      - if the control state is a string, it will be treated as a key in the control state object 
+     *      - if the control state is a string, it will be  assumed to be a key in the control state object 
      *
      */
     const inputIsDisplayed = (field: Field) => {

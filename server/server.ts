@@ -47,13 +47,12 @@ const app = express();
 
       // Stripe webhook needs raw body buffer, not JSON, 
       // so we have to call it before bodyParser.json()
-      app.post( '/donationReport', 
+      app.post( '/webhookListener', 
                 stripeWh.captureRawBody, 
                 stripeWh.handleWebhook  
               );                   
-      app.use(cors(
-
-      ));    
+      
+      app.use(cors());    
 
       //sets up gzip
       app.use(compression()); 

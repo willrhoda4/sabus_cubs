@@ -8,6 +8,7 @@
 
 import { FAQ, BoardMember } from './info';
 import { Item }             from './support';
+import { Field }            from './form';
 
 
 type dataReqType    = () => void;
@@ -28,6 +29,17 @@ export interface AdminFormProps {
     update?      :  FAQ | BoardMember | Item;
     getData      :  dataReqType;
     setEditing?  :  setEditingType;
+    fields       :  Field[];
+    table        :  string;
+}
+
+// interface for components that wrap AdminForm
+export interface AdminFormParentProps {
+
+    update?      :  FAQ | BoardMember | Item;
+    getData      :  dataReqType;
+    setEditing?  :  setEditingType;
+
 }
 
 

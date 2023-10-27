@@ -101,6 +101,7 @@ export interface FormProps {
   initialValues?:     FormState;
   onSubmit:        (  values    : FormState, 
                       newStatus : NewStatusFunction,
+                      resetForm : () => void,
                       controls? : FormState,
                    ) => Promise<boolean | void>;
 }
