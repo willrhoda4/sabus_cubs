@@ -13,6 +13,7 @@
 
 
 
+import { Theme } from './styles';
 
 
 
@@ -20,11 +21,10 @@
 
 
 
-
-
+export type MiscState = string | number | boolean | Date |File
 
 // type for form state object
-export interface FormState {  [key: string]: string | number | boolean | File;  }
+export interface FormState {  [key: string]: MiscState;  }
 
 
 // simple SetState type
@@ -39,14 +39,17 @@ export type NewStatusFunction = (message: string, duration?: number | boolean) =
 export type Options = [number, number] | (string | number)[];
 
 
+
+
 // interface for multi-functional Input component
 export interface InputProps {
 
     name:          string;
     type:          string;
-    state:         Record<string, string | number | boolean | File>; // The state object
+    style?:        Theme;
+    state:         FormState; // The state object
     error?:        Record<string, unknown>; // The error object (optional)
-    setter:        SetState<Record<string, string | number | boolean | File >>;
+    setter:        SetState<Record<string, MiscState >>;
     confirm?:      string;
     caption?:      string;
     options?:      Options;
@@ -75,6 +78,7 @@ export type ValidationArgs =
     |   'phone'
     |   'url'
     |   'exists'
+    |   'date'
     |   'number';
 
 
@@ -99,9 +103,10 @@ export interface FormProps {
 
   fields:             Field[];
   initialValues?:     FormState;
+  style?:             Theme;
   onSubmit:        (  values    : FormState, 
                       newStatus : NewStatusFunction,
                       resetForm : () => void,
                       controls? : FormState,
-                   ) => Promise<boolean | void>;
+                   )  => Promise<boolean | void>;
 }

@@ -40,7 +40,7 @@ const pool = process.env.NODE_ENV === 'production' ? new Pool({
 
 
 // type definition for the simpleQuery and atomicQuery functions.
-type CallbackFunction = (data: unknown, response: Response) => void;
+type CallbackFunction = (data: unknown, response?: Response) => void;
 
 
 // accepts an array of queries, parameters, and callbacks, then
@@ -144,11 +144,11 @@ function atomicQuery (  request:     Request,
 // accepts a query, parameters, and a callback, then 
 // executes the query and passes the results to the callback.
 function simpleQuery(
-                        response   : Response,
-                        query      : string, 
-                        parameters : unknown[], 
-                        cleanUp?   : CallbackFunction | undefined,
-                        next?      : NextFunction
+                        response    : Response,
+                        query       : string, 
+                        parameters? : unknown[], 
+                        cleanUp?    : CallbackFunction | undefined,
+                        next?       : NextFunction
                     ) {
 
     // if there is a parameter array at the index, pass it in with the query.
@@ -159,7 +159,7 @@ function simpleQuery(
         if (err) { console.log(err.stack);
                    response.status(400).send(err.message);
                  } 
-        else     { cleanUp && cleanUp(res.rows, response);
+        else     { cleanUp && cleanUp( res.rows, response );
                    next     ? next() : response.send(res.rows); 
                  }
     });

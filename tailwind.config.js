@@ -1,11 +1,43 @@
+
+
+
+
+
+
+
+
+
+
 /** @type {import('tailwindcss').Config} */
+
+
+
+// define your font-family stacks as variables for dryness.
+const fontFamilySans = 'Inter, sans-serif';
+const fontFamilySerif = 'Merriweather, serif';
+const fontFamilyBody = 'DM Sans, sans-serif';
+const fontFamilyHeading = 'Fjalla One, sans-serif';
+const fontFamilyTitle = 'DM Sans, sans-serif';
+
+
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+
+  content:  [
+              "./index.html",
+              "./src/**/*.{js,ts,jsx,tsx}",
+            ],
+
   theme: {
+
     extend: {
+
+      colors: {
+        'brand-red':    '#AB2927',
+        'brand-blue':   '#2774AB',
+        'brand-yellow': '#ABAB27',
+        'brand-brown':  '#563130',
+        'brand-grey':   '#252D33',
+      },
 
       keyframes: {
 
@@ -126,11 +158,35 @@ export default {
       },
       
       fontFamily: {
-        'sans': ['"Inter"', 'sans-serif'],
-        'serif': ['"Merriweather"', 'serif']
+        'sans':    [ fontFamilySans ],
+        'serif':   [ fontFamilySerif ],
+        'body':    [ fontFamilyBody ],
+        'heading': [ fontFamilyHeading ],
+        'title':   [ fontFamilyTitle ],
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.font-title': {
+          fontFamily: fontFamilyTitle,
+          fontWeight: '900',
+          fontSize: 'clamp(1.5rem, 2vw + 1rem, 3rem)',  // Font size scales between 1.5rem and 3rem as the viewport width increases
+        },
+        '.font-heading': {
+          fontFamily: fontFamilyHeading,
+          fontWeight: '400',
+          fontSize: 'clamp(1.25rem, 1.5vw + 1rem, 2.5rem)',  // Font size scales between 1.25rem and 2.5rem as the viewport width increases
+        },
+        '.font-body': {
+          fontFamily: fontFamilyBody,
+          fontWeight: '400',
+          fontSize: 'clamp(1rem, 1vw + 0.5rem, 1.5rem)',  // Font size scales between 1rem and 1.5rem as the viewport width increases
+        },
+      }
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    },
+  ],
 }
 

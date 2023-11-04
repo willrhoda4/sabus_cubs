@@ -9,50 +9,26 @@
 
 
 
-import   dropdownIcon    from '../../../assets/icon_dropdown.svg';
 
-import   EditorButtons   from '../../../common/buttons/EditorButtons';
+import   ContentRack                    from '../../../common/contentRack';
 
-import   FAQForm         from '../../Admin/components/forms/FAQForm';
+import   EditorButtons                  from '../../../common/buttons/EditorButtons';
 
-import { useState, 
-         useEffect }     from 'react';
+import   StoryForm                      from '../../Admin/components/forms/StoryForm';
 
-import   Axios           from 'axios';
+import { Story  }                       from '../../../types/news';
 
-import { Story, StoryRackProps } from '../../../types/news';
-
+import { ContentRackWrapperProps,
+         ContentControls            }   from '../../../types/content';
 
 
 
 
-
-export default function FAQBuffet({admin}:StoryRackProps ): JSX.Element {
-
+export default function FAQBuffet({admin}:ContentRackWrapperProps ): JSX.Element {
 
 
 
-
-    const [ stories,    setStories    ] = useState<FAQ[]>([]);
-    const [ editing,    setEditing    ] = useState<number | boolean>(false);
-
-
-
-
-
-
-    // requests FAQ data from server amd sets it to state
-    function getStories() {
-
-        const reqBody = [ 'stories', undefined, { orderBy: 'rank' } ];
-
-        Axios.post(`${import.meta.env.VITE_API_URL}getData`, reqBody )
-             .then(   res => setStories(res.data)                    )
-             .catch(  err => console.log(err )                       );
-    }
-
-    // get FAQS on initial load
-    useEffect(() => { getStories() }, [] )
+    const table = 'stories';
 
 
 
@@ -60,9 +36,33 @@ export default function FAQBuffet({admin}:StoryRackProps ): JSX.Element {
 
 
     // genrates question components for the FAQ buffet
-    function story( story : Story, index : number) {
+    function renderStories( story : Story, index : number, controls : ContentControls ) : JSX.Element {
 
-        const  { question, answer, id, rank } = story;
+        const  { 
+                    id, 
+                    url,
+                    rank,
+                    date,
+                    outlet,
+                    headline,
+                    image_url,
+                    image_alt,
+
+                } = story;
+
+                console.log(`${date}\n${typeof date}`);
+
+        const   {
+                    getData,
+                    editing, 
+                    dataSize,
+                    setEditing, 
+
+                } = controls;
+
+                
+        const formattedDate = new Date(date).toLocaleDateString();
+
 
         return (
 
@@ -71,39 +71,36 @@ export default function FAQBuffet({admin}:StoryRackProps ): JSX.Element {
                                         border border-blue-300
                                     `}
             >
-                <div className='flex justify-between' >
+                <a     
+                    target="_blank"
+                       rel="noreferrer"
+                      href={url}
+                >
+                    <div className='flex flex-col border border-orange-300' >
 
-                    <div className='flex items-center'>
-                        <h5 style={{marginRight: '2.5vmin', fontSize: '5vmin'}}>Q:</h5>
-                        <p>{question}</p>
+                        <p>{formattedDate}</p>
+                        <p>{outlet}</p>
+                        <img  src={image_url} alt={ image_alt } className='w-[250px]' />
+                        <p>{headline}</p>
+                        
                     </div>
-
-                    <img className={ `h-10 m-5 ${ displayed === id && 'transform rotate-180' }` } 
-                               alt={ 'dropdown icon' }
-                           onClick={  displayed !== id ? () => setDisplayed(id)
-                                                       : () => setDisplayed(false)
-                                   }
-                               src={dropdownIcon}
-                    />
-                </div>
-
-                { displayed === id && <p style={{whiteSpace: 'pre-line', paddingBottom: '10vmin'}}>{answer}</p> }
+                </a>
 
 
-                { admin && <EditorButtons 
+                { admin &&  <EditorButtons 
                                 id={id} 
-                                rank={rank} 
+                                rank={rank as number} 
                                 index={index}
                                 table={'faq'}
                                 pkName={'id'}
                                 editing={editing}
-                                loadData={getFAQs}
-                                dataSize={faqs.length}
+                                loadData={getData}
+                                dataSize={dataSize}
                                 setEditing={setEditing}
                             />
                 }
 
-                { admin && editing === id && <FAQForm getData={getFAQs} update={faq} setEditing={setEditing}/> }
+                { admin && editing === id && <StoryForm getData={getData} update={story} setEditing={setEditing}/> }
 
                 
             </div>
@@ -116,13 +113,6 @@ export default function FAQBuffet({admin}:StoryRackProps ): JSX.Element {
 
 
 
-    return (<>
+   return <ContentRack<Story> table={table} renderContent={renderStories} />
 
-
-
-    <div className='my-12'>
-        { faqs && faqs.map( (faq, index) => makeFAQ(faq, index) ) }
-    </div>
-
-    </>)
 }

@@ -16,12 +16,16 @@ import { Link,
 
 import { MenuProps   } from '../../types/menu';
 
+
+
+
+
 // pop-out menu for left side of screen
 export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProps) : JSX.Element {
     
     
 
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
+    const popOutRef  = useRef<HTMLDivElement | null>(null);
 
     const editing    = useLocation().pathname === '/simba';
 
@@ -32,13 +36,13 @@ export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProp
         function handleClickOutside (event : MouseEvent) {  
             
             // Ensure that the menu is being displayed and that
-            // dropdownRef.current is an instance of Node
+            //popOutnRef.current is an instance of Node
             // before we bother checking if the click was outside the menu.
             if (
-                    dropdownRef.current                            &&
-                   !dropdownRef.current.contains(event.target as Node)
+                    popOutRef.current                            &&
+                   !popOutRef.current.contains(event.target as Node)
 
-               ) {  setMenuDisplayed(() => false);  }
+               ) {  setMenuDisplayed(() => false); }
         }
 
         document.addEventListener("mousedown", handleClickOutside);
@@ -47,6 +51,7 @@ export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProp
 
     }, [setMenuDisplayed]);
 
+    
     
 
     // generate nav links from pages prop
@@ -64,12 +69,9 @@ export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProp
                                                 border border-gray-400
                                            `,                                 
                             }
-                            /*
-                                                                                Argument of type '(prev: string) => boolean' is not assignable to parameter of type '(prev: string) => string'.
-                                                                                  Type 'boolean' is not assignable to type 'string'
-                                                                                    vvvvvvvvvvvvvvvvv*/
+                            
         const link = editing ? <div  {...commonProps} onClick={() => setEditing(page)}>{title}</div>
-                             : <Link {...commonProps} to={path}                                           >{title}</Link>   
+                             : <Link {...commonProps} to={path}                       >{title}</Link>   
 
 
         return link
@@ -79,11 +81,11 @@ export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProp
     
     
     return (
-        <div       ref={dropdownRef}
+        <nav      ref={popOutRef}
             className={`
-                        absolute
-                        z-20
-                        w-1/2 h-[100vh]
+                        fixed bottom-0 left-0
+                        z-10
+                        w-1/2 h-[calc(100vh-5rem)]
                         self-start
                         flex flex-col
                         bg-gray-200
@@ -91,7 +93,7 @@ export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProp
                         `}
         >
             {  pages.map( (page, index) => navLink(page, index) ) }
-        </div>
+        </nav>
     );
-    }
+}
           

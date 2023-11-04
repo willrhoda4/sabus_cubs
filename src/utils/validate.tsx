@@ -100,11 +100,16 @@ export default function validate(validationArgs: ValidationArgs, value: unknown)
 
                 case 'number': {
 
-                    return !isNaN(parseFloat(value as string));
+                    return !isNaN(parseFloat(String(value)));
 
                 }
 
-
+                case 'date': {
+                    const date = Date.parse(String(value));
+                    return !isNaN(date);
+                    break;
+                }
+                
 
 
                 case 'exists': {

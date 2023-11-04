@@ -8,37 +8,42 @@
 
 
 
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements   } from '@stripe/react-stripe-js';
 
 
 
+import                               './App.css'
 
+import { loadStripe }           from '@stripe/stripe-js';
+import { Elements   }           from '@stripe/react-stripe-js';
 
-import                      './App.css'
 import { Route,
          Routes,  
-         useLocation } from 'react-router-dom';
+         useLocation }          from 'react-router-dom';
 
-import { useState    }    from 'react'
+import { useState,
+         useMemo     }          from 'react'
 
-import   useIGData     from './hooks/useIGData.ts';
+import   useIGData              from './hooks/useIGData.ts';
 
-import { Field, FormState, NewStatusFunction }       from './types/form';
+import { Field, 
+         FormState, 
+         NewStatusFunction  }   from './types/form';
 
-import   Admin         from './containers/Admin/Admin.tsx';
-import   Home          from './containers/Home/Home.tsx';
-import   Contact       from './containers/Contact/Contact.tsx';
-import   Info          from './containers/Info/Info.tsx';
-import   Support       from './containers/Support/Support.tsx';
-import   Gallery       from './containers/Gallery/Gallery.tsx';
+import { NotificationProvider } from './common/NotificationProvider.tsx';
 
-import   Updater        from './containers/Updater/Updater.tsx';
+import   Admin                  from './containers/Admin/Admin.tsx';
+import   Home                   from './containers/Home/Home.tsx';
+import   Contact                from './containers/Contact/Contact.tsx';
+import   Info                   from './containers/Info/Info.tsx';
+import   Support                from './containers/Support/Support.tsx';
+import   Gallery                from './containers/Gallery/Gallery.tsx';
+
+import   Updater                from './containers/Updater/Updater.tsx';
  
-import   Navbar        from './containers/NavBar/NavBar.tsx';
-import   Menu          from './containers/Menu/Menu.tsx';
+import   Navbar                 from './containers/NavBar/NavBar.tsx';
+import   Menu                   from './containers/Menu/Menu.tsx';
 
-import   Form          from './common/forms/Form.tsx';
+import   Form                   from './common/forms/Form.tsx';
 
 
 function App() {
@@ -46,7 +51,6 @@ function App() {
 
 
 
-  const   stripePromise                     = loadStripe( import.meta.env.VITE_PUBLISHABLE_KEY as string );
 
   const [ menuDisplayed, setMenuDisplayed ] = useState(false);
   const [ editing,       setEditing       ] = useState('faq');
@@ -56,8 +60,13 @@ function App() {
   const   location                          = useLocation().pathname;
 
   const   pages : string[] = location !== '/simba' ? [ 'home', 'info',  'support', 'gallery', 'contact', 'news' ]
-                                                   : [ 'faq',  'items', 'board', ];
+                                                   : [ 'faq',  'items', 'board', 'stories', 'journalists', 'newsReleases' ];
 
+  const stripePromise = useMemo(() => {
+
+      return loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY as string);
+
+  }, []);
 
 
 
@@ -147,18 +156,20 @@ function App() {
                       relative,
                    `}
       >
-        <Elements stripe={stripePromise}>
-          <Routes>
-            <Route path="/"                       element={<Home />} />
-            <Route path="/simba"                  element={<Admin editing={editing}/>} />
-            <Route path="/info"                   element={<Info />} />
-            <Route path="/support"                element={<Support />} />
-            <Route path="/gallery"                element={<Gallery photoData={photoData} />} />
-            <Route path="/contact"                element={<Contact />} />
-            <Route path="/news"                   element={<Form fields={fields} onSubmit={submitter} />} />
-            <Route path="/subscription-update"    element={<Updater />} />
-          </Routes>
-        </Elements>
+        <NotificationProvider>
+          <Elements stripe={stripePromise}>
+            <Routes>
+              <Route path="/"                       element={<Home />} />
+              <Route path="/simba"                  element={<Admin editing={editing}/>} />
+              <Route path="/info"                   element={<Info />} />
+              <Route path="/support"                element={<Support />} />
+              <Route path="/gallery"                element={<Gallery photoData={photoData} />} />
+              <Route path="/contact"                element={<Contact />} />
+              <Route path="/news"                   element={<Form fields={fields} onSubmit={submitter} />} />
+              <Route path="/subscription-update"    element={<Updater />} />
+            </Routes>
+          </Elements>
+        </NotificationProvider>
       </div>
     </div>
   )

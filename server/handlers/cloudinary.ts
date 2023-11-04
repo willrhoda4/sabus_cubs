@@ -8,20 +8,24 @@
 
 
 import { v2 as 
-         cloudinary  } from 'cloudinary';
+         cloudinary   } from 'cloudinary';
 import { Request, 
-         Response    } from 'express';
+         Response,
+         NextFunction } from 'express';
 
 
 
 
 
-const signature = (request: Request, response: Response) => {
+const cloud_name  =     process.env.CLOUDINARY_CLOUD_NAME;
+const api_secret  =     process.env.CLOUDINARY_API_SECRET;
+const api_key     =     process.env.CLOUDINARY_API_KEY;
+
+
+
+function signature (request: Request, response: Response) {
     
     
-    const apiSecret  =     process.env.CLOUDINARY_API_SECRET;
-    const api_key    =     process.env.CLOUDINARY_API_KEY;
-
 
     const params     = {
                             public_id: request.body[0],
@@ -30,10 +34,49 @@ const signature = (request: Request, response: Response) => {
                        }
 
 
-    const signature  = cloudinary.utils.api_sign_request(params, apiSecret as string);
+
+    const signature  = cloudinary.utils.api_sign_request( params, api_secret as string );
     
     
+
     response.json({ api_key, signature, ...params });
 }
 
-export default { signature };
+
+
+
+// upload function leveraged by newsRelease route.
+function upload(request : Request, response: Response, next: NextFunction) {
+
+    console.log('uploading PDF to Cloudinary...');
+
+    cloudinary.uploader.upload_stream(
+
+        { 
+            api_key, 
+            api_secret, 
+            cloud_name,
+            resource_type: 'raw', 
+            folder:        'news_releases',
+        },
+        (err, result) => {
+
+                 if (err)        return response.status(500).send('Error uploading to Cloudinary');
+
+            else if (result) {         
+                                        response.locals.pdf_url = result.url;
+                                        next();
+                             } 
+            else             {   return response.status(500).send('Error getting response from Cloudinary');  }
+        }
+
+    ).end(response.locals.buffer);
+}
+
+
+
+
+
+
+
+export default { signature, upload };

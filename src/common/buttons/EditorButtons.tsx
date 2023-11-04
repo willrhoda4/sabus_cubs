@@ -6,8 +6,12 @@
 
 
 
+
+
+
+import   useNotification              from '../../hooks/useNotification.js';
+
 import { EditorButtonsProps }         from '../../types/button.js';
-import { SvgIcon            }         from '../../types/image.js';
 
 import   ButtonBank                   from './ButtonBank.js';
 
@@ -15,12 +19,7 @@ import   deleteIcon                   from '../../assets/icon_trash.svg';
 import   editIcon                     from '../../assets/icon_edit.svg';
 import   demoteIcon                   from '../../assets/icon_arrowDown.svg';
 import   promoteIcon                  from '../../assets/icon_arrowUp.svg';
-
-// create SvgIcon objects
-const    deleteIconObj  :  SvgIcon = { svgContent: deleteIcon  };
-const    editIconObj    :  SvgIcon = { svgContent: editIcon    };
-const    demoteIconObj  :  SvgIcon = { svgContent: demoteIcon  };
-const    promoteIconObj :  SvgIcon = { svgContent: promoteIcon };
+import   mailIcon                     from '../../assets/icon_mail.svg';
 
 
 
@@ -41,21 +40,33 @@ export default function EditorButtons ({    id,
                                             editing,
                                             loadData,
                                             dataSize,
-                                            setEditing  }
+                                            setEditing,
+                                            releaseData  }
                                           : EditorButtonsProps ) { 
+
+
+    const notification = useNotification();
+
+
 
 
 
     // reveals or hides the form for editing the item.
-    function showForm () {                                  console.log('showForm')
+    function showForm () {                             
 
         // function is only available if 
         // editing andsetEditing is passed in.
-        if (!(editing !== undefined && setEditing)) return;               console.log(id)
+        if (!(editing !== undefined && setEditing)) return;            
 
         editing !== id ? setEditing(id)
-                       : setEditing(false);                 console.log(editing)
+                       : setEditing(false);            
     }
+
+
+
+
+
+
 
 
     
@@ -103,14 +114,41 @@ export default function EditorButtons ({    id,
         const promoteItem = () => rerankItem(rank+1);
 
 
+
+
+
+    // triggers a news release publication.
+    function publish () {
+
+        const warning = "Are you sure you want to publish this news release?";
+
+        window.confirm(warning) &&
+
+            Axios.post(`${import.meta.env.VITE_API_URL}publishNewsRelease`, releaseData )
+                 .then(  res => notification(res.data)                                  )
+                 .catch( err => console.log(err)                                        );
+    }
+
+
+
+
     // the button arrays are passed in when rendering the component.
-    const buttonNames                 = [ 'delete',         'edit',           'promote',        'demote'              ];
-    const buttonIcons  :    SvgIcon[] = [  deleteIconObj,    editIconObj,      promoteIconObj,   demoteIconObj        ];
-    const buttonFunctions             = [  deleteItem,       showForm,         promoteItem,      demoteItem           ];
-    const buttonConditions            = [  true,             true,             index !== 0,      index !== dataSize-1 ];
+    const buttonNames       = [ 'delete',         'edit',           'promote',        'demote'              ];
+    const buttonIcons       = [  deleteIcon,       editIcon,         promoteIcon,      demoteIcon           ];
+    const buttonFunctions   = [  deleteItem,       showForm,         promoteItem,      demoteItem           ];
+    const buttonConditions  = [  true,             true,             index !== 0,      index !== dataSize-1 ];
 
 
 
+
+    // implements the publish button if releaseData is passed in.
+    if ( table === 'news_releases' ) {
+
+             buttonNames.push('publish');
+             buttonIcons.push(mailIcon);
+         buttonFunctions.push(publish);
+        buttonConditions.push(true);
+    }
     
 
    // render the button bank.
@@ -119,6 +157,7 @@ export default function EditorButtons ({    id,
             <ButtonBank
                 names={      buttonNames      }
                 icons={      buttonIcons      }
+                stroke={    '#252D33'         }
                 onClicks={   buttonFunctions  }
                 conditions={ buttonConditions }
             />

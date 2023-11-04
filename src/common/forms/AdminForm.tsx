@@ -26,14 +26,9 @@ import { FormState,
 
 
 
-export default function AdminForm( {update, getData, setEditing, fields, table} : AdminFormProps ): JSX.Element {
+export default function AdminForm( { table, update, getData, setEditing, fields, style = 'neobrutalism' } : AdminFormProps ): JSX.Element {
 
 
-    
-    
-    
-    const type    = table.at(-1) === 's' ? table.slice(0, -1) : table; // remove the 's' from the table name if it's plural
-    
 
 
 
@@ -41,11 +36,11 @@ export default function AdminForm( {update, getData, setEditing, fields, table} 
 
 
         // set uploadProgress to 1 to display delivery message.
-        newStatus(`saving ${type}...`, false)
+        newStatus(`adding iterm to the ${table} table...`, false)
 
 
-        const reqSuccess: string = `${type} successfully saved! It should be available on the site now`;
-        const reqFailure: string = `There was a problem saving your ${type}. Please try again, and call tech support if this keeps up.`;
+        const reqSuccess: string = `${table} table successfully updated!`;
+        const reqFailure: string = `There was a database problem. Please try again, and call tech support if this keeps up.`;
 
 
         try {
@@ -65,10 +60,9 @@ export default function AdminForm( {update, getData, setEditing, fields, table} 
             let reqBody;
 
             if ( update ) { 
-                            // just refresh the values for updates
-                            const columns = fields.map(field => field.name);
-                            
-                                  reqBody = [ table, columns, formState,  [ [  'id', update.id as number  ] ] ] 
+                
+                                   // just refresh the values for updates
+                                  reqBody = [ table, formState,  [ [  'id', update.id as number  ] ] ] 
 
                         }         // new items also need a rank.
             else        {         reqBody = [ table, [ { ...formState, rank } ] ] }
@@ -103,8 +97,7 @@ export default function AdminForm( {update, getData, setEditing, fields, table} 
 
 
 
-    return <Form fields={fields} onSubmit={saveItem} initialValues={update} />
-                    
+    return  <Form fields={fields} style={style} onSubmit={saveItem} initialValues={update} /> 
 }
 
 

@@ -26,13 +26,13 @@ export default function Navbar ({ setMenuDisplayed } : NavbarProps) : JSX.Elemen
           <div className={`
                             relative
                             sticky top-0
-                            z-10
-                            w-full h-16
-                            px-4
+                            z-20
+                            w-full h-20
+                            px-6
                             flex
                             justify-between items-center
-                            bg-gray-200
-                            border-b-2 border-gray-400
+                            bg-white
+                            border-b-4 border-black
                          `}
           >
             <HamburgerMenu setMenuDisplayed={setMenuDisplayed} />

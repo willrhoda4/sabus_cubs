@@ -10,7 +10,7 @@
 
 
 
-import   AdminForm               from '../../../../common/forms/Form';
+import   AdminForm               from '../../../../common/forms/AdminForm';
 
 import { AdminFormParentProps  } from '../../../../types/admin';
 import { Field                 } from '../../../../types/form';
@@ -38,32 +38,65 @@ export default function StoryForm( {update, getData, setEditing} : AdminFormPare
 
   const fields : Field[] =  [
                                 {
-                                  name:             'question',
+                                  name:             'headline',
                                   type:             'text',
-                                  validation:      ['length', 0, 140],
-                                  errorMsg:         'Let\'s keep it under 140 characters.'
+                                  validation:      ['length', 1, 255],
+                                  errorMsg:         'Let\'s keep it under 255 characters.'
                                 },
 
                                 
                                 {
-                                  name:             'answer',
-                                  type:             'textArea',
-                                  validation:      ['length', 0, 280],
-                                  errorMsg:         'Let\'s keep it under 140 characters.'
+                                  name:             'outlet',
+                                  type:             'text',
+                                  validation:      ['length', 1, 255],
+                                  errorMsg:         'Let\'s keep it under 255 characters.'
                                 },
+
+                                
+                                {
+                                  name:             'url',
+                                  type:             'text',
+                                  validation:       'url',
+                                  errorMsg:         'Let\'s keep it under 255 characters.'
+                                },
+
+                                
+                                {
+                                  name:             'image_url',
+                                  type:             'text',
+                                  validation:       'url',
+                                  errorMsg:         'Let\'s keep it under 255 characters.'
+                                },
+
+                                
+                                {
+                                  name:             'image_alt',
+                                  type:             'text',
+                                  validation:      ['length', 0, 255],
+                                  errorMsg:         'Let\'s keep it under 255 characters.'
+                                },
+
+                                
+                                {
+                                  name:             'date',
+                                  type:             'date',
+                                  validation:       'date',
+                                  errorMsg:         'Let\'s keep it under 255 characters.'
+                                },
+
                               ];
 
 
 
-                              return  <AdminForm 
-                              table={'stories'}
-                              update={update}
-                              getData={getData}
-                              setEditing={setEditing}
-                              fields={fields}
-                          />
-                                  
-                }                  
+  return  <AdminForm 
+              table={'stories'}
+              update={update}
+              getData={getData}
+              setEditing={setEditing}
+              fields={fields}
+          />
+                  
+}                  
 
 
 

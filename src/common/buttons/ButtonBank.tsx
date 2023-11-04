@@ -6,10 +6,16 @@
 
 
 
-import { ButtonArgs, ButtonBankProps } from "../../types/button";
 
 
+import   SVGIcon           from "../images/SVGIcon";
 
+import { ButtonArgs,
+         ButtonBankProps } from "../../types/button";
+
+// import   deleteIcon        from '../../assets/icon_trash.svg';
+
+// import  useSVGIcon        from "../../hooks/useSVGIcon";
 
 
 
@@ -18,13 +24,33 @@ import { ButtonArgs, ButtonBankProps } from "../../types/button";
 // and conditions, with each index corresponding to a button.
 // it might feel a little clunky, but setting it up ends up being a lot more 
 // readable than a bunch of objects with a bunch of keys and values. 
-export default function ButtonBank ({names, icons, onClicks, conditions, wrapStyle, currentState} : ButtonBankProps) {
+export default function ButtonBank ( { names, icons, stroke, onClicks, conditions, wrapStyle, currentState, } : ButtonBankProps ) {
     
-   
-   
-    function button (...args : ButtonArgs) {
+    // const DeleteIcon = useSVGIcon({
+    //     icon: deleteIcon,
+    //     alt: 'Delete icon',
+    //     stroke: '#2774AB',
+    //     size: '24',
+    //     wrapStyles: 'border border-orange-300',
+    // });
 
-        const [name, icon, onClick, thisCondition, index] = args;    //this error here: Type 'never' must have a '[Symbol.iterator]()' method that returns an iterator.ts(2488)
+    const renderSVG = (name : string, icon?: string, stroke?: string, size: string = '24', styles?: string) => {
+
+        if (!icon) return   null;
+
+        else       return   <SVGIcon
+                                icon={icon}
+                                alt={name+' icon'}
+                                stroke={stroke}
+                                size={size}
+                                wrapStyles={styles || ''}
+                             />
+      };
+
+   
+    function button ( ...args : ButtonArgs ) {
+
+        const [ name, icon, stroke, onClick, thisCondition, index ] = args;    
 
          
 
@@ -42,7 +68,7 @@ export default function ButtonBank ({names, icons, onClicks, conditions, wrapSty
         // if there's no conditions prop or thisCondition argument is null,
         // then the button is always rendered (set condition to true).
         // otherwise, the button is only rendered if the condition is true.
-        const condition = !conditions || thisCondition == null ? true : thisCondition; 
+        const condition = !conditions || thisCondition === null ? true : thisCondition; 
 
 
         // if there's no icon prop or icon argument is null,
@@ -52,12 +78,8 @@ export default function ButtonBank ({names, icons, onClicks, conditions, wrapSty
         return (<div key={index}>
             {   condition   ?  <button type='button' onClick={onClick} className={buttonClass('px-4')} >
 
-                                        {   icon    ?   <img alt={name+'icon'} 
-                                                             src={icon.svgContent}              
-                                                             className={ currentState === name ? 'transition-all brightness-50' 
-                                                                                               : 'transition-all'
-                                                                        }
-                                                        />
+                                        {   icon    ?  renderSVG(name, icon, stroke, '24', `transition-all ${name === currentState && 'brightness-50'}`)
+
                                                     :   <p className={ `    transition-colors 
                                                                             translate-y-[-2px]
                                                                             ${ name === currentState ? 'text-black' 
@@ -66,9 +88,9 @@ export default function ButtonBank ({names, icons, onClicks, conditions, wrapSty
                                                                       `}
                                                         >{name}</p>
                                         }
-                                    </button>
-                            :   <button type='button' className={buttonClass('px-7')} />
-            }
+                                </button>
+                            :   <button type='button' className={ buttonClass('px-7') } />
+            }                  
         </div>)
     }
 
@@ -86,15 +108,16 @@ export default function ButtonBank ({names, icons, onClicks, conditions, wrapSty
                         '
             >
                 {   onClicks.length !== 0 &&
-                    onClicks.map((icon, index) => {     const buttonName =                     names[index];
-                                                        const buttonIcon =   icons      ?      icons[index] : null;  
-                                                        const onClick    =                  onClicks[index];
-                                                        const condition  =   conditions ? conditions[index] : null;
+                    onClicks.map((_icon, index) => {     const buttonName =                      names[index];
+                                                         const buttonIcon =   icons      &&      icons[index];   
+                                                         const onClick    =                   onClicks[index];
+                                                         const condition  =   conditions && conditions[index]; 
 
-                                                        return button(buttonName, buttonIcon, onClick, condition, index)
+                                                        return button(buttonName, buttonIcon, stroke, onClick, condition, index)
                                                   }
                                 )
                 }
+                {/* {DeleteIcon} */}
             </div>
         </div>
     )

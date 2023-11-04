@@ -16,7 +16,9 @@ import   useToggleRef     from '../../hooks/useToggleRef';
 import   validate         from '../../utils/validate';
 
 import { Field,
-         FormProps      } from '../../types/form';
+         FormProps,
+         MiscState      } from '../../types/form';
+
 
 import   Input            from './Input';
 import   Button           from '../buttons/Button';
@@ -27,7 +29,7 @@ import   Button           from '../buttons/Button';
 
 
 
-export default function Form ({ fields, onSubmit, initialValues,  } : FormProps) {
+export default function Form ({ fields, style, onSubmit, initialValues,  } : FormProps) {
 
 
 
@@ -35,8 +37,8 @@ export default function Form ({ fields, onSubmit, initialValues,  } : FormProps)
     // errorState is the error object for the form.
     // attempted is a boolean that tracks whether the user has attempted to submit the form.
     // status is a string that keeps the user in the loop.
-    const [ formState,     setFormState     ] = useState<Record< string, string | number | boolean | File >>({});
-    const [ controlState,  setControlState  ] = useState<Record< string, string | number | boolean | File >>({});
+    const [ formState,     setFormState     ] = useState<Record< string, MiscState >>({});
+    const [ controlState,  setControlState  ] = useState<Record< string, MiscState >>({});
     const [ errorState,    setErrorState    ] = useState<Record<string, unknown>>({});
     const [ attempted,     setAttempted     ] = useState<boolean>(false);
    
@@ -52,7 +54,7 @@ export default function Form ({ fields, onSubmit, initialValues,  } : FormProps)
 
     // Load initial values into state if they exist
     useEffect(() => { initialValues && setFormState(initialValues); }, [initialValues]);
-
+                                              
 
 
         
@@ -112,6 +114,7 @@ export default function Form ({ fields, onSubmit, initialValues,  } : FormProps)
             setAttempted(false);
             setFormState({});
         };
+        
     
         const hasError = Object.values(errorState).some(error => error === true);
     
@@ -159,6 +162,7 @@ export default function Form ({ fields, onSubmit, initialValues,  } : FormProps)
                                 name={           field.name                                             }
                                 type={           field.type                                             }
                                 options={        field.options                                          }
+                                style={          style                                                  }
 
                                 state={         !field.isController ? formState    : controlState       }
                                 setter={        !field.isController ? setFormState : setControlState    }
@@ -177,7 +181,7 @@ export default function Form ({ fields, onSubmit, initialValues,  } : FormProps)
 
             <p ref={statusRef} />
 
-            <Button text="Submit" onClick={handleFormSubmit} />
+            <Button text="Submit" style={style} onClick={handleFormSubmit} />
 
     </form>
 

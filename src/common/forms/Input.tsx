@@ -13,9 +13,8 @@
 import { ChangeEvent } from 'react';
 import { InputProps  } from '../../types/form';
 
-
-
-
+import   useStyles     from '../../hooks/useStyles.js';
+ 
 
 
 
@@ -26,6 +25,7 @@ import { InputProps  } from '../../types/form';
 export default function Input ({
                                     name,
                                     type,
+                                    style = 'neobrutalism',
                                     state,
                                     error,
                                     setter,
@@ -40,25 +40,18 @@ export default function Input ({
 
 
 
-
+    
     // before applying error styles, 
     // check if the user has attempted to submit the form,
     // and if the input has an error.
-    const mistakeMade = errorStyles && error && error[name];
+    const mistakeMade : boolean = ( errorStyles && error ) ? !!error[name] : false;
 
+    // get the appropriate styles for the input
+    // based on the input type and whether or not an error was made.
+    const theme       = useStyles(style);
 
+    const inputStyles = theme('input', { error: mistakeMade, type: type });
 
-    // Define the input's CSS class based on the error state and type
-    const inputClass = `
-                            w-full p-1 
-                            rounded-md border 
-                            ${!( mistakeMade === true) ? 'border-gray-300' : 'border-pink-300' } 
-                            ${ type === 'textArea' && 'min-h-[20rem]'}
-                            shadow-sm 
-                            focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50
-                       `;
-
-    
 
 
 
@@ -116,10 +109,12 @@ export default function Input ({
     const commonProps = {   
                                     name: name,
                                 onChange: handleInputChange,
-                               className: inputClass,
+                               className: inputStyles,
                                 required: true,
                                 ...(type !== 'file' ? valueProp : {}),
                         };
+                        /*Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '(type: string, mistakeMade: boolean) => StyleObject'.
+  No index signature with a parameter of type 'string' was found on type '(type: string, mistakeMade: boolean) => StyleObject'.ts(7053)*/
 
     
     // prepares options for the select input.

@@ -29,6 +29,7 @@ import    email          from './handlers/email.ts';
 import    cloud          from './handlers/cloudinary.ts';
 import    stripe         from './handlers/stripe.ts';
 import    stripeWh       from './handlers/stripeWebhook.ts';
+import    newsRelease    from './handlers/newsRelease.ts';
 
 
 
@@ -118,7 +119,14 @@ app.post('/scheduleUpdate',         auth.scheduleUpdate,                        
 app.post('/verifyUpdate',           auth.verifyUpdate,                                );
 
 
+// news release handlers
+app.post('/generateNewsRelease',    newsRelease.generateHTML,
+                                    newsRelease.generatePDF,
+                                    cloud.upload,
+                                    email.deliverNewsRelease,
+                                    newsRelease.logger,                                );
 
+app.post('/publishNewsRelease',     email.deliverNewsRelease,                          );
 
 
 
@@ -127,7 +135,7 @@ const server = app.listen( process.env.PORT || 3000, () => {
 
     const address = server?.address();
 
-           if (            typeof address === 'string'      ) { console.log(`Listening on ${address}`);                             }
+           if (            typeof address      === 'string' ) { console.log(`Listening on ${address}`);                             }
       else if ( address && typeof address.port === 'number' ) { console.log(`Listening on http://localhost:${address.port} ...`)    }
       else                                                    { console.log('Server is null or undefined');                         }
 });

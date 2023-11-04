@@ -9,51 +9,22 @@
 
 
 
-import   dropdownIcon    from '../../../assets/icon_dropdown.svg';
+import   ContentRack               from '../../../common/contentRack';
 
-import   EditorButtons   from '../../../common/buttons/EditorButtons';
+import   dropdownIcon              from '../../../assets/icon_dropdown.svg';
 
-import   FAQForm         from '../../Admin/components/forms/FAQForm';
+import   EditorButtons             from '../../../common/buttons/EditorButtons';
 
-import { useState, 
-         useEffect }     from 'react';
+import   FAQForm                   from '../../Admin/components/forms/FAQForm';
 
-import   Axios           from 'axios';
+import { FAQ }                     from '../../../types/info';
 
-import { FAQ, FAQBuffetProps } from '../../../types/info';
-
-
+import { ContentControls,
+         ContentRackWrapperProps } from '../../../types/content';
 
 
 
-
-export default function FAQBuffet({admin}:FAQBuffetProps ): JSX.Element {
-
-
-
-
-
-    const [ faqs,       setFaqs       ] = useState<FAQ[]>([]);
-    const [ displayed,  setDisplayed  ] = useState<number | boolean>(false);
-    const [ editing,    setEditing    ] = useState<number | boolean>(false);
-
-
-
-
-
-
-    // requests FAQ data from server amd sets it to state
-    function getFAQs() {
-
-        const reqBody = [ 'faq', undefined, { orderBy: 'rank' } ];
-
-        Axios.post(`${import.meta.env.VITE_API_URL}getData`, reqBody )
-             .then(   res => setFaqs(res.data)                       )
-             .catch(  err => console.log(err )                       );
-    }
-
-    // get FAQS on initial load
-    useEffect(() => { getFAQs() }, [] )
+export default function FAQBuffet({ admin } : ContentRackWrapperProps ): JSX.Element {
 
 
 
@@ -61,9 +32,29 @@ export default function FAQBuffet({admin}:FAQBuffetProps ): JSX.Element {
 
 
     // genrates question components for the FAQ buffet
-    function makeFAQ(faq : FAQ, index : number) {
+    function renderFAQ( 
+                        faq : FAQ, 
+                        index : number,
+                        controls : ContentControls 
+                    ) {
 
-        const  { question, answer, id, rank } = faq;
+        const   { 
+                    id, 
+                    rank, 
+                    answer, 
+                    question, 
+
+                } = faq;
+
+        const   { 
+                    getData,
+                    editing, 
+                    dataSize,
+                    displayed, 
+                    setEditing, 
+                    setDisplayed, 
+            
+                } = controls;
 
         return (
 
@@ -98,13 +89,13 @@ export default function FAQBuffet({admin}:FAQBuffetProps ): JSX.Element {
                                 table={'faq'}
                                 pkName={'id'}
                                 editing={editing}
-                                loadData={getFAQs}
-                                dataSize={faqs.length}
+                                loadData={getData}
+                                dataSize={dataSize}
                                 setEditing={setEditing}
                             />
                 }
 
-                { admin && editing === id && <FAQForm getData={getFAQs} update={faq} setEditing={setEditing}/> }
+                { admin && editing === id && <FAQForm getData={getData} update={faq} setEditing={setEditing}/> }
 
                 
             </div>
@@ -114,16 +105,135 @@ export default function FAQBuffet({admin}:FAQBuffetProps ): JSX.Element {
 
 
 
+    return <ContentRack<FAQ> table='faq' renderContent={renderFAQ} />
 
-
-
-    return (<>
-
-
-
-    <div className='my-12'>
-        { faqs && faqs.map( (faq, index) => makeFAQ(faq, index) ) }
-    </div>
-
-    </>)
 }
+
+
+
+
+
+
+
+
+
+
+
+// import   dropdownIcon    from '../../../assets/icon_dropdown.svg';
+
+// import   EditorButtons   from '../../../common/buttons/EditorButtons';
+
+// import   FAQForm         from '../../Admin/components/forms/FAQForm';
+
+// import { useState, 
+//          useEffect }     from 'react';
+
+// import   Axios           from 'axios';
+
+// import { FAQ, FAQBuffetProps } from '../../../types/info';
+
+
+
+
+
+
+// export default function FAQBuffet({admin}:FAQBuffetProps ): JSX.Element {
+
+
+
+
+
+//     const [ faqs,       setFaqs       ] = useState<FAQ[]>([]);
+//     const [ displayed,  setDisplayed  ] = useState<number | boolean>(false);
+//     const [ editing,    setEditing    ] = useState<number | boolean>(false);
+
+
+
+
+
+
+//     // requests FAQ data from server amd sets it to state
+//     function getFAQs() {
+
+//         const reqBody = [ 'faq', undefined, { orderBy: 'rank' } ];
+
+//         Axios.post(`${import.meta.env.VITE_API_URL}getData`, reqBody )
+//              .then(   res => setFaqs(res.data)                       )
+//              .catch(  err => console.log(err )                       );
+//     }
+
+//     // get FAQS on initial load
+//     useEffect(() => { getFAQs() }, [] )
+
+
+
+
+
+
+//     // genrates question components for the FAQ buffet
+//     function makeFAQ(faq : FAQ, index : number) {
+
+//         const  { question, answer, id, rank } = faq;
+
+//         return (
+
+//             <div key={id} className={`
+//                                         w-full h-fit 
+//                                         border border-blue-300
+//                                     `}
+//             >
+//                 <div className='flex justify-between' onClick={ () => displayed === id ? setDisplayed(false) : setDisplayed(id) }>
+
+//                     <div className='flex items-center'>
+//                         <h5 style={{marginRight: '2.5vmin', fontSize: '5vmin'}}>Q:</h5>
+//                         <p>{question}</p>
+//                     </div>
+
+//                     <img className={ `h-10 m-5 ${ displayed === id && 'transform rotate-180' }` } 
+//                                alt={ 'dropdown icon' }
+//                            onClick={  displayed !== id ? () => setDisplayed(id)
+//                                                        : () => setDisplayed(false)
+//                                    }
+//                                src={dropdownIcon}
+//                     />
+//                 </div>
+
+//                 { displayed === id && <p style={{whiteSpace: 'pre-line', paddingBottom: '10vmin'}}>{answer}</p> }
+
+
+//                 { admin && <EditorButtons 
+//                                 id={id} 
+//                                 rank={rank} 
+//                                 index={index}
+//                                 table={'faq'}
+//                                 pkName={'id'}
+//                                 editing={editing}
+//                                 loadData={getFAQs}
+//                                 dataSize={faqs.length}
+//                                 setEditing={setEditing}
+//                             />
+//                 }
+
+//                 { admin && editing === id && <FAQForm getData={getFAQs} update={faq} setEditing={setEditing}/> }
+
+                
+//             </div>
+//         )
+//     }
+
+
+
+
+
+
+
+//     return (<>
+
+
+
+//     <div className='my-12'>
+//         { faqs && faqs.map( (faq, index) => makeFAQ(faq, index) ) }
+//     </div>
+
+//     </>)
+// }

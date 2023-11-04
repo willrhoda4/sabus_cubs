@@ -53,11 +53,3 @@ export interface FAQ {
     rank:     number;
   }
   
-
-export interface FAQBuffetProps {
-    
-    
-    admin?: boolean;
-    key?:   number;
-
-}
