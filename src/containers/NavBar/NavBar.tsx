@@ -4,6 +4,7 @@
 
 import Button        from "../../common/buttons/Button";
 import HamburgerMenu from "./components/Hamburger";
+import SocialLinkSelector from "./components/SocialLinkSelector";
 
 
 
@@ -35,10 +36,20 @@ export default function Navbar ({ setMenuDisplayed } : NavbarProps) : JSX.Elemen
                             border-b-4 border-black
                          `}
           >
+
             <HamburgerMenu setMenuDisplayed={setMenuDisplayed} />
-            <Button onClick={() => setMenuDisplayed((prev : boolean) => !prev)}
-                        text='Donate'
-            />
+
+            <div className='flex'>
+
+              <SocialLinkSelector />
+
+              <Button onClick={() => setMenuDisplayed((prev : boolean) => !prev)}
+                         text='Donate'
+                         style='neobrutalism'
+              />
+
+            </div>
+
           </div>
         );
       }

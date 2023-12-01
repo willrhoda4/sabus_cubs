@@ -13,7 +13,7 @@
 import { useState, 
          useEffect   } from 'react';
 
-import   Tabs          from './components/Tabs'
+import   Tabs          from '../../common/Tabs'
 import   ContactInfo   from './components/ContactInfo';
 import   CreditCard    from './components/CreditCard';
 import   Amount        from './components/Amount';

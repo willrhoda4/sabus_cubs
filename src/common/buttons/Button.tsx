@@ -22,7 +22,7 @@ export default function Button ( { text, onClick, style = 'neobrutalism' } : But
 
     const theme        = useStyles(style);
 
-    const buttonStyle  = theme('button');
+    const buttonStyle  = theme.button?.();
 
     return (    <button     
                       onClick={ onClick } 

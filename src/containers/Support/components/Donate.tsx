@@ -22,17 +22,19 @@ import { CardElement,
 import   Axios             from 'axios'
 import { v4 as uuidv4  }   from 'uuid';
 
-import   UpdateTrigger     from './UpdateTrigger';    
 
 
-import   ButtonBank        from '../../../common/buttons/ButtonBank';
+
+import   AmountSelector    from './AmountSelector';
 
 import   Input             from '../../../common/forms/Input'
 
 import   Button            from '../../../common/buttons/Button';
 
-import { ButtonBankProps } from '../../../types/button';
 
+import { MiscState       } from '../../../types/form';    
+
+import   copy              from '../../../assets/copy';
 
 
  
@@ -42,8 +44,8 @@ export default function Donate() {
 
 
     const [ amount,         setAmount        ]   = useState<number>(5);
-    const [ formState,      setFormState     ]   = useState<Record< string, string | number | boolean | File >>({});
-    const [ errorState,     setErrorState    ]   = useState<Record<string, unknown>>({});
+    const [ formState,      setFormState     ]   = useState<Record< string, MiscState >>({});
+    const [ errorState,     setErrorState    ]   = useState<Record< string, unknown   >>({});
     const [ attempted,      setAttempted     ]   = useState<boolean>(false);
     
     
@@ -52,8 +54,8 @@ export default function Donate() {
     const [ isClicked,      setIsClicked     ]   = useToggleRef(false);
     
     
-    const   stripe                               = useStripe();                                                 // Hook to access the Stripe    object
-    const   elements                             = useElements();                                               // Hook to access     Stripe.js elements
+    const   stripe                               = useStripe();   // Hook to access the Stripe    object
+    const   elements                             = useElements(); // Hook to access     Stripe.js elements
 
 
 
@@ -208,38 +210,28 @@ export default function Donate() {
 
     // style options for Stripe's portion of the form
     const cardElementOptions = {
-
         style: {
-
             base: {
-                color:         "#000",
-                fontFamily:   '"Helvetica Neue", Helvetica, sans-serif',
-                fontSmoothing: "antialiased",
-                fontSize:      "16px",
-                               "::placeholder": { color: "#6c757d" },
+                color: "#000", // Text color
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif', // Font family
+                fontSmoothing: "antialiased", // Font smoothing
+                fontSize: "16px", // Font size
+                fontWeight: "bold", // Bold text
+                '::placeholder': { color: "#6c757d", },// Placeholder text color
+                iconColor: '#666EE8', // Color of the icon inside the CardElement
             },
-
             invalid: {
-                color:     "#dc3545",
-                iconColor: "#dc3545"
-            }
+                color: '#dc3545', // Text color when input is invalid
+                iconColor: '#dc3545', // Icon color when input is invalid
+            },
         },
-
-        hidePostalCode: true,
+        hidePostalCode: true, // Hide the postal code field if not needed
     };
+    
+    
 
 
 
-
-
-    // props for the donation selector buttons
-    const donationSelectorProps : ButtonBankProps=  {
-
-                names:       [ '5',                 '10',                 '20',                 '50',               '100'                 ],
-                onClicks:    [  ()=>setAmount(5),    ()=>setAmount(10),    ()=>setAmount(20),    ()=>setAmount(50),  ()=>setAmount(100)   ],
-                wrapStyle:     'pl-4 m-4',
-                currentState:   amount,
-    }
 
 
 
@@ -251,7 +243,8 @@ export default function Donate() {
                                             : 'please provide a valid email.';
 
 
-
+    // styles for form's p elements
+    const pStyles = 'font-body w-full py-8 pr-[40%]'
 
 
 
@@ -264,24 +257,14 @@ export default function Donate() {
                                 h-fit w-full 
                                 flex flex-col
                                 items-center
-                                p-12
-                                border border-orange-300
+                                min-w-[900px]
+                                p-8
                             `}
             >
                 
-                {/* Component to collect card details */}
-                <div className={`
-                                    w-full rounded-md 
-                                    font-bold 
-                                    border-2 border-black bg-white 
-                                    shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
-                                    p-4
-                                    max-w-[900px]
-                                    flex flex-col
-                            `}
-                >
+               
                     
-                    <p>{`$${amount} is enough to afford some things!`}</p>
+                    { copy('donate', pStyles) }
 
                     <Input                      
                         name={      'name'                  }
@@ -311,19 +294,26 @@ export default function Donate() {
                         setter={     setFormState           }
                     />
 
-                    <ButtonBank { ...donationSelectorProps } />
 
-                    <CardElement key={renderKey} options={cardElementOptions} />
+                    <AmountSelector 
+                            amount={amount} 
+                         setAmount={setAmount} 
+                        wrapStyles='self-start my-8'    
+                    />
 
-                    <Button onClick={handleSubmit} text='Donate Now!' />
+                    <p className={pStyles}>{`With a donation of $${amount} we can afford some stuff!`}</p>
+
+                    <div className='w-full h-12 m-4' >
+                        <CardElement key={renderKey}  options={cardElementOptions} />
+                    </div>
+
+                    <Button onClick={handleSubmit} text={`contribute $${amount}${formState.monthly ? ' a month' : ''}`} />
 
                     <p ref={statusRef} />
 
-                </div>
 
             </form>
 
-            <UpdateTrigger />
 
         </div>
     );

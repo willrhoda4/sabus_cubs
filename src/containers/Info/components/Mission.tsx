@@ -6,7 +6,16 @@
 
 
 
-export default function Mission ({text}:{text:string}): JSX.Element {
+
+
+
+import copy from '../../../assets/copy';
+
+
+
+
+
+export default function Mission () : JSX.Element {
 
 
 
@@ -15,26 +24,20 @@ export default function Mission ({text}:{text:string}): JSX.Element {
 
         <div className={`
                             w-full h-fit
-                            flex items-center justify-center
-                            p-12
+                            flex  flex-col
+                            pt-20 px-12 pb-40
+                            bg-brand-blue
+                            text-brand-yellow
                        `}
         >
 
-            <p className={`
-                                text-2xl
-                                text-center
-                                text-white
-                                font-bold
-                                first-letter:text-8xl
-                                first-letter:leading-3
-                                bg-red-300
-                                p-12
-                           `}
-            >{text}</p>
+            <p className='font-title self-end mb-20'>Mission</p>
+
+            <p className={`font-heading self-center m-8`}>{ copy('mission', 'string') }</p>
+
+          
 
 
         </div>
-
-
     )
 }

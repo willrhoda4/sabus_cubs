@@ -6,21 +6,53 @@
 
 
 
-import FacebookFeed from "./FacebookFeed"
 
 
 
 
-export default function Social(): JSX.Element {
+import   FacebookFeed      from './FacebookFeed';
+import   InstagramExamples from './InstagramExamples';
+import   SocialPlatform    from './SocialPlatform';
+
+import { ContactProps }    from '../../../types/contact';
+
+import   IconInstagram     from '../../../assets/icon_instagram.svg?react'
+import   IconFacebook      from '../../../assets/icon_facebook.svg?react'
 
 
 
 
 
-    return (<>
-
-            <FacebookFeed name='Sabus Cubs' url='https://www.facebook.com/sabuscubs' />
 
 
-    </>)
+
+export default function Social({ photoData }: ContactProps): JSX.Element {
+
+
+
+
+    return (
+
+
+        <div className={`
+                            w-full h-fit
+                            flex flex-col md:flex-row 
+                            items-center justify-center
+                       `}
+        >
+
+            <SocialPlatform
+                name='Instagram'
+                icon={IconInstagram}
+                content={<InstagramExamples photoData={photoData} />}
+            />
+
+            <SocialPlatform
+                name='Facebook'
+                icon={IconFacebook}
+                content={<FacebookFeed name='Sabus Cubs' url='https://www.facebook.com/sabuscubs' />}
+            />
+            
+        </div>
+    );
 }

@@ -6,6 +6,29 @@
 
 
 
+/**
+ * The UpdateTrigger component is designed to handle the process of user login for monthly donees.
+ * It initially displays a message and a login button. When the user clicks the login button,
+ * it switches to a form view where the user can enter their email for login purposes.
+ *
+ * The component uses a state `loggingIn` to toggle between the initial view and the form view.
+ * In the initial view, it displays a message (retrieved using the `copy` function) and a button to initiate login.
+ * Once the login button is clicked, `loggingIn` is set to true, and the component renders a form for the user to enter their email.
+ *
+ * The form submission is handled by `handleSubmit`, which sends a POST request to schedule an update.
+ * This function also updates the status message based on the success or failure of the request.
+ *
+ * Component Structure:
+ * - Card: A container that provides a styled card layout.
+ *   - Initial View (when `loggingIn` is false):
+ *     - Message explaining the update process.
+ *     - Button to initiate the login process.
+ *   - Form View (when `loggingIn` is true):
+ *     - Message prompting for login.
+ *     - Form for the user to input their email.
+ * 
+ * The component uses Axios for making HTTP requests and manages its own state using React's `useState` hook.
+ */
 
 
 
@@ -22,30 +45,37 @@ import { Field,
          FormState, 
          NewStatusFunction  }  from '../../../types/form';
 
+import   Card                  from '../../../common/Card';
+import   Button                from '../../../common/buttons/Button';
+
+import   copy                  from '../../../assets/copy';
+
 
 
 const UpdateTrigger: React.FC = () => {
 
         
-    const [ isModalOpen, setIsModalOpen ] = useState(false);
 
-    const openModal  = () => { setIsModalOpen(true);  };
+    const [ loggingIn,   setLoggingIn   ] = useState(false);
 
-    const closeModal = () => { setIsModalOpen(false); }; 
 
-    const fields : Field[] =    [
+
+
+    const   fields : Field[] =    [
                                     {
                                         name:             'email',
                                         type:             'text',
                                         validation:       'email',
                                         errorMsg:         'please provide a valid email.'
                                     },
-                                ];
+                                  ];
+
+
 
     function handleSubmit ( formState : FormState, newStatus : NewStatusFunction ) : Promise<boolean|void> {
 
 
-        newStatus('scheduling your update...', false);
+        newStatus('generating login link...', false);
       
         const email = formState.email;
 
@@ -57,44 +87,28 @@ const UpdateTrigger: React.FC = () => {
 
     return (
         
-        <div className={`
-                          relative
-                          w-full 
-                          border border-orange-300
-                          flex flex-col items-center
-                       `}
+        <Card 
+            wrapClass='max-w-[60%] mt-8 mb-20 relative'
+            headingClass='bg-brand-red text-white'
+            heading='monthly donee login'
         >
-            <p>Monthly donees can click below to adjust payments, update contact info or cancel their subscriptions.</p>
-            <button onClick={openModal} className="bg-blue-500 text-white p-2 rounded">manage subscription</button>
 
-            {isModalOpen && (
+                {
+                    !loggingIn ?    <div className='flex flex-col items-center justify center'>
+                                        { copy('update', 'my-8') }
+                                        <Button text='login now' onClick={ () => setLoggingIn(true) } />
+                                    </div>
+                               
+                               :    <div className='flex flex-col items-center justify center'>
+                                        { copy('login', 'my-8') } 
+                                        <Form fields={fields} onSubmit={handleSubmit} />
+                                    </div>
+                }
 
-                <div className={`   
-                                    z-50
-                                    fixed 
-                                    inset-0 bg-black bg-opacity-50 
-                                    flex items-center justify-center 
-                                `}                
-                >
-                    <div className={`
-                                        bg-white p-4 
-                                        rounded shadow-lg 
-                                        relative
-                                        w-[50%] h-[50%]
-                                        flex flex-col items-center
-                                   `}                    
-                    >
+                
 
-                        <button onClick={closeModal} className="absolute top-2 right-2 text-gray-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                        <Form fields={fields} onSubmit={handleSubmit} />
-                    </div>
-                </div>
-            )}
-        </div>
+
+        </Card>
     );
 };
 

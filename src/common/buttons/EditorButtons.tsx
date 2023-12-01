@@ -15,17 +15,17 @@ import { EditorButtonsProps }         from '../../types/button.js';
 
 import   ButtonBank                   from './ButtonBank.js';
 
-import   deleteIcon                   from '../../assets/icon_trash.svg';
-import   editIcon                     from '../../assets/icon_edit.svg';
-import   demoteIcon                   from '../../assets/icon_arrowDown.svg';
-import   promoteIcon                  from '../../assets/icon_arrowUp.svg';
-import   mailIcon                     from '../../assets/icon_mail.svg';
+import   DeleteIcon                   from '../../assets/icon_trash.svg?react';
+import   EditIcon                     from '../../assets/icon_edit.svg?react';
+import   DemoteIcon                   from '../../assets/icon_arrowDown.svg?react';
+import   PromoteIcon                  from '../../assets/icon_arrowUp.svg?react';
+import   MailIcon                     from '../../assets/icon_mail.svg?react';
+
+import   Axios                        from 'axios';  
 
 
 
 
-
-import Axios            from 'axios';  
 
 
 
@@ -134,7 +134,7 @@ export default function EditorButtons ({    id,
 
     // the button arrays are passed in when rendering the component.
     const buttonNames       = [ 'delete',         'edit',           'promote',        'demote'              ];
-    const buttonIcons       = [  deleteIcon,       editIcon,         promoteIcon,      demoteIcon           ];
+    const buttonIcons       = [  DeleteIcon,       EditIcon,         PromoteIcon,      DemoteIcon           ];
     const buttonFunctions   = [  deleteItem,       showForm,         promoteItem,      demoteItem           ];
     const buttonConditions  = [  true,             true,             index !== 0,      index !== dataSize-1 ];
 
@@ -145,7 +145,7 @@ export default function EditorButtons ({    id,
     if ( table === 'news_releases' ) {
 
              buttonNames.push('publish');
-             buttonIcons.push(mailIcon);
+             buttonIcons.push(MailIcon);
          buttonFunctions.push(publish);
         buttonConditions.push(true);
     }
@@ -163,3 +163,8 @@ export default function EditorButtons ({    id,
             />
     )
 }
+/**
+ * Type 'string[]' is not assignable to type 'ComponentType<SVGProps<SVGSVGElement>>[]'.
+  Type 'string' is not assignable to type 'ComponentType<SVGProps<SVGSVGElement>>'.ts(2322)
+button.ts(46, 5): The expected type comes from property 'icons' which is declared here on type 'IntrinsicAttributes & ButtonBankProps'
+ */

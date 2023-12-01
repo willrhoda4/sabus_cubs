@@ -4,37 +4,57 @@
 
 
 
-
-import { Theme } from '../hooks/useStyles.ts';
-export { Theme };
-
-
-
-export type ComponentType = 'button'   | 'input';
-
-export type StyleObject   = Record< ComponentType, string >;
-
-export type InputType    = 'text'     | 'textArea';
+// theme type derived from array of strings in useStyles hoook
+import      { Theme } from '../hooks/useStyles.ts';
+export type { Theme };
 
 
-  
-export interface InputStyleProps {
-    error?: boolean;
-    type?:  InputType;
-    // ...other props
+// limits which styles can be tracked in a StyleFunctions object.
+export type ComponentType = 'button'        | 
+                            'input'         |
+                            'menuWrapper'   |
+                            'mainMenu'      |
+                            'subMenu'       ;
+
+
+export interface StyleArgObject {
+
+    type?       :  string, 
+    error?      : boolean,
+    selected?   : boolean,
 }
 
 
-
-
-export interface UseStyleArgProps {
-
-    type?:  string, 
-    error?: boolean,
-}
+export type StyleFunction = (args?: StyleArgObject) => string;
 
 
 
 export type StyleFunctions = {
-    [ key in ComponentType ]: ( args?: UseStyleArgProps ) => string;
+    [key in ComponentType]?: StyleFunction;
 };
+
+
+
+
+
+// // type for StyleFunctions properties
+// export type StyleObject   = Record< ComponentType, string >;
+
+
+
+
+
+
+
+// export interface StyleArgObject {
+
+//     type?:  string, 
+//     error?: boolean,
+// }
+
+
+
+// export type StyleFunctions = {
+//     [ key in ComponentType ]? : ( args?: StyleArgObject ) => string | Record<string, string>;
+// };
+

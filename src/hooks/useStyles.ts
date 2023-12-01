@@ -7,30 +7,57 @@
 
 
 
-import   sailboat           from '../styles/sailboat';
-import   neobrutalism       from '../styles/neobrutalism';
-
-import { StyleFunctions,
-         UseStyleArgProps } from '../types/styles';
 
 
-const    themes =   {
-                        sailboat,
-                        neobrutalism,
-                    };
+import sailboat from '../styles/sailboat';
+import neobrutalism from '../styles/neobrutalism';
 
-                    
+
+import { StyleFunctions } from '../types/styles';
+
+const themes = {
+                    sailboat,
+                    neobrutalism,
+                };
+
 export type Theme = keyof typeof themes;
 
 
-export default function useStyles ( theme: Theme ) {
 
-    const styleFunctions: StyleFunctions = themes[theme];
+export default function useStyles(theme: Theme) : StyleFunctions{
 
-    return ( component: keyof StyleFunctions, args?: UseStyleArgProps ) => {
-
-        const  styleFunction = styleFunctions[component];
-        return styleFunction(args);
-    };                      
+    return themes[theme];
 }
+
+
+
+
+// import   sailboat           from '../styles/sailboat';
+// import   neobrutalism       from '../styles/neobrutalism';
+
+// import { StyleFunctions,
+//          StyleArgObject,
+//                           } from '../types/styles';
+
+
+// const    themes =   {
+//                         sailboat,
+//                         neobrutalism,
+//                     };
+
+
+// export type Theme = keyof typeof themes;
+
+
+// export default function useStyles ( theme: Theme )  {
+
+//     const styleFunctions: StyleFunctions = themes[theme];
+
+//     return ( component: keyof StyleFunctions, args?: StyleArgObject ) => {
+
+//         const  styleFunction = styleFunctions[component];
+
+//         if ( styleFunction )   return styleFunction(args);
+//     };                      
+// }
 

@@ -7,23 +7,26 @@
 
 
 
-import GalleryImage from "../../common/images/GalleryImage"
+import   GalleryImage      from "../../common/images/GalleryImage"
 
-import { GalleryProps } from "../../types/gallery"
+import { GalleryProps }    from "../../types/gallery"
 
-
-
-
+import   useLocationScroll from "../../hooks/useLocationScroll"
 
 
-export default function Gallery({ photoData }: GalleryProps): JSX.Element {
 
 
+export default function Gallery( { photoData } : GalleryProps): JSX.Element {
+
+
+    
+    useLocationScroll();
 
 
     return (
 
-        <div className={`
+        <div         id='gallery'
+              className={`
                             grid grid-cols-1 gap-20
                                 md:grid-cols-2 lg:grid-cols-3 
                             p-20

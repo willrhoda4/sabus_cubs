@@ -10,7 +10,7 @@
 
 
 import { StyleFunctions,
-         UseStyleArgProps } from '../types/styles';
+         StyleArgObject } from '../types/styles';
 
 
 
@@ -30,7 +30,7 @@ const sailboat: StyleFunctions = {
         disabled:cursor-not-allowed disabled:border-gray-100 disabled:bg-gray-50 disabled:text-gray-400
     `,
 
-    input: ( args? : UseStyleArgProps ) => `
+    input: ( args? : StyleArgObject ) => `
         w-full p-1 
         rounded-md border 
         ${!(args && args.error) ? 'border-gray-300' : 'border-pink-300'} 

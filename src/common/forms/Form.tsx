@@ -35,8 +35,10 @@ export default function Form ({ fields, style, onSubmit, initialValues,  } : For
 
     // formState is the state object for the form.
     // errorState is the error object for the form.
-    // attempted is a boolean that tracks whether the user has attempted to submit the form.
-    // status is a string that keeps the user in the loop.
+    // attempted is a boolean that tracks whether the user has attempted to submit the form yet.
+
+    // the newStatus function is used to update the status of the form.
+
     const [ formState,     setFormState     ] = useState<Record< string, MiscState >>({});
     const [ controlState,  setControlState  ] = useState<Record< string, MiscState >>({});
     const [ errorState,    setErrorState    ] = useState<Record<string, unknown>>({});
@@ -148,7 +150,11 @@ export default function Form ({ fields, style, onSubmit, initialValues,  } : For
 
     return (
 
-        <form>
+        <form className={`
+                            w-full max-w-3xl
+                            flex flex-col items-center
+                        `}
+        >
 
             {fields.map(field => {
 
@@ -156,7 +162,7 @@ export default function Form ({ fields, style, onSubmit, initialValues,  } : For
 
                     inputIsDisplayed(field) &&
 
-                        <div key={field.name}>
+                        <div key={field.name} className='w-full flex flex-col items-center'>
                                      {/*         common props         form props     control props    */}
                             <Input                      
                                 name={           field.name                                             }

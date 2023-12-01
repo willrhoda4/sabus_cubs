@@ -54,10 +54,10 @@ export default function useStateFromURL(paramName: string = 'state', defaultStat
 
     useEffect(() => {
 
-        const params     = new URLSearchParams(location.search);
+        const params      = new URLSearchParams(location.search);
 
-        const stateParam = params.get(paramName);
-        
+        const stateParam  = params.get(paramName);  
+
               stateParam && setState(stateParam);
 
     }, [location, paramName]);

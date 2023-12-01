@@ -27,7 +27,7 @@ export default function ItemsList ({ admin } : ItemsListProps) : JSX.Element {
 
 
     const [ items,      setItems      ] = useState<Item[]>([]);
-    const [ editing,    setEditing    ] = useState<number | boolean>(false);
+    const [ editing,    setEditing    ] = useState<number | false>(false);
 
 
     // requests items data from server amd sets it to state
@@ -37,7 +37,7 @@ export default function ItemsList ({ admin } : ItemsListProps) : JSX.Element {
 
         Axios.post(`${import.meta.env.VITE_API_URL}getData`, reqBody )
              .then(   res => setItems(res.data)                      )
-            .catch(  err => console.log(err )                        );
+            .catch(   err => console.log(err )                       );
 
     }
 
@@ -48,15 +48,68 @@ export default function ItemsList ({ admin } : ItemsListProps) : JSX.Element {
     function itemLi (item : Item, index : number) : JSX.Element {
 
 
+        const itemGraf = <p className='font-body'>{item.item}</p>
 
-        return  <ul      key={item.id}
-                    className={`flex flex-col`}
-                >
-                    
+
+        return  <li key={item.id}>
+
                     {
+                        !admin ?    itemGraf
+
+                               :    <div className='flex flex-col'>
+
+                                        {
+                                            editing === item.id ? <ItemsForm getData={getItems} update={item} setEditing={setEditing}/>
+                                                                : itemGraf
+                                        }
+                                        
+                                        <EditorButtons 
+                                            id={item.id} 
+                                            rank={item.rank} 
+                                            index={index}
+                                            table={'items'}
+                                            pkName={'id'}
+                                            editing={editing}
+                                            loadData={getItems}
+                                            dataSize={items.length}
+                                            setEditing={setEditing}
+                                        />
+                                               
+                                    </div> 
+                    }
+                    
+                </li>
+    }
+
+    return (
+
+        <ul className={`
+                            w-full h-fit
+                            flex flex-col
+                            ${!admin ? 'list-disc pl-5' : ''}
+                       `}
+        >
+            { items.length > 0 && items.map( (item : Item, index) => itemLi( item, index ) ) }
+        </ul>
+
+    )
+}
+
+/*
+
+
+
+ 
+
+
+
+
+
+
+                     {
                         admin && editing === item.id 
-                            ? <ItemsForm getData={getItems} update={item} setEditing={setEditing}/> 
-                            : <p>{item.item}</p>
+                                 ? <ItemsForm getData={getItems} update={item} setEditing={setEditing}/> 
+                                 : <p className='font-body'>{item.item}</p>
                     }
               
                    
@@ -72,18 +125,6 @@ export default function ItemsList ({ admin } : ItemsListProps) : JSX.Element {
                                     setEditing={setEditing}
                                  />
                     }
-                </ul>
-    }
 
-    return (
 
-        <ul className={`
-                            w-full h-fit
-                            flex flex-col
-                       `}
-        >
-            { items.length > 0 && items.map((item : Item, index) => itemLi(item, index)) }
-        </ul>
-
-    )
-}
+                    */

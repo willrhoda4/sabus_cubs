@@ -36,7 +36,7 @@ export default function AdminForm( { table, update, getData, setEditing, fields,
 
 
         // set uploadProgress to 1 to display delivery message.
-        newStatus(`adding iterm to the ${table} table...`, false)
+        newStatus(`adding item to the ${table} table...`, false)
 
 
         const reqSuccess: string = `${table} table successfully updated!`;

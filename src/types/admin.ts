@@ -16,7 +16,7 @@ import { Theme }            from './styles';
 
 
 type dataReqType    = () => void;
-type setEditingType = (arg0: boolean | number) => void;
+type setEditingType = (arg0: false | number) => void;
 
 
 // interface for Admin container component

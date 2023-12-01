@@ -9,43 +9,49 @@
 import   Map             from './components/Map';
 import   EmailForm       from './components/EmailForm';
 import   Social          from './components/Social';
-import   ButtonBank      from '../../common/buttons/ButtonBank';
+import   TabsDiv         from '../../common/TabsDiv';
 
-import { useState }      from 'react';
+import  useStateFromURL  from '../../hooks/useStateFromURL';
 
-
-
-
-export default function Contact(): JSX.Element {
-
-    type DisplayedState = 'email' | 'social' | 'map';
-
-    type ButtonAction   = () => void;
+import { ContactProps }  from '../../types/contact';
 
 
 
-    const [ displayed, setDisplayed ] = useState<DisplayedState>('map');
+
+export default function Contact( { photoData } : ContactProps): JSX.Element {
 
 
-    const buttonNames     : string[]       = [      'map',                     'email',                     'social'                ];
-    const buttonFunctions : ButtonAction[] = [ () => setDisplayed('map'), () => setDisplayed('email'), () => setDisplayed('social') ];
+
+    const [ displayed, setDisplayed ] = useStateFromURL('section', 'map');
+
+
+    const   tabsNames   : string[]  = [ 'map', 'email', 'social' ];
     
     
-    return (<>
+    return (
+    
+        <div className={`
+                            w-full max-w-5xl h-fit 
+                            px-4 py-20
+                       `}
+        >
 
-        <ButtonBank
-            names={      buttonNames      }
-            onClicks={   buttonFunctions  }
-        />
+            <TabsDiv 
+                activeTab={displayed} 
+                setActiveTab={setDisplayed} 
+                tabsArray={tabsNames}
+                bgClass='bg-brand-blue'
+                textClass='text-white'
+            >
 
-        {/* render based on displayed. If sonmething goes wrong with state, 
-            just give them the email form. */}
-        {   
-             displayed === 'map'    ? <Map       />       
-          :  displayed === 'social' ? <Social    />    
-          :                           <EmailForm /> 
-        }
+                {
+                    displayed === 'map'     ? <Map       />       
+                :   displayed === 'social'  ? <Social    photoData={photoData} />    
+                :                             <EmailForm /> 
+                }
 
+            </TabsDiv>
 
-    </>);
+        </div>
+    );
 }

@@ -20,14 +20,10 @@ import { Route,
          Routes,  
          useLocation }          from 'react-router-dom';
 
-import { useState,
+import { useState, 
          useMemo     }          from 'react'
 
 import   useIGData              from './hooks/useIGData.ts';
-
-import { Field, 
-         FormState, 
-         NewStatusFunction  }   from './types/form';
 
 import { NotificationProvider } from './common/NotificationProvider.tsx';
 
@@ -42,8 +38,8 @@ import   Updater                from './containers/Updater/Updater.tsx';
  
 import   Navbar                 from './containers/NavBar/NavBar.tsx';
 import   Menu                   from './containers/Menu/Menu.tsx';
+import   Footer                 from './containers/Footer/Footer.tsx'; 
 
-import   Form                   from './common/forms/Form.tsx';
 
 
 function App() {
@@ -52,73 +48,24 @@ function App() {
 
 
 
-  const [ menuDisplayed, setMenuDisplayed ] = useState(false);
-  const [ editing,       setEditing       ] = useState('faq');
+  const [ menuDisplayed,  setMenuDisplayed  ] = useState(false);
+  const [ iconsDisplayed, setIconsDisplayed ] = useState('home');
+  const [ editing,        setEditing        ] = useState('faq');
 
   const   photoData                         = useIGData();
 
   const   location                          = useLocation().pathname;
 
-  const   pages : string[] = location !== '/simba' ? [ 'home', 'info',  'support', 'gallery', 'contact', 'news' ]
-                                                   : [ 'faq',  'items', 'board', 'stories', 'journalists', 'newsReleases' ];
+  const   editor                            = location === '/simba';
+
+  const   pages : string[] = !editor ? [ 'home', 'info',  'support', 'gallery', 'contact', 'news' ]
+                                     : [ 'faq',  'items', 'board', 'stories', 'journalists', 'newsReleases' ];
 
   const stripePromise = useMemo(() => {
 
       return loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY as string);
 
   }, []);
-
-
-
-
-
-  const fields : Field[] =  [
-                                  {
-                                    name:             'name',
-                                    type:             'text',
-                                    validation:      ['length', 5, 15],
-                                    errorMsg:         'wrong'
-                                  },
-
-                                  
-                                  {
-                                    name:             'email',
-                                    type:             'text',
-                                    validation:       'email',
-                                    errorMsg:         'wrong'
-                                  },
-
-                                  {
-                                    name:             'ask_my_job',
-                                    type:             'check',
-                                    validation:       'exists',
-                                    errorMsg:         'wrong',
-                                    isController:      true
-                                  },
-
-                                  {
-                                    name:             'title',
-                                    type:             'select',
-                                    validation:       'exists',
-                                    errorMsg:         'wrong',
-                                    control:          'ask_my_job',
-                                    options:          [ 1, 5, 'Mr', 'Mrs', 'Ms', 'Dr', 'Prof'] 
-                                  },
-
-                                  {
-                                    name:             'range',
-                                    type:             'select',
-                                    validation:       'exists',
-                                    errorMsg:         'wrong',
-                                    control:          'ask_my_job',
-                                    options:          [ 1, 5 ] 
-                                  },
-
-
-                            ];
-
-
-  const submitter = (state: FormState, newStatus: NewStatusFunction) => {console.log(state); newStatus('submitted'); return Promise.resolve(true) }
 
 
 
@@ -140,8 +87,11 @@ function App() {
       {/* absolutely positioned pop-out menu summoned by menuDisplayed */}
       { menuDisplayed && <Menu    
                                setMenuDisplayed={setMenuDisplayed}
+                              setIconsDisplayed={setIconsDisplayed}
+                                 iconsDisplayed={iconsDisplayed}
                                      setEditing={setEditing}
-                                          pages={pages}
+                                         editor={editor}
+                                          pages={pages} 
                          /> }
 
       {/* sticky nav bar component for top of screen */}
@@ -158,16 +108,21 @@ function App() {
       >
         <NotificationProvider>
           <Elements stripe={stripePromise}>
+
+
             <Routes>
               <Route path="/"                       element={<Home />} />
               <Route path="/simba"                  element={<Admin editing={editing}/>} />
               <Route path="/info"                   element={<Info />} />
               <Route path="/support"                element={<Support />} />
               <Route path="/gallery"                element={<Gallery photoData={photoData} />} />
-              <Route path="/contact"                element={<Contact />} />
-              <Route path="/news"                   element={<Form fields={fields} onSubmit={submitter} />} />
+              <Route path="/contact"                element={<Contact photoData={photoData} />} />
+              {/* <Route path="/news"                   element={<Form  />} /> */}
               <Route path="/subscription-update"    element={<Updater />} />
             </Routes>
+
+            <Footer />
+
           </Elements>
         </NotificationProvider>
       </div>

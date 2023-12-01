@@ -8,26 +8,41 @@
 
 
 import { useEffect, 
-         useRef,     } from 'react';
-import { Link,
-         useLocation } from 'react-router-dom';
+         useRef,      } from 'react';
+
+import { Link, 
+         useLocation, 
+         useNavigate  } from 'react-router-dom';
+
+import   useStyles      from '../../hooks/useStyles';
 
 
 
-import { MenuProps   } from '../../types/menu';
+import { MenuProps   }  from '../../types/menu';
+
+
+import   infoLinks      from '../../common/links/info';
+import   supportLinks   from '../../common/links/support';
+import   galleryLinks   from '../../common/links/gallery';
+import   contactLinks   from '../../common/links/contact';
 
 
 
 
 
 // pop-out menu for left side of screen
-export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProps) : JSX.Element {
+export default function Menu ({ pages, iconsDisplayed, setIconsDisplayed, setMenuDisplayed, setEditing, editor } : MenuProps) : JSX.Element {
     
     
 
     const popOutRef  = useRef<HTMLDivElement | null>(null);
 
-    const editing    = useLocation().pathname === '/simba';
+
+    const theme      = useStyles('neobrutalism');
+
+    const thisPage   = useLocation().pathname.slice(1)
+
+    const navigate   = useNavigate();
 
 
     // Close dropdown menu if user clicks outside of it
@@ -42,14 +57,17 @@ export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProp
                     popOutRef.current                            &&
                    !popOutRef.current.contains(event.target as Node)
 
-               ) {  setMenuDisplayed(() => false); }
+               ) {  
+                    setMenuDisplayed(() => false); 
+                    setIconsDisplayed(thisPage);
+                 }
         }
 
         document.addEventListener("mousedown", handleClickOutside);
     
         return () => { document.removeEventListener("mousedown", handleClickOutside); }
 
-    }, [setMenuDisplayed]);
+    }, [setEditing, setIconsDisplayed, setMenuDisplayed, thisPage]);
 
     
     
@@ -60,39 +78,113 @@ export default function Menu ({ pages, setMenuDisplayed, setEditing } : MenuProp
         // generate slashed path and capitalized title from name
         const path  = '/'+page;
         const title = page[0].toUpperCase()+page.slice(1);
-
-        const commonProps = {   
-                                key,
-                                className:`
-                                                w-full h-fit
-                                                px-2 py-4
-                                                border border-gray-400
-                                           `,                                 
-                            }
                             
-        const link = editing ? <div  {...commonProps} onClick={() => setEditing(page)}>{title}</div>
-                             : <Link {...commonProps} to={path}                       >{title}</Link>   
+        const link = editor ?   <div  
+                                    key={key}  
+                                    onClick={    () => {   setEditing(page); 
+                                                           setMenuDisplayed(false);
+                                                       } }
+                                >{title}</div>
+
+                            :   <Link 
+                                    key={key}  
+                                    to={path} 
+                                    onMouseOver={ () =>     setIconsDisplayed(page) }    
+                                    onClick={     () => {   
+                                                            setMenuDisplayed(false);
+                                                            window.scrollTo(0, 0);
+                                                        } }                  
+                                >{title}</Link>   
 
 
         return link
     }
 
 
+
+    function menuIcons () {
+
+        const displayedIcons = () => {
+
+            switch (iconsDisplayed) {
+
+                case 'info'    : return infoLinks;
+                case 'support' : return supportLinks;
+                case 'gallery' : return galleryLinks;
+                case 'contact' : return contactLinks;
+                default        : return [];
+            }
+        }
+
+
+        return displayedIcons().map( (link, index) => {
+           
+           
+           
+            const { name, icon : Icon, outLinkURL } = link;
+           
+            const icon       =  <Icon
+                                    height={'45px'}
+                                    width={'45px'}
+                                    className='mx-1 px-2 hover:animate-wiggle'
+                                    style={{ color: '#ABAB27' }}
+                                />      
+
+            const id          = link.id ?? name.toLowerCase();
+
+            const timeStamp   = Date.now()
+
+            const handleClick = () =>   {
+                                            navigate(`/${iconsDisplayed}`, { state: { id: id, timeStamp: timeStamp } } );
+                                            setMenuDisplayed(false);
+                                        }
+
+            const inLink      = <a 
+                                    key={index}
+                                    onClick={handleClick}
+                                    className='flex flex-col'
+                                >
+                                    {icon}  
+                                    <p className='text-brand-yellow'>{name}</p>
+                                </a>
+
+            const outLink     = <a 
+                                    key={index}
+                                    href={outLinkURL} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    onClick={handleClick}
+                                    className='flex flex-col'
+                                >
+                                    {icon}
+                                    <p className='text-brand-yellow'>{name}</p> 
+                                </a>
+
+            return outLinkURL ? outLink : inLink;
+        })
+    }
+
+
     
-    
+
+
+
     return (
         <nav      ref={popOutRef}
-            className={`
-                        fixed bottom-0 left-0
-                        z-10
-                        w-1/2 h-[calc(100vh-5rem)]
-                        self-start
-                        flex flex-col
-                        bg-gray-200
-                        border-b-2 border-gray-400
-                        `}
+            className={theme.menuWrapper?.()}   //Parsing error: Expression expected.eslint
+
         >
-            {  pages.map( (page, index) => navLink(page, index) ) }
+            {/* left column  : page links */}
+            <div className={theme.mainMenu?.()} >   
+                {  pages.map( (page, index) => navLink(page, index) ) }
+                <div /> {/* we'll use a dummy div to carry the border to the bottom of the screen */}
+            </div>
+
+            {/* right column : section links */}
+            { !editor && <div className={ theme.subMenu?.() } >
+                            { menuIcons() }
+                         </div>
+            }
         </nav>
     );
 }

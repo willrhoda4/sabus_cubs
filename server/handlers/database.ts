@@ -495,7 +495,7 @@ const reRankData = (request: Request, response: Response) => {
 
 
 const updateData = (request: Request, response: Response) => {                  console.log('here it is : ',request.body[1]);
-
+                                                                                console.log('here it is again: ',request.body[2]);
 
 
     // destructure the request body.

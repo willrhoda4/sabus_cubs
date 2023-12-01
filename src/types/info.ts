@@ -2,7 +2,6 @@
 
 
 
-import { SvgIcon } from './image';
 
 
 
@@ -10,7 +9,7 @@ import { SvgIcon } from './image';
 export interface ActionValueProps {
     title:      string;
     copy:       string;
-    icon:       SvgIcon;
+    icon:       React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 
@@ -53,3 +52,27 @@ export interface FAQ {
     rank:     number;
   }
   
+
+
+
+
+
+
+
+export interface Statement {
+    title:      string;
+    copy:       string;
+    icon:       React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    stroke?:    string;
+}
+
+
+
+export interface StatementsProps {
+    title:         string;
+    blurb:         string;
+    statements:    Statement[];
+    statementsOn?: 'left' | 'right';
+    bgClass:       string;
+    textClass:     string;
+}

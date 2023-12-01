@@ -10,16 +10,17 @@
 export interface ContentControls {
     getData:      () => void;
     dataSize:     number;
-    editing:      number | boolean;
-    setEditing:   React.Dispatch<React.SetStateAction<number | boolean>>;
-    displayed:    number | boolean;
-    setDisplayed: React.Dispatch<React.SetStateAction<number | boolean>>;
+    editing:      number | false;
+    setEditing:   React.Dispatch<React.SetStateAction<number | false>>;
+    displayed:    number | false;
+    setDisplayed: React.Dispatch<React.SetStateAction<number | false>>;
 }
 
 
 
 export interface ContentRackProps<T> {
     table:          string;
+    className?:     string;
     key?:           number;
     renderContent: (    content:   T, 
                         index:     number,

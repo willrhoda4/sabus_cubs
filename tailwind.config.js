@@ -29,10 +29,18 @@ export default {
 
   theme: {
 
+    screens: {
+      'sm':  '640px',  // Small devices like phones
+      'md':  '768px',  // Medium devices like tablets
+      'lg':  '1024px', // Large devices like laptops
+      'xl':  '1280px', // Extra large devices like desktops
+      '2xl': '1536px', // Extra extra large devices like large desktops
+    },
+
     extend: {
 
       colors: {
-        'brand-red':    '#AB2927',
+        'brand-red':    '#A62826',
         'brand-blue':   '#2774AB',
         'brand-yellow': '#ABAB27',
         'brand-brown':  '#563130',
@@ -121,6 +129,24 @@ export default {
           '100%': { transform: 'rotateX(-.5turn)' }
         },
 
+        wiggle: {
+          '0%':   { transform: 'translateY(0) rotate(0)'           },
+          '25%':  { transform: 'translateY(-1.25px) rotate(-5deg)' },
+          '50%':  { transform: 'translateY(-2.5px) rotate(5deg)'   },
+          '75%':  { transform: 'translateY(-1.25px) rotate(-5deg)' },
+          '100%': { transform: 'translateY(0) rotate(0)'           }
+        },
+
+        growDown: {
+          '0%':   { transform: 'scaleY(0)'   },
+          '100%': { transform: 'scaleY(1)'   }
+        },
+
+        growUp: {
+          '0%':   { transform: 'scaleY(1)'   },
+          '100%': { transform: 'scaleY(0)'   }
+        },
+
        
       },
       animation: {
@@ -153,7 +179,14 @@ export default {
         
         'popUp':          'popUp 400ms ease-out',
 
-        'popDown':        'popDown 400ms ease-in'
+        'popDown':        'popDown 400ms ease-in',
+        
+        'wiggle':         'wiggle 400ms ease-out',
+
+        'growUp':         'growUp 400ms ease-out',
+
+        'growDown':       'growDown 400ms ease-out',
+
 
       },
       
@@ -166,27 +199,37 @@ export default {
       },
     },
   },
+
   plugins: [
+
     function ({ addUtilities }) {
+
       const newUtilities = {
         '.font-title': {
           fontFamily: fontFamilyTitle,
           fontWeight: '900',
-          fontSize: 'clamp(1.5rem, 2vw + 1rem, 3rem)',  // Font size scales between 1.5rem and 3rem as the viewport width increases
+          fontSize: '5rem',  // Font size scales between 1.5rem and 3rem as the viewport width increases
         },
         '.font-heading': {
           fontFamily: fontFamilyHeading,
           fontWeight: '400',
-          fontSize: 'clamp(1.25rem, 1.5vw + 1rem, 2.5rem)',  // Font size scales between 1.25rem and 2.5rem as the viewport width increases
+          fontSize: '3rem',  // Font size scales between 1.25rem and 2.5rem as the viewport width increases
         },
         '.font-body': {
           fontFamily: fontFamilyBody,
           fontWeight: '400',
-          fontSize: 'clamp(1rem, 1vw + 0.5rem, 1.5rem)',  // Font size scales between 1rem and 1.5rem as the viewport width increases
+          fontSize: '1.4rem',  // Font size scales between 1rem and 1.5rem as the viewport width increases
         },
       }
+
       addUtilities(newUtilities, ['responsive', 'hover']);
     },
+
+    function ({ addVariant }) {
+      
+      addVariant('child', '& > *');
+      addVariant('child-hover', '& > *:hover');
+    }
   ],
 }
 

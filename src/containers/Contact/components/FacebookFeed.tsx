@@ -22,7 +22,7 @@ export default function FacebookFeed({ name, url }: FacebookFeedProps) {
     useEffect(() => {
 
         const   script             =  document.createElement('script');
-                script.src         = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v15.0&appId=1229119547492444&autoLogAppEvents=1';
+                script.src         = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=133959569807066'
                 script.crossOrigin = 'anonymous';
                 script.nonce       = 'DSHjCoBi';
                 script.async       =  true;
@@ -45,15 +45,13 @@ export default function FacebookFeed({ name, url }: FacebookFeedProps) {
 
 
     return (
-        <div>
+        <div className="w-full h-full"> {/* assumethe parent controls the size */}
             <div id="fb-root" />
 
             <div 
-                style={{ width: '40vmin', height: '60vmin' }}
-                className='fb-page'
+                className='fb-page w-full h-full' 
                 data-href={url}
                 data-tabs='timeline'
-                data-width="500"
                 data-small-header='true'
                 data-adapt-container-width='true'
                 data-hide-cover='true'

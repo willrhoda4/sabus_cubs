@@ -41,8 +41,8 @@ export default function FAQForm( { update, getData, setEditing } : AdminFormPare
                                 {
                                   name:             'answer',
                                   type:             'textArea',
-                                  validation:      ['length', 0, 280],
-                                  errorMsg:         'Let\'s keep it under 140 characters.'
+                                  validation:      ['length', 0, 2400],
+                                  errorMsg:         'Let\'s keep it under 2400 characters.'
                                 },
                               ];
 

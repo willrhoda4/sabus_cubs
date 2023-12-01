@@ -24,8 +24,8 @@ import { useState } from 'react';
 
 export default function useContentControls( getData : () => void, dataSize : number ) {
 
-    const   [   editing,    setEditing    ] = useState<number | boolean>(false);
-    const   [   displayed,  setDisplayed  ] = useState<number | boolean>(false);
+    const   [   editing,    setEditing    ] = useState<number | false>(false);
+    const   [   displayed,  setDisplayed  ] = useState<number | false>(false);
 
     return  { 
                 editing,    setEditing,     

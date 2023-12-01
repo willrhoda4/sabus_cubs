@@ -6,12 +6,19 @@
 
 
 
-import   ButtonBank   from '../../common/buttons/ButtonBank';
 
-import   ItemsList    from './components/ItemsList';
-import   Donate       from './components/Donate';
+import   TabsDiv       from '../../common/TabsDiv';
+import   Supplies      from './components/Supplies';
+import   Donate        from './components/Donate';
+import   Fundraisers   from './components/Fundraisers';
+import   Volunteer     from './components/Volunteer';
 
-import { useState   } from 'react';
+import   UpdateTrigger from './components/UpdateTrigger';
+
+
+// import { useState   }  from 'react';
+
+import useLocationState from '../../hooks/useLocationState';
 
 
 
@@ -21,36 +28,40 @@ export default function Support(): JSX.Element {
 
 
 
-    type DisplayedState = 'donate' | 'volunteer' | 'supplies' | 'fundraisers';
-
-    type ButtonAction   = () => void;
 
 
 
-    const [ displayed, setDisplayed ] = useState<DisplayedState>('donate');
+    const [ displayed, setDisplayed ] = useLocationState<string>('donate', 'support-tabs');
 
-    const   display = (component : DisplayedState) => () => setDisplayed(component);
 
-    const   buttonNames     : string[]       = [         'donate',          'volunteer',          'supplies',          'fundraisers'  ];
-    const   buttonFunctions : ButtonAction[] = [ display('donate'), display('volunteer'), display('supplies'), display('fundraisers') ];
+    const   tabNames : string[]   = [ 'donate', 'volunteer', 'supplies', 'fundraisers' ];
 
     
-    return (
-                   
-        <div>
-
-            <ButtonBank
-                names={      buttonNames      }
-                onClicks={   buttonFunctions  }
-            />
-
-        
+    return (<>
+                                        
+<div id='support-tabs'>
+        <TabsDiv 
+               activeTab={displayed} 
+            setActiveTab={setDisplayed} 
+               tabsArray={tabNames}
+                 bgClass='bg-brand-red'
+               textClass='text-white'
+        >
             {   
-                displayed === 'supplies'    ? <ItemsList  />       
-            :   displayed === 'donate'      ? <Donate     />       
-            :                                <p>{`donate ${displayed}`}</p>    
+                displayed === 'volunteer'   ? <Volunteer    />    
+            :   displayed === 'supplies'    ? <Supplies     />       
+            :   displayed === 'fundraisers' ? <Fundraisers  />   
+            :                                 <Donate       />    
             }
 
 
-        </div>);
+        </TabsDiv>
+        </div>
+
+        
+
+        { displayed === 'donate' && <UpdateTrigger /> }
+
+    </>);
 }
+

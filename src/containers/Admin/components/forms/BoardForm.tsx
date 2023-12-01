@@ -12,7 +12,7 @@
 import   Axios               from 'axios';
 
 
-import { AdminFormProps    } from '../../../../types/admin'
+import { AdminFormParentProps    } from '../../../../types/admin'
 
 import { Field,
          FormState, 
@@ -24,7 +24,7 @@ import   Form                from '../../../../common/forms/Form';
 
 
 
-export default function BoardForm ( { update, getData } : AdminFormProps ) : JSX.Element {
+export default function BoardForm ( { update, getData } : AdminFormParentProps ) : JSX.Element {
 
 
 
@@ -37,12 +37,13 @@ export default function BoardForm ( { update, getData } : AdminFormProps ) : JSX
     // there's a lot going on here, so we'll break it down step by step.
     async function handleUpload ( formState    : FormState, 
                                   newStatus    : NewStatusFunction, 
+                                  resetForm    : () => void,
                                   controlState : FormState = {}
                                 ) {
 
 
        
-        // otherwise, declare some variables before proceeding.
+        // declare some variables before proceeding.
         const cloud             =   import.meta.env.VITE_CLOUD_NAME;
         const cloudURL          =  `https://api.cloudinary.com/v1_1/${cloud}/upload`;
         const serverURL         =   import.meta.env.VITE_API_URL;
@@ -63,17 +64,17 @@ export default function BoardForm ( { update, getData } : AdminFormProps ) : JSX
             // start by fetching the names of all existing board members.
             // this is necessary for calculating the new board member's rank,
             // and also for checking for name conflicts.
-            const names = await Axios.post( `${serverURL}getData`, ['board', null, { columns: 'full_name' } ] );
+            const names = await Axios.post( `${serverURL}getData`, [ 'board', null, { columns: 'full_name' } ] );
 
 
             // if it's not an update, check for name conflicts.
-            if (!update) {
+            if ( !update ) {
 
                 newStatus('checking for name conflicts...', false);
 
 
-                const nameConflict =  names.data.some( (boardMember: { full_name: string }) => boardMember.full_name.toLowerCase()
-                                                                                                            === name.toLowerCase() 
+                const nameConflict =  names.data.some( ( boardMember: { full_name: string  } ) => boardMember.full_name.toLowerCase()
+                                                                                                               === name.toLowerCase() 
                                                      );
 
                 if  ( nameConflict ) { return newStatus('This name is already in the database. Try editing the existing profile instead.'); }
@@ -144,26 +145,18 @@ export default function BoardForm ( { update, getData } : AdminFormProps ) : JSX
 
             if (update) { 
                             // name, title and bio are updated every update
-                            const columns =    [ 
-                                                    'full_name', 
-                                                    'title',         
-                                                    'bio'          
-                                               ];
+                            // public_id is updated if the headshot is updated
+                            const updateState = {
 
-                            const values  =    [  
-                                                    name,        
-                                                    formState.title, 
-                                                    formState.bio 
-                                               ];
+                                full_name: name,
+                                title:     formState.title,
+                                bio:       formState.bio,
+                                ...(updatingHeadshot && { public_id: public_id }), 
+                                
+                            };
                             
-                            // if they want to replace the headshot, 
-                            // add public_id to the columns and values arrays
-                            if (updatingHeadshot)   { 
-                                                        columns.push('public_id'); 
-                                                         values.push( public_id );
-                                                    }
 
-                            reqBody = [ 'board', columns, values,  [ [  'id', update.id as number  ] ] ] 
+                            reqBody = [ 'board', updateState,  [ [  'id', update.id as number  ] ] ] 
 
                         }   // new board members also need a rank.
             else        {   reqBody = [ 'board', [ { ...restOfFormState, public_id, rank } ] ] }
@@ -184,16 +177,15 @@ export default function BoardForm ( { update, getData } : AdminFormProps ) : JSX
 
             getData();
             newStatus(`board member successfully ${ update ? 'updated' : 'added' }!`);
-            return true;
+            return resetForm();
 
 
 
     
         }   catch (error) {
 
-                console.error('Upload failed:', error);
-                newStatus('An error occurred while processing your request. Please try again.');
-                return false;
+              newStatus('An error occurred while processing your request. Please try again.');
+              return console.error('Upload failed:', error);
             }
 
 
@@ -235,7 +227,9 @@ export default function BoardForm ( { update, getData } : AdminFormProps ) : JSX
                                     isController:      true,
                                     control:          !!update
                                   },
-
+                                  // ^^^^ this is a controller that is controlled.
+                                  // if it's an update, it controls whether or not the headshot is updated (controller).
+                                  // if it isn't an update, it isn't displayed (controlled)
                                   {
                                     name:             'headshot',
                                     type:             'file',

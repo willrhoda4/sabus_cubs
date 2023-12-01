@@ -16,16 +16,13 @@ type TabsProps = {
     tabsArray       : string[]
     activeTab       : string
     setActiveTab    : React.Dispatch<React.SetStateAction<string>>
+    bgClass?        : string
+    textClass?      : string
   }
   
 
   
-  export default function Tabs ({ tabsArray, activeTab, setActiveTab } : TabsProps) {
-
-
-
-      
-    const bgColor  = ( isActive : boolean ) => { return isActive ? 'bg-purple-600' : 'bg-purple-400'; };
+  export default function Tabs ( { tabsArray, activeTab, setActiveTab, bgClass, textClass } : TabsProps ) {
 
 
 
@@ -47,10 +44,12 @@ type TabsProps = {
                                         px-6 py-3 
                                         text-center font-bold 
                                         transition-colors 
-                                        ${bgColor(activeTab === tab)}
-                                        ${index === 0 ? 'rounded-tl-md' : ''} 
-                                        ${index === tabsArray.length - 1 ? 'rounded-tr-md' : ''}
-                                `}
+                                        ${ textClass  ?? 'text-black' }
+                                        ${ bgClass    ?? 'bg-white'   }
+                                        ${ activeTab === tab && 'opacity-75 ' }
+                                        ${ index === 0 ? 'rounded-tl-md' : '' } 
+                                        ${ index === tabsArray.length - 1 ? 'rounded-tr-md' : '' }
+                                  `}
                     >
                         {tab}
                     </button>

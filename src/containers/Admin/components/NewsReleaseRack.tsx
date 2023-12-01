@@ -13,7 +13,7 @@
 
 
 
-import   ContentRack                    from '../../../common/contentRack';  
+import   ContentRack                    from '../../../common/ContentRack';  
 
 import { ContentRackWrapperProps,
          ContentControls            }   from '../../../types/content';

@@ -50,8 +50,8 @@ export default function Input ({
     // based on the input type and whether or not an error was made.
     const theme       = useStyles(style);
 
-    const inputStyles = theme('input', { error: mistakeMade, type: type });
-
+    const inputStyles = theme.input!({ error: mistakeMade, type: type });
+                                    //Cannot invoke an object which is possibly 'undefined'.ts(2722)
 
 
 
@@ -182,13 +182,14 @@ export default function Input ({
                                             />
                                         
                 : type === 'check'    ?     <div className='flex'>
-                                                <p>{caption}</p>
+                                                
                                                 <input
                                                     type="checkbox"
                                                     name={name}
                                                     checked={!!state[name]}
                                                     onChange={handleToggleChange}
                                                 />
+                                                <p className='pl-2'>{ caption ? caption : name.replace(/_/g, ' ') }</p>
                                             </div>
                                                                     
 
@@ -233,7 +234,7 @@ export default function Input ({
 
     return (
 
-        <div className={`${wrapStyle ? wrapStyle : 'w-[90%]'}`}>
+        <div className={`${wrapStyle ? wrapStyle : 'w-full'}`}>
             <label className='p-2 w-9/12'>
                 { 
                     type !== 'check'  && 
@@ -241,7 +242,7 @@ export default function Input ({
                 
                 }
                 { field } 
-                <div className='text-red-500 h-4'>
+                <div className='text-brand-red h-4'>
                     { mistakeMade as boolean && errorMsg && <p>{errorMsg}</p> }
                 </div>
             </label>

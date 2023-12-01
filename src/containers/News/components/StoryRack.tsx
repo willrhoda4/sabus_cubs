@@ -10,7 +10,7 @@
 
 
 
-import   ContentRack                    from '../../../common/contentRack';
+import   ContentRack                    from '../../../common/ContentRack';
 
 import   EditorButtons                  from '../../../common/buttons/EditorButtons';
 

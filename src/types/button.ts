@@ -15,9 +15,9 @@ import { Theme } from './styles';
 export interface ButtonProps {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-     onClick: (event: any) => any;
-     text:    string;
-     style?:  Theme;
+     onClick?: (event: any) => any;
+     text:      string;
+     style?:    Theme;
  }
 
 
@@ -28,7 +28,7 @@ export interface ButtonProps {
 export type ButtonArgs = [ 
 
     string, 
-    string | undefined, 
+    React.ComponentType<React.SVGProps<SVGSVGElement>> | undefined, 
     string | undefined,
     (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void, 
     boolean | null | undefined,
@@ -43,7 +43,7 @@ export interface ButtonBankProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onClicks      : ((event: any) => any)[];
     names         : string[];
-    icons?        : string[];
+    icons?        : React.ComponentType<React.SVGProps<SVGSVGElement>>[];
     stroke?       : string;
     conditions?   : boolean[];
     wrapStyle?    : string;
@@ -62,8 +62,8 @@ export interface EditorButtonsProps {
     pkName:       string;
     loadData:     () => void;
     dataSize:     number;
-    editing?:     boolean | number;
-    setEditing?:  (arg0: boolean | number) => void;
+    editing:      false | number;
+    setEditing?:  (arg0: false | number) => void;
     releaseData?: {
                     html:     string;
                     publish:  boolean; 
@@ -74,12 +74,3 @@ export interface EditorButtonsProps {
 
 
 
-
-
-export interface SVGIconProps {
-    icon:        string;
-    alt:         string;
-    stroke?:     string;
-    size?:       string;
-    wrapStyles?: string;
-}

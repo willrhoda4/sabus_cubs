@@ -8,7 +8,7 @@
 
 
 
-import   SVGIcon           from "../images/SVGIcon";
+// import   SVGIcon           from "../images/SVGIcon";
 
 import { ButtonArgs,
          ButtonBankProps } from "../../types/button";
@@ -26,31 +26,12 @@ import { ButtonArgs,
 // readable than a bunch of objects with a bunch of keys and values. 
 export default function ButtonBank ( { names, icons, stroke, onClicks, conditions, wrapStyle, currentState, } : ButtonBankProps ) {
     
-    // const DeleteIcon = useSVGIcon({
-    //     icon: deleteIcon,
-    //     alt: 'Delete icon',
-    //     stroke: '#2774AB',
-    //     size: '24',
-    //     wrapStyles: 'border border-orange-300',
-    // });
-
-    const renderSVG = (name : string, icon?: string, stroke?: string, size: string = '24', styles?: string) => {
-
-        if (!icon) return   null;
-
-        else       return   <SVGIcon
-                                icon={icon}
-                                alt={name+' icon'}
-                                stroke={stroke}
-                                size={size}
-                                wrapStyles={styles || ''}
-                             />
-      };
+   
 
    
     function button ( ...args : ButtonArgs ) {
 
-        const [ name, icon, stroke, onClick, thisCondition, index ] = args;    
+        const [ name, Icon, stroke, onClick, thisCondition, index ] = args;    
 
          
 
@@ -60,7 +41,7 @@ export default function ButtonBank ( { names, icons, stroke, onClicks, condition
                                                     rounded-md bg-white 
                                                     m-0.5 
                                                     text-center text-sm font-medium 
-                                                    ${ icon ? 'translate-y-[2px]' : 'translate-y-[-.5px]' }
+                                                    ${ Icon ? 'translate-y-[2px]' : 'translate-y-[-.5px]' }
                                                     hover:bg-gray-100 
                                                     ${plus}
                                                 `;
@@ -78,7 +59,12 @@ export default function ButtonBank ( { names, icons, stroke, onClicks, condition
         return (<div key={index}>
             {   condition   ?  <button type='button' onClick={onClick} className={buttonClass('px-4')} >
 
-                                        {   icon    ?  renderSVG(name, icon, stroke, '24', `transition-all ${name === currentState && 'brightness-50'}`)
+                                        {   Icon    ?  <Icon
+                                                            stroke={stroke}
+                                                            height={'24'}
+                                                            width={'24'}
+                                                            className={`transition-all ${name === currentState && 'brightness-50'}`}
+                                                        />
 
                                                     :   <p className={ `    transition-colors 
                                                                             translate-y-[-2px]
@@ -89,7 +75,7 @@ export default function ButtonBank ( { names, icons, stroke, onClicks, condition
                                                         >{name}</p>
                                         }
                                 </button>
-                            :   <button type='button' className={ buttonClass('px-7') } />
+                            :   <button type='button' className={ buttonClass('px-7') } disabled />
             }                  
         </div>)
     }

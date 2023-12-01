@@ -11,8 +11,8 @@
 /**
  * useURLScroll - A custom hook for scrolling to specific page sections based on URL parameters.
  *
- * The hook listens for click events within `nav` elements and URL changes. When a click event
- * occurs within a `nav` element or the URL changes, it checks for the presence of a specified URL
+ * The hook listens for click events within nav elements and URL changes. When a click event
+ * occurs within a nav element or the URL changes, it checks for the presence of a specified URL
  * parameter (default: 'section'). If this parameter is found, it scrolls to the corresponding
  * section of the page based on the parameter value, which should match the CSS ID of the target
  * element.
@@ -95,7 +95,7 @@ export default function useURLScroll(paramName: string = 'section'): void {
 
         const section = params.get(paramName);
 
-        
+
         if  ( section ) {
 
             const element =  document.getElementById(   section   );

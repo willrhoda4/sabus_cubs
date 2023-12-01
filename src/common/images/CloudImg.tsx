@@ -9,7 +9,7 @@
 
 import { Cloudinary    } from '@cloudinary/url-gen';
 import { AdvancedImage } from '@cloudinary/react';
-import { CloudinaryImageProps } from '../../types/image';
+import { CloudinaryImageProps } from '../../types/images';
 
 
 
