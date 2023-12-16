@@ -22,7 +22,7 @@ import { ContentRackProps } from '../types/content';
 
 
 
-export default function ContentRack<T>( { table, renderContent, className } : ContentRackProps<T> ) : JSX.Element {
+export default function ContentRack<T>( { table, renderContent, wrapStyle } : ContentRackProps<T> ) : JSX.Element {
 
 
 
@@ -50,7 +50,7 @@ export default function ContentRack<T>( { table, renderContent, className } : Co
 
     return (
 
-        <div className={ className }>
+        <div className={ wrapStyle }>
             { content && content.map( ( content : T, index : number ) => renderContent(content, index, contentControls) ) }
         </div>
 

@@ -7,15 +7,13 @@
 
 
 
-
-// import   SVGIcon           from "../images/SVGIcon";
+import   useStyles         from '../../hooks/useStyles';
 
 import { ButtonArgs,
-         ButtonBankProps } from "../../types/button";
+         ButtonBankProps } from '../../types/button';
 
-// import   deleteIcon        from '../../assets/icon_trash.svg';
 
-// import  useSVGIcon        from "../../hooks/useSVGIcon";
+
 
 
 
@@ -28,23 +26,21 @@ export default function ButtonBank ( { names, icons, stroke, onClicks, condition
     
    
 
+    const theme = useStyles('neobrutalism')
    
+
+
     function button ( ...args : ButtonArgs ) {
 
         const [ name, Icon, stroke, onClick, thisCondition, index ] = args;    
 
          
 
-        // this is the class for the button itself.
-        // it accepts additional classes as an argument,
-        const buttonClass = (plus : string) =>  `  
-                                                    rounded-md bg-white 
-                                                    m-0.5 
-                                                    text-center text-sm font-medium 
-                                                    ${ Icon ? 'translate-y-[2px]' : 'translate-y-[-.5px]' }
-                                                    hover:bg-gray-100 
-                                                    ${plus}
-                                                `;
+        // this is the class for the individual buttons.
+        // it accepts a condition and  additional classes as arguments.
+
+
+      
 
         // if there's no conditions prop or thisCondition argument is null,
         // then the button is always rendered (set condition to true).
@@ -57,7 +53,7 @@ export default function ButtonBank ( { names, icons, stroke, onClicks, condition
         // if the condition is false, then some extra x padding 
         // is added to the button to keep the button's width consistent.
         return (<div key={index}>
-            {   condition   ?  <button type='button' onClick={onClick} className={buttonClass('px-4')} >
+            {   condition   ?  <button type='button' onClick={onClick} className={ theme.buttonBankButton?.( { condition: !!Icon, extra: 'px-4' } ) } >
 
                                         {   Icon    ?  <Icon
                                                             stroke={stroke}
@@ -75,7 +71,11 @@ export default function ButtonBank ( { names, icons, stroke, onClicks, condition
                                                         >{name}</p>
                                         }
                                 </button>
-                            :   <button type='button' className={ buttonClass('px-7') } disabled />
+                            :   <button 
+                                         type='button' 
+                                    className={ theme.buttonBankButton?.( { condition: !!Icon, extra: 'px-7' } ) } 
+                                     disabled 
+                                />
             }                  
         </div>)
     }
@@ -87,12 +87,9 @@ export default function ButtonBank ( { names, icons, stroke, onClicks, condition
     // use ternaries to check if the other props exist.
     return (
         <div className={wrapStyle}>
-            <div className='    w-fit
-                                rounded-lg border border-gray-300 
-                                shadow-sm
-                                flex items-center
-                        '
-            >
+            
+            <div className={ theme.buttonBank?.() } >
+
                 {   onClicks.length !== 0 &&
                     onClicks.map((_icon, index) => {     const buttonName =                      names[index];
                                                          const buttonIcon =   icons      &&      icons[index];   

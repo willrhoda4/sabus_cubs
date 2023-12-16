@@ -6,28 +6,33 @@
 
 
 
-import EmailSignup      from './components/EmailSignup';
-import FooterLinksDiv   from './components/FooterLinksDiv';
+import   EmailSignupDiv   from './components/EmailSignupDiv';
+import   Friends          from './components/Friends';
+import   FooterLinksDiv   from './components/FooterLinksDiv';
+import { BrandColours }   from '../../utils/brandColours';
 
 
 
 
-
-export default function Footer () : JSX.Element {
+// container for the footer.
+// wraps nav links, as well as email signup form.
+export default function Footer ( { brandColours } : { brandColours : BrandColours } ) : JSX.Element {
 
 
 
     return (
         
-        // container for the footer.
-        // wraps nav links, as well as email signup form.
+       
         <footer className={`
                                 w-full h-fit
                                 flex flex-col
+                                mt-48
                           `}
         >
 
-            <EmailSignup />
+            <EmailSignupDiv brandColours={brandColours} />
+
+            <Friends />
 
             <FooterLinksDiv />
 

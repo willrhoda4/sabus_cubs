@@ -24,11 +24,10 @@ import { ContentRackWrapperProps,
 
 
 
-export default function FAQBuffet({admin}:ContentRackWrapperProps ): JSX.Element {
+export default function FAQBuffet( { admin } : ContentRackWrapperProps ): JSX.Element {
 
 
 
-    const table = 'stories';
 
 
 
@@ -50,7 +49,6 @@ export default function FAQBuffet({admin}:ContentRackWrapperProps ): JSX.Element
 
                 } = story;
 
-                console.log(`${date}\n${typeof date}`);
 
         const   {
                     getData,
@@ -68,7 +66,6 @@ export default function FAQBuffet({admin}:ContentRackWrapperProps ): JSX.Element
 
             <div key={id} className={`
                                         w-full h-fit 
-                                        border border-blue-300
                                     `}
             >
                 <a     
@@ -76,13 +73,33 @@ export default function FAQBuffet({admin}:ContentRackWrapperProps ): JSX.Element
                        rel="noreferrer"
                       href={url}
                 >
-                    <div className='flex flex-col border border-orange-300' >
+                    <div className='flex flex-col items-center' >
 
-                        <p>{formattedDate}</p>
-                        <p>{outlet}</p>
-                        <img  src={image_url} alt={ image_alt } className='w-[250px]' />
-                        <p>{headline}</p>
-                        
+                        <img  
+                            src={image_url} 
+                            alt={ image_alt } 
+                            className='w-full h-auto' 
+                        />
+
+                        <div className={`
+                                            w-10/12 h-fit
+                                            flex flex-col items-center
+                                            text-center
+                                            mt-2
+                                       `}
+                        >
+
+                            <p className={`
+                                            font-heading text-2xl 
+                                         `}
+                            >{headline}</p>
+
+                            <p className='font-body text-lg'>{outlet}</p>
+
+                            <p className='font-body text-sm'>{formattedDate}</p>
+
+                        </div>
+
                     </div>
                 </a>
 
@@ -91,7 +108,7 @@ export default function FAQBuffet({admin}:ContentRackWrapperProps ): JSX.Element
                                 id={id} 
                                 rank={rank as number} 
                                 index={index}
-                                table={'faq'}
+                                table={'stories'}
                                 pkName={'id'}
                                 editing={editing}
                                 loadData={getData}
@@ -113,6 +130,14 @@ export default function FAQBuffet({admin}:ContentRackWrapperProps ): JSX.Element
 
 
 
-   return <ContentRack<Story> table={table} renderContent={renderStories} />
+   return   <ContentRack<Story> 
+                        table={'stories'      } 
+                renderContent={ renderStories }
+                    wrapStyle={`
+                                    grid gap-16
+                                    grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
+                                    p-20
+                              `} 
+            />
 
 }

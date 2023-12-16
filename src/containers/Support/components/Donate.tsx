@@ -5,6 +5,14 @@
 
 
 
+/**
+ * donation component for the support page.
+ * 
+ * there's a lot going on here, so we'll break it down.
+ */
+
+
+
 
 import { useState,
          useEffect     }   from 'react';
@@ -39,7 +47,8 @@ import   copy              from '../../../assets/copy';
 
  
 
-export default function Donate() {
+export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Element {
+
 
 
 
@@ -230,11 +239,23 @@ export default function Donate() {
     
     
 
+    function thisBuysUs() {
+
+        if ( amount > 500 ) return 'Large donations like this make a huge difference in our ability to help the community. Thank you!';
 
 
-
-
-
+        const purchase =  amount >= 500 ? '300 hygiene kits'
+                        : amount >= 200 ? 'a new foldable wagon to haul supplies on our walks' 
+                        : amount >= 100 ? '100 ear warmers or 100 pairs of socks'
+                        : amount >= 50  ? 'a weeks worth of sandwiches'
+                        : amount >= 20  ? '48 granola bars or 40 hand warmers'
+                        : amount >= 10  ? 'a new heavy duty trash picker or headlamp'
+                        : amount >= 5   ? '24 bottles of water for thirsty community members'
+                        :                 ''
+    
+        return `With a ${formState.monthly ? 'monthly ' : ''}donation of $${amount}, we can afford ${purchase}.`;
+    }
+    
 
 
 
@@ -243,79 +264,93 @@ export default function Donate() {
                                             : 'please provide a valid email.';
 
 
-    // styles for form's p elements
-    const pStyles = 'font-body w-full py-8 pr-[40%]'
+
 
 
 
 
     return (
 
-        <div>
 
-            <form className={`
-                                h-fit w-full 
-                                flex flex-col
-                                items-center
-                                min-w-[900px]
-                                p-8
-                            `}
-            >
-                
-               
-                    
-                    { copy('donate', pStyles) }
+        <form className={`
+                            h-fit w-full 
+                            flex flex-col 
+                            px-4 md:px-8 lg:px-12   
+                            py-8
+                        `}
+        >
+            
+            
+                {/* intro paragraph */}
+                { copy('donate', pStyles) }
 
-                    <Input                      
-                        name={      'name'                  }
-                        type={      'text'                  }
-                        state={      formState              }
-                        setter={     setFormState           }
-                        error={      errorState             }
-                        errorStyles={ attempted             }
-                        errorMsg={   'Any name works.'}
-                        />
-                                                                            
-                    <Input                      
-                        name={      'email'                 }
-                        type={      'text'                  }
-                        state={      formState              }
-                        setter={     setFormState           }
-                        error={      errorState             }
-                        errorStyles={ attempted             }   
-                        errorMsg={   emailErrorMsg          }
+
+                {/* name and email inputs, followed by monthly toggle */}
+                <Input                      
+                    name={       'name'                  }
+                    type={       'text'                  }
+                    state={       formState              }
+                    setter={      setFormState           }
+                    error={       errorState             }
+                    errorStyles={ attempted              }
+                    errorMsg={   'Any name works.'       }
+                    wrapStyle={  'w-full max-w-xl'       }
                     />
+                                                                        
+                <Input                      
+                    name={      'email'                 }
+                    type={      'text'                  }
+                    state={      formState              }
+                    setter={     setFormState           }
+                    error={      errorState             }
+                    errorStyles={ attempted             }   
+                    errorMsg={   emailErrorMsg          }
+                    wrapStyle={  'w-full max-w-xl'      }
+                />
 
-                    <Input                      
-                        name={      'monthly'               }
-                        type={      'toggle'                }
-                        options={ [ 'one-time', 'monthly' ] }
-                        state={      formState              }
-                        setter={     setFormState           }
-                    />
+                <Input                      
+                    name={      'monthly'               }
+                    type={      'toggle'                }
+                    options={ [ 'one-time', 'monthly' ] }
+                    state={      formState              }
+                    setter={     setFormState           }
+                />
 
 
-                    <AmountSelector 
-                            amount={amount} 
-                         setAmount={setAmount} 
-                        wrapStyles='self-start my-8'    
-                    />
+                {/* the amount selector, which selects amounts */}
+                <AmountSelector 
+                        amount={amount} 
+                        setAmount={setAmount} 
+                    wrapStyles='self-start my-8'    
+                />
 
-                    <p className={pStyles}>{`With a donation of $${amount} we can afford some stuff!`}</p>
 
-                    <div className='w-full h-12 m-4' >
-                        <CardElement key={renderKey}  options={cardElementOptions} />
-                    </div>
 
+                {/* impact paragraph generated by thisBuysUs() */}
+                <div className='h-36 my-8'>
+                    { amount >= 5 && <p className={pStyles}>{thisBuysUs()}</p> }
+                </div>
+
+
+                {/*  Stripe card element  */}
+                <div className='w-full max-w-xl h-24 my-8' >
+                    <CardElement key={renderKey}  options={cardElementOptions} />
+                </div>
+
+
+                {/*  submit button  */}
+                <div className='self-center'>
                     <Button onClick={handleSubmit} text={`contribute $${amount}${formState.monthly ? ' a month' : ''}`} />
-
-                    <p ref={statusRef} />
-
-
-            </form>
+                </div>
 
 
-        </div>
+                {/* status message */}
+                <p ref={statusRef} />
+
+
+        </form>
+
+
     );
 }
 

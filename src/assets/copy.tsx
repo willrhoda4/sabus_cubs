@@ -31,12 +31,17 @@
 const textResources : { [ key: string ] : string }  = {
 
 
+    // home resources
+
+    intro       : `is a Winnipeg-based non-profit focused on giving the youth of today the skills they need to become the leaders of tomorrow. We believe in equality, inclusion, and the aggregate potential of small direct actions to transform the communities we love. Come walk with us!`,
+
     
     //info resources
-    mission: `Empowering youth to strengthen the Point Douglas community.`,
+    mission1     : `Empowering youth.`,
+    mission2     : `Strengthening community.`,
 
     story:   `
-                Sabu’s Cubs is a grassroots non-profit organization committed to providing the youth of Point Douglas with the support they need to make transformative differences in their community.  Powered by the generosity of our supporters and the dedication of our volunteers, we provide mentorship and safe spaces for our members and deliver impactful positive change through direct action in the neighbourhood.
+                Sabu’s Cubs is a grassroots non-profit organization committed to providing youth with the support they need to make transformative differences in their community.  Powered by the generosity of our supporters and the dedication of our volunteers, we provide mentorship and safe spaces for our members and deliver impactful positive change through direct action in the Point Douglas neighbourhood.
                 ||
                 Our name is inspired by William “Sabu” Rhoda, a political activist who left South Africa with an exit visa in 1967, escaping apartheid and immigrating to Winnipeg where he spent over twenty years working with young people as a high school math and science teacher. He believed in hard work, equality and fighting for what’s right, and we try to honour the spirit of those beliefs with the work we do.
             `,
@@ -48,7 +53,7 @@ const textResources : { [ key: string ] : string }  = {
 
 
     // contact resources       
-    contact  : `Our community walks happen every Tuesday and Thursday from 4:30-6:00pm. We meet at Gonzaga Middle School (160 Gerard Ave) and walk in the North End. We walk in all weather, so please dress appropriately. We walk for about an hour and then return to Gonzaga for a light supper. We have a variety of routes that we walk, and we always have a leader and a sweeper to ensure that no one gets left behind.`,
+    contact  : `We operate out Gonzaga Middle School, at 174 Maple St N in the Point Douglas neighbourhood. We meet most Wednesdays from 5:30 p.m. to 8:00 p.m., and we’d love to see you at our next walk! We recommend reaching out by email or social media before you come out, just to make sure that there isn’t a cancellation this week.`,
         
     googleMapURL: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2569.5264802138595!2d-97.13338532293551!3d49.90769267149365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x52ea716c75c831ad%3A0x39f5bee041f8da01!2sGonzaga%20Middle%20School!5e0!3m2!1sen!2sca!4v1695846137768!5m2!1sen!2sca',
 
@@ -58,17 +63,27 @@ const textResources : { [ key: string ] : string }  = {
 
 
     // support resources
-    donate     : `For those who can afford it, an online donation is often the easiest way to support the work we do. Whether it's a small one-time amount or a substantial monthly contribution, we accept all major credit cards and we're always grateful for your generosity.`,
+    donate          : `For those who can afford it, an online donation is often the easiest way to support the work we do. Whether it's a small, one-time amount or a substantial monthly contribution, we accept all major credit cards and we're always grateful for your generosity.`,
 
-    supplies   : `We're always in need of supplies to help keep our community members safe and comfortable. If you have any of the following items to donate, please contact us to arrange a drop-off time.`,
+    supplies        : `We're always in need of supplies to help keep community members safe and comfortable. If you have any of the following items to donate, please contact us to arrange a drop-off time.`,
 
-    fundraiser : `We're always looking for new ways to raise funds for our community. If you have an idea for a fundraiser, please contact us to discuss it.`,
+    fundraiser      : `We're always looking for new ways to raise funds for the neighbourhood. If you have an idea for a fundraiser, please contact us to discuss it.`,
 
-    update     : `If you're trying to update your information or adjust your payments, you're in the right place.`,
+    volunteer       : `For those who can make the time, volunteering with us can be an immensely rewarding way to make an impact in the neighbourhood. All volunteers are required to fill out a registration form and sign a waiver before participating in our walks. If you have access to a printer, links to the documents are available below. If not, we’ll have a hard copy ready for you at our next meeting.`,
 
-    login      : `To verify your identity, we'll send a login link to the email you registered with.`,
+    update          : `If you're trying to update your information or adjust your payments, you're in the right place.`,
+
+    login           : `To verify your identity, we'll send a login link to the email you registered with.`,
 
 
+    // gallery resources
+    instaCTA        : `Don't forget to follow us on Instagram for regular updates on the work we're doing.`,
+
+
+    // news resources
+    newsStories     : `We feel fortunate to have been featured in some great news stories. Here's a few.`,
+
+    newsReleases    : `To promote a culture of transparency, we publish all our press releases for the community to read.`,
 
 }
 
@@ -95,7 +110,7 @@ export default function copy ( key : string, styles? : string, grafGap : string 
     
     return (
 
-        <div className={`font-body ${ styles }` }>
+        <div className={`text-body ${ styles }` }>
 
             { paragraphs.map((paragraph, index) => (
                 <p 

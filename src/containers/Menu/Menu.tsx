@@ -7,49 +7,77 @@
 
 
 
+
+
 import { useEffect, 
-         useRef,      } from 'react';
+         useRef,      }      from 'react';
 
-import { Link, 
-         useLocation, 
-         useNavigate  } from 'react-router-dom';
+import { useLocation  }      from 'react-router-dom';
 
-import   useStyles      from '../../hooks/useStyles';
+import   useStyles           from '../../hooks/useStyles';
 
+import useToggleAnimation    from '../../hooks/useToggleAnimation';
 
+import { MenuProps   }       from '../../types/menu';
 
-import { MenuProps   }  from '../../types/menu';
-
-
-import   infoLinks      from '../../common/links/info';
-import   supportLinks   from '../../common/links/support';
-import   galleryLinks   from '../../common/links/gallery';
-import   contactLinks   from '../../common/links/contact';
-
+import   MenuIcons           from './components/MenuIcons';
+import   NavLink             from './components/NavLink';
 
 
 
 
 // pop-out menu for left side of screen
-export default function Menu ({ pages, iconsDisplayed, setIconsDisplayed, setMenuDisplayed, setEditing, editor } : MenuProps) : JSX.Element {
+export default function Menu ( { 
+                                    pages, 
+                                    iconsDisplayed, 
+                                    menuDisplayed,
+                                    setMenuDisplayed, 
+                                    setIconsDisplayed, 
+                                    hamburgerRef,
+                                    setEditing, 
+                                    editor 
+                                } : MenuProps) : JSX.Element {
     
     
 
-    const popOutRef  = useRef<HTMLDivElement | null>(null);
+    const   popOutRef                         = useRef<HTMLDivElement | null>(null);
 
+    const   theme                             = useStyles('neobrutalism');
 
-    const theme      = useStyles('neobrutalism');
+    const   thisPage                          = useLocation().pathname.slice(1)
 
-    const thisPage   = useLocation().pathname.slice(1)
+    const [ mainMenuAnimation, menuIsOpen    ] = useToggleAnimation({  
 
-    const navigate   = useNavigate();
+                                                                        isOpen:          menuDisplayed,
+                                                                        openAnimation:  'animate-slide-in-left',
+                                                                        closeAnimation: 'animate-slide-out-left-after',
+                                                                        closingTime:     800,
+                                                                   });
+  
+    const  subMenuAnimation                    = useToggleAnimation({
+                                                                        isOpen:          menuDisplayed,
+                                                                        openAnimation:  'animate-submenu-slide-in', 
+                                                                        closeAnimation: 'animate-submenu-slide-out', 
+                                                                        closingTime:     800, 
+                                                                   })[0]; // mainMenuAnimation and subMenuAnimation return the same menuIsOpen,
+                                                                         // therefore, we'll just need the animation class.
+  
+  
 
 
     // Close dropdown menu if user clicks outside of it
-    useEffect(() => {
+    useEffect(() => {           
 
         function handleClickOutside (event : MouseEvent) {  
-            
+
+
+            // if the user clicks on the hamburger, call it off.
+            // we'll let the hamburger handle its own clicks.
+            if (    hamburgerRef.current && 
+                    hamburgerRef.current.contains(event.target as Node)
+               )  { return; }
+
+              
             // Ensure that the menu is being displayed and that
             //popOutnRef.current is an instance of Node
             // before we bother checking if the click was outside the menu.
@@ -57,7 +85,7 @@ export default function Menu ({ pages, iconsDisplayed, setIconsDisplayed, setMen
                     popOutRef.current                            &&
                    !popOutRef.current.contains(event.target as Node)
 
-               ) {  
+               ) {     
                     setMenuDisplayed(() => false); 
                     setIconsDisplayed(thisPage);
                  }
@@ -67,125 +95,51 @@ export default function Menu ({ pages, iconsDisplayed, setIconsDisplayed, setMen
     
         return () => { document.removeEventListener("mousedown", handleClickOutside); }
 
-    }, [setEditing, setIconsDisplayed, setMenuDisplayed, thisPage]);
+    }, [hamburgerRef, setEditing, setIconsDisplayed, setMenuDisplayed, thisPage] );
 
     
     
 
-    // generate nav links from pages prop
-    function navLink (page : string, key : number) : JSX.Element {
-
-        // generate slashed path and capitalized title from name
-        const path  = '/'+page;
-        const title = page[0].toUpperCase()+page.slice(1);
-                            
-        const link = editor ?   <div  
-                                    key={key}  
-                                    onClick={    () => {   setEditing(page); 
-                                                           setMenuDisplayed(false);
-                                                       } }
-                                >{title}</div>
-
-                            :   <Link 
-                                    key={key}  
-                                    to={path} 
-                                    onMouseOver={ () =>     setIconsDisplayed(page) }    
-                                    onClick={     () => {   
-                                                            setMenuDisplayed(false);
-                                                            window.scrollTo(0, 0);
-                                                        } }                  
-                                >{title}</Link>   
-
-
-        return link
-    }
-
-
-
-    function menuIcons () {
-
-        const displayedIcons = () => {
-
-            switch (iconsDisplayed) {
-
-                case 'info'    : return infoLinks;
-                case 'support' : return supportLinks;
-                case 'gallery' : return galleryLinks;
-                case 'contact' : return contactLinks;
-                default        : return [];
-            }
-        }
-
-
-        return displayedIcons().map( (link, index) => {
-           
-           
-           
-            const { name, icon : Icon, outLinkURL } = link;
-           
-            const icon       =  <Icon
-                                    height={'45px'}
-                                    width={'45px'}
-                                    className='mx-1 px-2 hover:animate-wiggle'
-                                    style={{ color: '#ABAB27' }}
-                                />      
-
-            const id          = link.id ?? name.toLowerCase();
-
-            const timeStamp   = Date.now()
-
-            const handleClick = () =>   {
-                                            navigate(`/${iconsDisplayed}`, { state: { id: id, timeStamp: timeStamp } } );
-                                            setMenuDisplayed(false);
-                                        }
-
-            const inLink      = <a 
-                                    key={index}
-                                    onClick={handleClick}
-                                    className='flex flex-col'
-                                >
-                                    {icon}  
-                                    <p className='text-brand-yellow'>{name}</p>
-                                </a>
-
-            const outLink     = <a 
-                                    key={index}
-                                    href={outLinkURL} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    onClick={handleClick}
-                                    className='flex flex-col'
-                                >
-                                    {icon}
-                                    <p className='text-brand-yellow'>{name}</p> 
-                                </a>
-
-            return outLinkURL ? outLink : inLink;
-        })
-    }
-
-
-    
 
 
 
     return (
-        <nav      ref={popOutRef}
-            className={theme.menuWrapper?.()}   //Parsing error: Expression expected.eslint
+        <>
+            { menuIsOpen && (
+                
+                <nav ref={popOutRef} className={theme.menuWrapper?.()}>
+            
+                    <>
+                        {/* left column  : page links */}
+                        <div className={theme.mainMenu?.({ animation: mainMenuAnimation })}>
 
-        >
-            {/* left column  : page links */}
-            <div className={theme.mainMenu?.()} >   
-                {  pages.map( (page, index) => navLink(page, index) ) }
-                <div /> {/* we'll use a dummy div to carry the border to the bottom of the screen */}
-            </div>
+                            { pages.map((page, index) => (
+                                                            
+                                <NavLink
+                                    key={index}
+                                    index={index} 
+                                    page={page}
+                                    editor={editor}
+                                    setEditing={setEditing}
+                                    setMenuDisplayed={setMenuDisplayed}
+                                    onMouseOver={() => setIconsDisplayed(page)}
+                                />
+                            ) ) }
+                            <div /> {/* we'll use a dummy div to carry the border to the bottom of the window */}
+                        </div>
+            
+                        {/* right column : section links */}
+                        <div className={theme.subMenu?.({ animation: subMenuAnimation })}>
+                            <MenuIcons
+                                iconsDisplayed={iconsDisplayed}
+                                setMenuDisplayed={setMenuDisplayed}
+                            />
+                        </div>
+                    </>
 
-            {/* right column : section links */}
-            { !editor && <div className={ theme.subMenu?.() } >
-                            { menuIcons() }
-                         </div>
-            }
-        </nav>
+                </nav>
+                ) }</>
     );
+          
 }
           

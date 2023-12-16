@@ -2,23 +2,31 @@
 
 
 
-import Button        from "../../common/buttons/Button";
-import HamburgerMenu from "./components/Hamburger";
-import SocialLinkSelector from "./components/SocialLinkSelector";
 
 
 
 
 
-// catalogue prop types for the component
-interface NavbarProps {
 
-    setMenuDisplayed: (func: (prev: boolean) => boolean) => void;
-}
+
+import   Button               from "../../common/buttons/Button";
+import   HamburgerMenu        from "./components/Hamburger";
+import   SocialLinkSelector   from "../../common/links/SocialLinkSelector";
+
+import { NavbarProps }        from '../../types/menu';
+
+import { useNavigate }        from 'react-router-dom';
+
+
+
 
 // sticky navbar component for top of screen
-export default function Navbar ({ setMenuDisplayed } : NavbarProps) : JSX.Element {
+export default function Navbar ({ hamburgerRef, setMenuDisplayed } : NavbarProps) : JSX.Element {
 
+
+
+
+    const navigate = useNavigate();
 
 
 
@@ -37,15 +45,15 @@ export default function Navbar ({ setMenuDisplayed } : NavbarProps) : JSX.Elemen
                          `}
           >
 
-            <HamburgerMenu setMenuDisplayed={setMenuDisplayed} />
+            <HamburgerMenu hamburgerRef={hamburgerRef} setMenuDisplayed={setMenuDisplayed} />
 
             <div className='flex'>
 
               <SocialLinkSelector />
 
-              <Button onClick={() => setMenuDisplayed((prev : boolean) => !prev)}
+              <Button onClick={ () => navigate(`/support`, { state: { id: 'donate', timeStamp: Date.now() } } ) }
                          text='Donate'
-                         style='neobrutalism'
+                         theme='neobrutalism'
               />
 
             </div>

@@ -3,28 +3,37 @@
 
 
 
-import copy      from '../../../assets/copy';
+import   copy          from '../../../assets/copy';
 
-import ItemsList from './ItemsList';
+import   Button        from '../../../common/buttons/Button';
+
+import   ItemsList     from './ItemsList';
+
+import { Link       }  from 'react-router-dom';
 
 
 
 
 
-export default function Supplies(): JSX.Element {
+export default function Supplies ( { pStyles } : { pStyles : string } ) : JSX.Element {
+
 
     return (
 
-        <div   className={` flex flex-col items-start p-8`} >
+        <div   className={` 
+                            w-full h-fit
+                            flex flex-col items-center
+                            px-4 md:px-8 lg:px-12   
+                         `} 
+        >
 
-            <p className={`
-                            font-body
-                            w-full pr-[40%]
-                            mt-8 mb-16   
-                         `}
-            >{ copy('supplies') }</p>
+            { copy('supplies', pStyles) }
 
             <ItemsList />
+
+            <Link  to={'/contact?section=email&subject=supply%20donation'} >
+                <Button text='get in touch' styles='m-4' />
+            </Link>
 
         </div>
 

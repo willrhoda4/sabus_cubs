@@ -13,7 +13,7 @@ import { SocialPlatformProps } from "../../../types/contact"
 
 
 
-export default function SocialPlatform({ icon : Icon, content }: SocialPlatformProps): JSX.Element {
+export default function SocialPlatform({ icon : Icon, content, url }: SocialPlatformProps): JSX.Element {
 
 
 
@@ -25,12 +25,21 @@ export default function SocialPlatform({ icon : Icon, content }: SocialPlatformP
                         `}
         >
 
-        <Icon
-                stroke={'black'}
-                height={'80px'}
-                width={'80px'}
-                className='m-8 animate-wiggle'
-            />    
+            <a  
+                href={url} 
+                target='_blank' 
+                rel='noreferrer'
+                className='flex items-center cursor-pointer hover:text-brand-red'
+            >
+
+                <Icon
+                    stroke={'black'}
+                    height={'80px'}
+                    width={'80px'}
+                    className='m-8 animate-wiggle'
+                />    
+
+            </a>
 
             <div className={`
                                 w-full max-w-xs 

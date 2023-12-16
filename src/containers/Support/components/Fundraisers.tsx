@@ -20,7 +20,7 @@ import   Button           from '../../../common/buttons/Button';
 
 
 
-export default function Fundraisers() : JSX.Element {
+export default function Fundraisers ( { pStyles } : { pStyles : string } ) : JSX.Element {
 
 
 
@@ -37,15 +37,10 @@ export default function Fundraisers() : JSX.Element {
                        `}
         >
             
-            <p className={`
-                            w-ful 
-                            pr-[40%] my-8
-                            font-body
-                         `}
-            >{ copy('fundraiser') }</p>
+            { copy('fundraiser', pStyles) }
             
             <Link  to={'/contact?section=email&subject=fundraising%20opportunity'} >
-                <Button text='reach out now'/>
+                <Button text='reach out now' styles='m-4' />
             </Link>
 
 

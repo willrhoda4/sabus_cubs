@@ -6,9 +6,9 @@
 
 
 
-import IconFacebook   from '../../../assets/icon_facebook.svg?react';
-import IconInstagram  from '../../../assets/icon_instagram.svg?react';
-import IconMail       from '../../../assets/icon_mail.svg?react';
+import IconFacebook   from '../../assets/icons/facebook.svg?react';
+import IconInstagram  from '../../assets/icons/instagram.svg?react';
+import IconMail       from '../../assets/icons/mail.svg?react';
                                 
 
 import SocialLink     from './SocialLink';
@@ -17,7 +17,7 @@ import SocialLink     from './SocialLink';
 
 
 
-export default function SocialLinkSelector() {
+export default function SocialLinkSelector({ stroke = 'black'} : { stroke?: string } ) {
 
 
     const platforms =   [
@@ -52,7 +52,7 @@ export default function SocialLinkSelector() {
                             mr-2
                        `}
         >
-            { platforms.map( platform => <SocialLink key={platform.name} { ...platform } /> ) }
+            { platforms.map( platform => <SocialLink key={platform.name} stroke={stroke} { ...platform } /> ) }
 
         </div>                         
     )

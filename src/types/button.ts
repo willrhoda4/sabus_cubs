@@ -15,9 +15,10 @@ import { Theme } from './styles';
 export interface ButtonProps {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-     onClick?: (event: any) => any;
-     text:      string;
-     style?:    Theme;
+     onClick?   :  (event: any) => any;
+     text       :   string;
+     theme?     :   Theme;
+     styles?    :   string;
  }
 
 
@@ -63,6 +64,7 @@ export interface EditorButtonsProps {
     loadData:     () => void;
     dataSize:     number;
     editing:      false | number;
+    wrapStyle?:   string;
     setEditing?:  (arg0: false | number) => void;
     releaseData?: {
                     html:     string;

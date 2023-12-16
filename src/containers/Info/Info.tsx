@@ -7,8 +7,6 @@
 
 
 
-                   
-
 
 import   ImageStrip         from '../../common/images/ImageStrip';
 
@@ -20,7 +18,6 @@ import   Board              from './components/BoardRoster';
 import   FAQBuffet          from './components/FAQBuffet';
 
 import   useLocationScroll  from '../../hooks/useLocationScroll';
-// import   useScrollToUrlParam  from '../../hooks/useScrollToURLParam';
 
 
 
@@ -29,8 +26,8 @@ export default function Info (): JSX.Element {
 
 
     useLocationScroll();
-    // useScrollToUrlParam('section');
 
+    
     return (
         
         <div className={`
@@ -38,6 +35,7 @@ export default function Info (): JSX.Element {
                             flex flex-col
                        `}
         >
+
 
             <div id='story'>
                 <Story />
@@ -61,18 +59,18 @@ export default function Info (): JSX.Element {
                 <Actions />
             </div>
 
-            <ImageStrip bgClass='bg-brand-grey'   ids={ [ 'maintaining_smudge', 'face_squeeze', 'heres_a_sandwich', ] } />
+            <ImageStrip bgClass='bg-brand-blue'   ids={ [ 'maintaining_smudge', 'face_squeeze', 'heres_a_sandwich', ] } />
 
             <div id='board' className='flex flex-col'>
-                <p className='font-title self-start m-20'>Board</p>
+                <p className='text-title self-start m-4 md:m-10 xl:m-20'>Board</p>
                 <Board />
             </div>
 
             <ImageStrip bgClass='bg-brand-red'   ids={ [ 'jumpshot_right', 'pulling_cart', 'jumpshot_left', ] } />
 
     
-            <div id='faq_buffet' className='flex flex-col'>
-                <p className='font-title self-end m-20'>FAQ</p>
+            <div id='faq' className='flex flex-col px-2'>
+                <p className='text-title self-end m-20'>FAQ</p>
                 <FAQBuffet />
             </div>
     

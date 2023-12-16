@@ -31,9 +31,16 @@ export default function Mission () : JSX.Element {
                        `}
         >
 
-            <p className='font-title self-end mb-20'>Mission</p>
+            <p className='text-title self-end mb-20'>Mission</p>
 
-            <p className={`font-heading self-center m-8`}>{ copy('mission', 'string') }</p>
+            <div className={`
+                                text-heading 
+                                self-center 
+                                m-8
+                           `}>
+                <p>{ copy('mission1', 'string') }</p>
+                <p>{ copy('mission2', 'string') }</p>
+            </div>
 
           
 

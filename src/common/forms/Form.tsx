@@ -153,6 +153,7 @@ export default function Form ({ fields, style, onSubmit, initialValues,  } : For
         <form className={`
                             w-full max-w-3xl
                             flex flex-col items-center
+                            px-2
                         `}
         >
 
@@ -187,7 +188,7 @@ export default function Form ({ fields, style, onSubmit, initialValues,  } : For
 
             <p ref={statusRef} />
 
-            <Button text="Submit" style={style} onClick={handleFormSubmit} />
+            <Button text="Submit" theme={style} onClick={handleFormSubmit} />
 
     </form>
 

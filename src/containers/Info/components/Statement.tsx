@@ -1,42 +1,45 @@
 
 
-
+/**
+ * renders a statement to feeed the Statements component
+ */
 
 
 
 import { Statement as StatementType } from '../../../types/info';
 
-export default function Statement( { title, copy, icon: Icon, stroke = 'black'} : StatementType): JSX.Element {
 
 
-                  
+
+export default function Statement( { title, copy, icon: Icon, stroke = 'black'} : StatementType) : JSX.Element {
+
+
+    // everything will be in a column and centered for small screens.
+    // when we get to large screens, we'll put the icon and text-alignment on the left             
     return (
+
         <div className={`
-                            grid grid-cols-[auto_1fr] 
-                            w-full m-8 
+                            flex flex-col lg:flex-row items-center
+                            w-full
                        `}
         >
-            <div className={`
-                                flex items-center justify-center 
-                           `}
-            >
                 <Icon
                     stroke={stroke}
-                    height={'6rem'} // or use classes like h-20 for TailwindCSS
-                    width={'6rem'}  // or use classes like w-20 for TailwindCSS
-                    className='mx-8 hover:animate-wiggle'
+                    height={'60px'}
+                    width={'60px'} 
+                    className='mx-8 shrink-0 grow-0 hover:animate-wiggle'
                 />
 
-            </div>
 
             <div className={`
-                                flex flex-col items-start 
+                                flex flex-col items-center lg:items-start
+                                text-center lg:text-left
                                 p-4 
                            `}
             >
 
-                <h2 className='font-heading text-l mb-1'>{title}</h2>
-                <p  className='font-body text-sm'>{copy}</p>
+                <h2 className='text-heading text-l mb-1'>{title}</h2>
+                <p  className='text-body text-sm'>{copy}</p>
 
             </div>
         </div>
@@ -44,54 +47,3 @@ export default function Statement( { title, copy, icon: Icon, stroke = 'black'} 
 }
 
 
-
-// import { Statement } from '../../../types/info';
-
-
-
-// export default function Statement ( { title, copy, icon : Icon } : Statement ) : JSX.Element {
-
-
-
-
-//     return (
-
-//         <div className={`
-//                             grid grid-cols-3
-//                             w-full 
-//                             m-8
-//                             border border-blue-500
-//                        `}
-//         >
-
-//             <div className={`
-//                                 col-span-1
-//                                 flex items-center justify-center
-//                                 border border-orange-500
-//                            `}
-//             >
-//                 <Icon 
-//                     stroke={'black'}
-//                     height={'100px'}
-//                     width={'100px'}
-//                     className='mx-8 hover:animate-wiggle'
-//                 />
-//             </div>
-
-//             <div className={`
-//                                 col-span-2
-//                                 flex- flex-col items-start
-//                                 p-1
-//                                 border border-green-500
-//                            `}
-//             >
-//                 <h2 className='font-fontFamilyHeading text-2xl' >{title}</h2>
-
-//                 <p className='font-fontFamilyBody text-md '>{copy}</p>
-//             </div>
-                
-
-//         </div>
-
-//     )
-// }

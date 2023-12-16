@@ -11,12 +11,12 @@ import   Statements from './Statements';
 
 import { Statement } from '../../../types/info';
 
-import   Cleanup          from '../../../assets/cleanup.svg?react';
-import   Communication    from '../../../assets/communication.svg?react';
-import   Counselling      from '../../../assets/counselling.svg?react';
-import   FamilyMeals      from '../../../assets/familyMeals.svg?react';
-import   Walks            from '../../../assets/walks.svg?react';
-import   OpenGym          from '../../../assets/openGym.svg?react';
+import   Cleanup          from '../../../assets/icons/cleanup.svg?react';
+import   Communication    from '../../../assets/icons/communication.svg?react';
+import   Counselling      from '../../../assets/icons/counselling.svg?react';
+import   FamilyMeals      from '../../../assets/icons/familyMeals.svg?react';
+import   Walks            from '../../../assets/icons/walks.svg?react';
+import   OpenGym          from '../../../assets/icons/openGym.svg?react';
 
 
 
@@ -64,7 +64,7 @@ export default function Actions () : JSX.Element {
                 blurb='some of the ways we try to give back'
                 statements={actions}
                 statementsOn='right'
-                bgClass='bg-brand-blue'
+                bgClass='bg-brand-grey'
                 textClass='text-brand-yellow'
             />
 }

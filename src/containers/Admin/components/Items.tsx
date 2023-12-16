@@ -30,6 +30,7 @@ export default function Items (): JSX.Element {
             <div className={`
                                 w-full h-fit
                                 flex flex-col
+                                    first-child:mb-16
                         `}
             >
     

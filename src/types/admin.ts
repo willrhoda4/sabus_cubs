@@ -11,6 +11,7 @@ import { Item }             from './support';
 import { Field }            from './form';
 import { Story }            from './news';
 import { Theme }            from './styles';
+import { BrandColours }     from '../utils/brandColours';
 
 
 
@@ -21,8 +22,8 @@ type setEditingType = (arg0: false | number) => void;
 
 // interface for Admin container component
 export interface AdminProps {
-
     editing: string;
+    brandColours: BrandColours;
 }
 
 

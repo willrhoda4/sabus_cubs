@@ -7,7 +7,7 @@
 
 
 import JournalistForm from './forms/JournalistForm';
-import JournalistList from './JournalistRack';
+import JournalistRack from './JournalistRack';
 
 import useRenderKey   from '../../../hooks/useRenderKey';
 
@@ -20,12 +20,14 @@ export default function Journalists(): JSX.Element {
 
     
 
-    return (<>
+    return (
+    
+        <div>
+     
+            <JournalistForm getData={renderJournalists} />
 
-                
-        <JournalistForm getData={renderJournalists} />
-
-        <JournalistList key={renderKey} admin={true} />
-                
-    </>)
+            <JournalistRack key={renderKey} admin={true} />
+                    
+        </div>
+        )
 }

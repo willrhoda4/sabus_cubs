@@ -50,15 +50,20 @@ function upload(request : Request, response: Response, next: NextFunction) {
 
     console.log('uploading PDF to Cloudinary...');
 
+    const customPublicId = `news_release_${request.body.headline.replace(/ /g, '_')}_${Date.now()}`;
+
+
     cloudinary.uploader.upload_stream(
 
         { 
             api_key, 
             api_secret, 
             cloud_name,
-            resource_type: 'raw', 
+            resource_type: 'auto', 
             folder:        'news_releases',
+            public_id:      customPublicId,
         },
+
         (err, result) => {
 
                  if (err)        return response.status(500).send('Error uploading to Cloudinary');

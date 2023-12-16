@@ -1,7 +1,7 @@
 
 
 
-import CloudImg from '../../../common/images/CloudImg';
+import   CloudImg      from '../../../common/images/CloudImg';
 
 import { BoardMember } from '../../../types/info';
 
@@ -15,25 +15,16 @@ export default function boardProfile (boardMember: BoardMember) : JSX.Element {
 
         <div       key={id as number}
              className={`
-                            flex items-center
-                            h-60 w-1/2
-                            p-4 m-4
-                            border
+                            flex flex-col items-center
+                            h-fit w-full max-w-lg
                        `}
         >
 
-            <CloudImg id={public_id as string} wrapStyle={`h-auto w-1/2`} />
+            <CloudImg id={public_id as string} wrapStyle={`h-auto w-full`} />
 
-            <div className={`
-                                flex flex-col
-                                h-full w-1/2
-                                border
-                           `}
-            >
-                <h3 className='h-1/4'>{ full_name as string }</h3>
-                <h4 className='h-1/4'>{ title     as string }</h4>
-                <p  className='h-1/2'>{ bio       as string }</p>
-            </div>
+            <h3 className='font-heading text-4xl mt-2'>{ full_name as string }</h3>
+            <h4 className='font-body font-bold text-xl mb-4'>{ title     as string }</h4>
+            <p  className='font-body text-xl'>{ bio       as string }</p>
 
         </div>
 

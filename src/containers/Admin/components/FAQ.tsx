@@ -22,13 +22,16 @@ export default function FAQ(): JSX.Element {
 
     const [ renderKey, renderFAQs ] = useRenderKey();
 
-    return (<>
-                  
-        <FAQForm getData={renderFAQs} />
+    return (
+        
+        <div>
+                    
+            <FAQForm getData={renderFAQs} />
 
-        <FAQBuffet key={renderKey} admin={true}/>
+            <FAQBuffet key={renderKey} admin={true}/>
                   
-    </>)
+        </div>
+    )
 }
 
 

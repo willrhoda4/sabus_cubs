@@ -10,8 +10,8 @@
 
 
 
-import  Gallery      from '../../assets/gallery.svg?react'
-import  Instagram    from '../../assets/icon_instagram.svg?react'
+import  Gallery      from '../../assets/icons/gallery.svg?react'
+import  Instagram    from '../../assets/icons/instagram.svg?react'
 
 
 import { LinkProps } from '../../types/menu'

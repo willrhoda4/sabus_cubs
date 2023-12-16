@@ -14,6 +14,7 @@ import { ChangeEvent } from 'react';
 import { InputProps  } from '../../types/form';
 
 import   useStyles     from '../../hooks/useStyles.js';
+import { StyleArgObject } from '../../types/styles.js';
  
 
 
@@ -50,8 +51,9 @@ export default function Input ({
     // based on the input type and whether or not an error was made.
     const theme       = useStyles(style);
 
-    const inputStyles = theme.input!({ error: mistakeMade, type: type });
-                                    //Cannot invoke an object which is possibly 'undefined'.ts(2722)
+    const inputStyles = theme.input!({ error: mistakeMade, type: type } as StyleArgObject);
+                                    //Argument of type 'StyleArgObject' is not assignable to parameter of type 'StyleArgObject & string'.
+                                    //Type 'StyleArgObject' is not assignable to type 'string'.ts(2345)
 
 
 
@@ -234,7 +236,7 @@ export default function Input ({
 
     return (
 
-        <div className={`${wrapStyle ? wrapStyle : 'w-full'}`}>
+        <div className={`${ wrapStyle ?? 'w-full' }`}>
             <label className='p-2 w-9/12'>
                 { 
                     type !== 'check'  && 

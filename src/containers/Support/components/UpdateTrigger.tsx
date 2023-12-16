@@ -86,29 +86,30 @@ const UpdateTrigger: React.FC = () => {
 
 
     return (
-        
-        <Card 
-            wrapClass='max-w-[60%] mt-8 mb-20 relative'
-            headingClass='bg-brand-red text-white'
-            heading='monthly donee login'
-        >
+        <div className='px-2'>
+            <Card 
+                wrapClass='max-w-2xl mt-8 mb-20 relative'
+                headingClass='bg-brand-red text-white'
+                heading='monthly donee login'
+            >
 
-                {
-                    !loggingIn ?    <div className='flex flex-col items-center justify center'>
-                                        { copy('update', 'my-8') }
-                                        <Button text='login now' onClick={ () => setLoggingIn(true) } />
-                                    </div>
-                               
-                               :    <div className='flex flex-col items-center justify center'>
-                                        { copy('login', 'my-8') } 
-                                        <Form fields={fields} onSubmit={handleSubmit} />
-                                    </div>
-                }
+                    {
+                        !loggingIn ?    <div className='flex flex-col items-center justify center'>
+                                            { copy('update', 'my-8') }
+                                            <Button text='login now' onClick={ () => setLoggingIn(true) } />
+                                        </div>
+                                
+                                :    <div className='flex flex-col items-center justify center'>
+                                            { copy('login', 'my-8') } 
+                                            <Form fields={fields} onSubmit={handleSubmit} />
+                                        </div>
+                    }
 
-                
+                    
 
 
-        </Card>
+            </Card>
+        </div>
     );
 };
 

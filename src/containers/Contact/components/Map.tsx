@@ -15,12 +15,28 @@ import copy      from '../../../assets/copy.js'
 
 export default function Map() {
 
+
+
+    // common style for components p elements
+    const pStyles = `
+        text-body 
+        w-full max-w-xl
+        lg:pr-12
+        my-20
+        self-start
+    `;
+
    
     return (
 
-        <div className={` border border-orange-300 w-full h-full p-4`} >
+        <div className={` 
+                            w-full h-fit
+                            flex flex-col lg:flex-row
+                            px-4 md:px-8 lg:px-12   
+                       `} 
+        >
 
-            <p className='font-body mb-[100px] w-3/4'>{ copy('contact' )}</p>
+            { copy('contact', pStyles ) }
 
             <GoogleMap src={ copy('googleMapURL', 'string') as string } />
             

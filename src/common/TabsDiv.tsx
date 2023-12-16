@@ -27,9 +27,7 @@ export default function TabsDiv( { tabsArray, activeTab, setActiveTab, children,
     return (
 
         <div className={`
-                            w-full max-w-5xl 
-                            h-fit
-                            px-4 py-20
+                            w-full max-w-6xl h-fit px-2
                        `}
         >
 
@@ -44,7 +42,7 @@ export default function TabsDiv( { tabsArray, activeTab, setActiveTab, children,
 
             <div className={`
                                 w-full h-fit 
-                                px-4 py-12 
+                                py-12 
                                 border-4 border-black 
                                 flex flex-col items-center
                            `}

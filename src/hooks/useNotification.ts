@@ -5,24 +5,26 @@
 
 
 
+
+/**
+ * Custom hook for utilizing the notification context.
+ * 
+ * This hook provides an easy way to show notifications throughout the application.
+ * It should be used in components nested within 'NotificationProvider' to ensure
+ * access to the 'showNotification' function.
+ * 
+ * Usage:
+ * const showNotification = useNotification();
+ * showNotification('Your message here', 3000); // Shows notification for 3000 ms
+ */
+
+
+
 import { useContext          } from 'react';
 import { NotificationContext } from '../common/NotificationProvider';
 
 
 
-/**
- * this is a simple hook that leverages the NotificationProvider to show a notification.
- * 
- * note that the NotificationProvider needs to be implemented in the top-level component:
- * 
- * 
- * return (
- *   <NotificationProvider>
- *    // the rest of your jsx for App.tsx, or whateer your top level component is.
- *  </NotificationProvider>
- * 
- * 
- */
 
 
 const useNotification = () => {

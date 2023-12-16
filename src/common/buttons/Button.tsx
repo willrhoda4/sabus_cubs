@@ -17,16 +17,16 @@ import   useStyles     from '../../hooks/useStyles';
 
     
 // flexible button component
-export default function Button ( { text, onClick, style = 'neobrutalism' } : ButtonProps ) : JSX.Element {
+export default function Button ( { text, onClick, theme = 'neobrutalism', styles } : ButtonProps ) : JSX.Element {
 
 
-    const theme        = useStyles(style);
+    const buttonTheme  = useStyles(theme);
 
-    const buttonStyle  = theme.button?.();
+    const buttonStyle  = buttonTheme.button?.();
 
     return (    <button     
                       onClick={ onClick } 
-                    className={ buttonStyle }
+                      className={`${buttonStyle || ''} ${styles || ''}`}
 
                 > {text}</button>                     
     

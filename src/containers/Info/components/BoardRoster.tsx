@@ -1,7 +1,10 @@
 
 
 
-
+/**
+ * displays the board roster on the info page,
+ * as well as on the admin dashboard
+ */
 
 
 
@@ -41,14 +44,15 @@ export default function Board ( { admin } : { admin? : boolean } ): JSX.Element 
     useEffect(() => { getBoard(); }, [])
 
 
-    // package boardProfile with EditorButtons and updateForm/
+    // package boardProfile with conditionaly rendered EditorButtons and updateForm
     function BoardProfile (boardMember: BoardMember, index : number) : JSX.Element {
 
 
         const {  id, rank } = boardMember;
 
         return (
-            <div>
+
+            <div className='flex flex-col items-center'>
 
                 { boardProfile(boardMember) }
 
@@ -65,6 +69,7 @@ export default function Board ( { admin } : { admin? : boolean } ): JSX.Element 
                                editing={ editing          }
                               loadData={ getBoard         }
                               dataSize={ boardData.length }
+                             wrapStyle={ 'mt-4'           }
                             setEditing={ setEditing       } 
                         />
 
@@ -72,6 +77,7 @@ export default function Board ( { admin } : { admin? : boolean } ): JSX.Element 
                     
                     </>
                 }
+
             </div>
         )
     }
@@ -83,10 +89,16 @@ export default function Board ( { admin } : { admin? : boolean } ): JSX.Element 
 
     return (
 
-        <div className='w-full h-full'>
+        <div className={`
+                            w-full h-fit
+                            py-24 px-8 xl:px-24
+                            grid gap-8 xl:gap-16
+                            grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+                       `}
+        >
 
 
-            { boardData.length > 0 && boardData.map( (boardMember, index) =>    <div key={boardMember.public_id as string} >
+            { boardData.length > 0 && boardData.map( (boardMember, index) =>    <div key={boardMember.public_id as string} className='flex justify-center'>
                                                                                     { BoardProfile(boardMember, index) }
                                                                                 </div> 
                                                    ) 

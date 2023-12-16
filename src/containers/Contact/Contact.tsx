@@ -18,23 +18,26 @@ import { ContactProps }  from '../../types/contact';
 
 
 
+
 export default function Contact( { photoData } : ContactProps): JSX.Element {
 
 
 
-    const [ displayed, setDisplayed ] = useStateFromURL('section', 'map');
+    const [ displayed, setDisplayed ] = useStateFromURL('section', 'location');
 
 
-    const   tabsNames   : string[]  = [ 'map', 'email', 'social' ];
+    const   tabsNames   : string[]  = [ 'location', 'email', 'social' ];
     
     
     return (
     
         <div className={`
-                            w-full max-w-5xl h-fit 
-                            px-4 py-20
+                            w-full h-fit
+                            flex flex-col items-center
                        `}
         >
+
+
 
             <TabsDiv 
                 activeTab={displayed} 
@@ -45,9 +48,9 @@ export default function Contact( { photoData } : ContactProps): JSX.Element {
             >
 
                 {
-                    displayed === 'map'     ? <Map       />       
-                :   displayed === 'social'  ? <Social    photoData={photoData} />    
-                :                             <EmailForm /> 
+                    displayed === 'location'     ? <Map                             />       
+                :   displayed === 'social'       ? <Social    photoData={photoData} />    
+                :                                  <EmailForm                       /> 
                 }
 
             </TabsDiv>

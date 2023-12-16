@@ -5,6 +5,16 @@
 
 
 
+/**
+ * 
+ *  displays a list of journalists.
+ *  gets managed on its own page in the admin dashboard.
+ *  this is the list we feed our news releases to.
+ */
+
+
+
+
 
 
 import   ContentRack                    from '../../../common/ContentRack';  
@@ -21,14 +31,14 @@ import   EditorButtons                  from '../../../common/buttons/EditorButt
 
 
 
-4
+
 
 export default function JournalistRack({ admin } : ContentRackWrapperProps ): JSX.Element {
 
 
 
 
-
+    // builder function for each journalist
     function renderJournalist ( journalist : Journalist, index : number, controls : ContentControls ) : JSX.Element {
 
 
@@ -50,43 +60,64 @@ export default function JournalistRack({ admin } : ContentRackWrapperProps ): JS
                 } = controls;
 
 
-
+                // one list item per journalist
         return  <ul      key={id}
-                    className={`flex flex-col`}
+                    className={`
+                                w-[600px] maw-w-10/12
+                                flex flex-col
+                                p-2 border-b-2 border-black
+                              `}
                 >
                     <div className={`
-                                        flex flex-col 
-                                        hover:cursor-copy
-                                        border border-blue-300
-                                   `} 
-                         onClick={ () => navigator.clipboard.writeText(email) } 
+                                        flex flex-row 
+                                        items-center justify-between
+                                   `}
                     >
-                        <h3>{name}</h3>
-                        <p>{email}</p>
-                        <p>{outlet}</p>
-                    </div>
+                        {/* display name, email and outlet, and if they click copy the email. */}
+                        <div className={`
+                                            flex flex-col 
+                                            hover:cursor-copy
+                                    `} 
+                            onClick={ () => navigator.clipboard.writeText(email) } 
+                        >
+                            <h3>{ name   }</h3>
+                            <p>{  email  }</p>
+                            <p>{  outlet }</p>
+                        </div>
+                        
                     
-                    {
+                        {/* we'll provide the full editor button suite,
+                            but delete and edidt are the only two that are really relevant. */}
+                        {   admin && <EditorButtons 
+                                        id={id} 
+                                        rank={rank} 
+                                        index={index}
+                                        table={'journalists'}
+                                        pkName={'id'}
+                                        editing={editing}
+                                        loadData={getData}
+                                        dataSize={dataSize}
+                                        setEditing={setEditing}
+                                    />
+                        }
+                    </div>
+                        
+                    {/* if we're editing this journalist, show the form. */}
+                    {               
                         admin && editing === id && <JournalistForm getData={getData} update={journalist} setEditing={setEditing}/> 
                     }
               
-                   
-                    {   admin && <EditorButtons 
-                                    id={id} 
-                                    rank={rank} 
-                                    index={index}
-                                    table={'journalists'}
-                                    pkName={'id'}
-                                    editing={editing}
-                                    loadData={getData}
-                                    dataSize={dataSize}
-                                    setEditing={setEditing}
-                                 />
-                    }
                 </ul>
     }
 
-    return <ContentRack<Journalist> table="journalists" renderContent={renderJournalist} />
+    return  <ContentRack<Journalist> 
+                table="journalists" 
+                renderContent={renderJournalist} 
+                wrapStyle={`
+                            mt-24
+                            border-4 border-black
+                          `} 
+            />
 
     
 }

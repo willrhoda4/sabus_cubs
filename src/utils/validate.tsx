@@ -10,7 +10,7 @@ import { ValidationArgs } from '../types/form';
 
 
 
-export default function validate(validationArgs: ValidationArgs, value: unknown): boolean {   
+export default function validate(validationArgs: ValidationArgs, value: unknown) : boolean {   
 
 
         if (Array.isArray(validationArgs)) {

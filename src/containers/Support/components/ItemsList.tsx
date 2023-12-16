@@ -48,7 +48,7 @@ export default function ItemsList ({ admin } : ItemsListProps) : JSX.Element {
     function itemLi (item : Item, index : number) : JSX.Element {
 
 
-        const itemGraf = <p className='font-body'>{item.item}</p>
+        const itemGraf = <p className='text-body'>{item.item}</p>
 
 
         return  <li key={item.id}>
@@ -71,6 +71,7 @@ export default function ItemsList ({ admin } : ItemsListProps) : JSX.Element {
                                             pkName={'id'}
                                             editing={editing}
                                             loadData={getItems}
+                                            wrapStyle={'mb-4'}
                                             dataSize={items.length}
                                             setEditing={setEditing}
                                         />
@@ -94,37 +95,3 @@ export default function ItemsList ({ admin } : ItemsListProps) : JSX.Element {
 
     )
 }
-
-/*
-
-
-
- 
-
-
-
-
-
-
-                     {
-                        admin && editing === item.id 
-                                 ? <ItemsForm getData={getItems} update={item} setEditing={setEditing}/> 
-                                 : <p className='font-body'>{item.item}</p>
-                    }
-              
-                   
-                    {   admin && <EditorButtons 
-                                    id={item.id} 
-                                    rank={item.rank} 
-                                    index={index}
-                                    table={'items'}
-                                    pkName={'id'}
-                                    editing={editing}
-                                    loadData={getItems}
-                                    dataSize={items.length}
-                                    setEditing={setEditing}
-                                 />
-                    }
-
-
-                    */

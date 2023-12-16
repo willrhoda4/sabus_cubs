@@ -31,7 +31,7 @@ interface CardProps {
 
         <div className={`
                             border-b-2 border-black 
-                            font-heading
+                            text-heading
                             p-4
                             ${headingClass}
                         `}>

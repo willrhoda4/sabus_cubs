@@ -41,7 +41,7 @@ type TabsProps = {
                                         w-full
                                         cursor-pointer 
                                         border-2 border-black 
-                                        px-6 py-3 
+                                        py-3 
                                         text-center font-bold 
                                         transition-colors 
                                         ${ textClass  ?? 'text-black' }

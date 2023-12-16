@@ -11,12 +11,12 @@ import   Statements from './Statements';
 
 import { Statement } from '../../../types/info';
 
-import   Compassion from '../../../assets/compassion.svg?react';
-import   Discipline from '../../../assets/discipline.svg?react';
-import   Sport      from '../../../assets/sport.svg?react';
-import   Community  from '../../../assets/community.svg?react';
-import   Courage    from '../../../assets/courage.svg?react';
-import   Family     from '../../../assets/family.svg?react';
+import   Compassion from '../../../assets/icons/compassion.svg?react';
+import   Discipline from '../../../assets/icons/discipline.svg?react';
+import   Sport      from '../../../assets/icons/sport.svg?react';
+import   Community  from '../../../assets/icons/community.svg?react';
+import   Courage    from '../../../assets/icons/courage.svg?react';
+import   Family     from '../../../assets/icons/family.svg?react';
 
 
 

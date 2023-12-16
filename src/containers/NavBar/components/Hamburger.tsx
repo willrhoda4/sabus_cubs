@@ -8,14 +8,14 @@
 
 import { useState       } from "react";
 
-import { HamburgerProps } from "../../../types/menu";
+import { NavbarProps } from "../../../types/menu";
 
 
 
 
 
 
-export default function Hamburger ({ setMenuDisplayed } : HamburgerProps) : JSX.Element {
+export default function Hamburger ({ hamburgerRef, setMenuDisplayed } : NavbarProps) : JSX.Element {
 
 
     const [ isHovered, setIsHovered ] = useState(false);
@@ -33,6 +33,7 @@ export default function Hamburger ({ setMenuDisplayed } : HamburgerProps) : JSX.
     return (
 
         <div
+                     ref={ hamburgerRef              }
             onMouseEnter={ () => setIsHovered(true)  }
             onMouseLeave={ () => setIsHovered(false) }
                  onClick={ () => setMenuDisplayed((prev : boolean) => !prev) }

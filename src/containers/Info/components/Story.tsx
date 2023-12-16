@@ -23,7 +23,7 @@ export default function Story () : JSX.Element {
     return (
         
         <div className={`
-                            grid grid-cols-2 
+                            flex flex-col xl:flex-row
                             w-full
                             py-20
                             bg-whitesmoke
@@ -31,27 +31,27 @@ export default function Story () : JSX.Element {
         >
 
             <div className={`
-                                col-span-1
-                                flex flex-col
-                                pl-28 pr-12
+                                w-full xl:w-1/2
+                                flex flex-col items-start
+                                px-10 xl:pl-28 xl:pr-12
                            `}
             >
 
-                <p className='font-title'>Story</p>
+                <p className='text-title'>Story</p>
                 { copy('story') }
             
             </div>
 
 
             <div className={`
-                                col-span-1
-                                flex items-center justify-end
-                                px-10
+                                w-full xl:w-1/2 max-w-4xl
+                                self-center
+                                p-0 xl:p-10
+                                my-10
                            `}
             >
 
                 <CloudinaryImage id='groupshot' wrapStyle='w-full h-auto' />
-
             </div>
 
         </div>

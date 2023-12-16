@@ -22,13 +22,16 @@ export default function Board(): JSX.Element {
 
     const [ renderKey, renderFAQs ] = useRenderKey();
 
-    return (<>
+    return (
+        
+        <div>
                   
-        <BoardForm getData={renderFAQs} />
+            <BoardForm getData={renderFAQs} />
 
-        <BoardRoster key={renderKey} admin={true} />
+            <BoardRoster key={renderKey} admin={true} />
                   
-    </>)
+        </div>
+    )
 }
 
 

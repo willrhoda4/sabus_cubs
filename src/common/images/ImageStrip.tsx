@@ -18,8 +18,8 @@ export default function ImageStrip ( { ids, bgClass = 'bg-black' } : { ids : str
 
 
     <div className={`
-                        grid grid-cols-3 gap-4 
-                        p-8
+                        grid grid-cols-3 gap-2 md:gap-4 lg:gap-8
+                        p-2 md:p-4 lg:p-8 
                         ${ bgClass }
                    `}>
 

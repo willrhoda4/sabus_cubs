@@ -35,7 +35,8 @@ export default function useLocationScroll() {
     const location  = useLocation();
     const id        = location.state && location.state.id;
     const timeStamp = location.state && location.state.timeStamp;
-
+          // timeStamp is used to coerce the useEffect hook to run,
+          // even if the id is the same as the previous one.
 
 
     useEffect(() => {

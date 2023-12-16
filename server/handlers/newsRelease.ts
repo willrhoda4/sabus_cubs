@@ -16,7 +16,8 @@ import { Request,
 
 
 
-
+// first stop for generateNewsRelease.
+// generates html and passes it to generatePDF
 function generateHTML(request: Request, response: Response, next: NextFunction) {
 
 
@@ -26,7 +27,7 @@ function generateHTML(request: Request, response: Response, next: NextFunction) 
             date, 
             content,
             headline 
-          } = request.body;
+           } = request.body;
 
 
     const   template = `
@@ -50,6 +51,8 @@ function generateHTML(request: Request, response: Response, next: NextFunction) 
 
 
 
+// second stop for generateNewsRelease.
+// generates a PDF and passes it to the cloudinary upload handler.
 function generatePDF(request: Request, response: Response, next: NextFunction) {
 
     console.log('generating a PDF with the HTML...')
@@ -66,6 +69,8 @@ function generatePDF(request: Request, response: Response, next: NextFunction) {
 }
         
 
+// last stop for generateNewsRelease.
+// logs the news release in the database.
 function logger( request: Request, response: Response ) {
 
 
@@ -92,9 +97,9 @@ const     query  =   `
 
 const parameters = [ date, html, content, headline, pdf_url ];
 
-db.simpleQuery(response, query, parameters, undefined);
 
 // note that simple query will handle delivering the response to the client.
+db.simpleQuery(response, query, parameters, undefined);
 }
 
 

@@ -9,8 +9,7 @@
 
 
 import     useRenderKey     from '../../../hooks/useRenderKey';
-
-import     NewsReleaseRack  from './NewsReleaseRack';
+import     NewsReleaseRack  from '../../News/components/NewsReleaseRack';
 import     NewsReleaseForm  from './forms/NewsReleaseForm';
 
 
@@ -20,15 +19,18 @@ import     NewsReleaseForm  from './forms/NewsReleaseForm';
 export default function NewsReleases(): JSX.Element {
 
 
-    const [ renderKey, renderReleasess ] = useRenderKey();
+    const  [ renderKey, renderReleasess ] = useRenderKey();
 
-    return (<>
+    return (
+        
+        <div>
                   
-        <NewsReleaseForm getData={renderReleasess} />
+            <NewsReleaseForm getData={renderReleasess}    />
 
-        <NewsReleaseRack key={renderKey} admin={true}/>
+            <NewsReleaseRack key={renderKey} admin={true} />
                   
-    </>)
+        </div>
+    )
 }
 
 

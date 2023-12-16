@@ -11,8 +11,6 @@
 
 import   ContentRack               from '../../../common/ContentRack';
 
-// import   dropdownIcon              from '../../../assets/icon_dropdown.svg';
-
 import   EditorButtons             from '../../../common/buttons/EditorButtons';
 
 import   FAQForm                   from '../../Admin/components/forms/FAQForm';
@@ -36,8 +34,8 @@ export default function FAQBuffet({ admin } : ContentRackWrapperProps ): JSX.Ele
 
     // genrates question components for the FAQ buffet
     function renderFAQ( 
-                        faq : FAQ, 
-                        index : number,
+                        faq      : FAQ, 
+                        index    : number,
                         controls : ContentControls 
                     ) {
 
@@ -62,10 +60,11 @@ export default function FAQBuffet({ admin } : ContentRackWrapperProps ): JSX.Ele
         return (
 
             <div key={id} className={`
-                                        w-full h-fit 
-                                        border border-blue-300
+                                        w-full h-fit
+                                        flex flex-col items-center
                                     `}
             >
+
 
 
                 <FAQAccordian 
@@ -100,7 +99,11 @@ export default function FAQBuffet({ admin } : ContentRackWrapperProps ): JSX.Ele
 
 
 
-    return <ContentRack<FAQ> table='faq' renderContent={renderFAQ} />
+    return  <ContentRack<FAQ> 
+                        table='faq' 
+                renderContent={renderFAQ} 
+                    wrapStyle={`mb-24 w-full`}
+            />
 
 }
 

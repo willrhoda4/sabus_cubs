@@ -15,11 +15,11 @@ import { EditorButtonsProps }         from '../../types/button.js';
 
 import   ButtonBank                   from './ButtonBank.js';
 
-import   DeleteIcon                   from '../../assets/icon_trash.svg?react';
-import   EditIcon                     from '../../assets/icon_edit.svg?react';
-import   DemoteIcon                   from '../../assets/icon_arrowDown.svg?react';
-import   PromoteIcon                  from '../../assets/icon_arrowUp.svg?react';
-import   MailIcon                     from '../../assets/icon_mail.svg?react';
+import   DeleteIcon                   from '../../assets/icons/trash.svg?react';
+import   EditIcon                     from '../../assets/icons/edit.svg?react';
+import   DemoteIcon                   from '../../assets/icons/arrowDown.svg?react';
+import   PromoteIcon                  from '../../assets/icons/arrowUp.svg?react';
+import   MailIcon                     from '../../assets/icons/mail.svg?react';
 
 import   Axios                        from 'axios';  
 
@@ -40,6 +40,7 @@ export default function EditorButtons ({    id,
                                             editing,
                                             loadData,
                                             dataSize,
+                                            wrapStyle,
                                             setEditing,
                                             releaseData  }
                                           : EditorButtonsProps ) { 
@@ -154,6 +155,7 @@ export default function EditorButtons ({    id,
    // render the button bank.
     return (
 
+        <div className={wrapStyle}>
             <ButtonBank
                 names={      buttonNames      }
                 icons={      buttonIcons      }
@@ -161,6 +163,7 @@ export default function EditorButtons ({    id,
                 onClicks={   buttonFunctions  }
                 conditions={ buttonConditions }
             />
+        </div>
     )
 }
 /**

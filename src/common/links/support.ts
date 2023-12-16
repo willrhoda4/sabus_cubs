@@ -4,10 +4,11 @@
 
 
 
-import Donations       from '../../assets/donations.svg?react'
-import Volunteer     from '../../assets/volunteer.svg?react'
-import Supplies      from '../../assets/supplies.svg?react'
-import Fundraising   from '../../assets/fundraising.svg?react'
+import Donations     from '../../assets/icons/donations.svg?react'
+import Volunteer     from '../../assets/icons/volunteer.svg?react'
+import Supplies      from '../../assets/icons/supplies.svg?react'
+import Fundraising   from '../../assets/icons/fundraising.svg?react'
+import Subscriptions from '../../assets/icons/subscriptions.svg?react'
 
 
 import { LinkProps } from '../../types/menu'
@@ -30,13 +31,18 @@ const supportLinks : LinkProps[] = [
     },
 
     {
-        name: 'Supplies',
+        name: 'Items',
         icon:  Supplies,
     },
 
     {
-        name: 'Fundraising',
+        name: 'Fundraise',
         icon:  Fundraising,
+    },
+
+    {
+        name: 'Subscriptions',
+        icon:  Subscriptions,
     },
 
 ]

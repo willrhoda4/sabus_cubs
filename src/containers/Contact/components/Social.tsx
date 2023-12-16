@@ -16,8 +16,8 @@ import   SocialPlatform    from './SocialPlatform';
 
 import { ContactProps }    from '../../../types/contact';
 
-import   IconInstagram     from '../../../assets/icon_instagram.svg?react'
-import   IconFacebook      from '../../../assets/icon_facebook.svg?react'
+import   IconInstagram     from '../../../assets/icons/instagram.svg?react'
+import   IconFacebook      from '../../../assets/icons/facebook.svg?react'
 
 
 
@@ -45,12 +45,14 @@ export default function Social({ photoData }: ContactProps): JSX.Element {
                 name='Instagram'
                 icon={IconInstagram}
                 content={<InstagramExamples photoData={photoData} />}
+                url='https://www.instagram.com/sabuscubswpg/'
             />
 
             <SocialPlatform
                 name='Facebook'
                 icon={IconFacebook}
                 content={<FacebookFeed name='Sabus Cubs' url='https://www.facebook.com/sabuscubs' />}
+                url='https://www.facebook.com/sabuscubs/'
             />
             
         </div>

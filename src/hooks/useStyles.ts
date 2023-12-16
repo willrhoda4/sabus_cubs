@@ -9,7 +9,7 @@
 
 
 
-import sailboat from '../styles/sailboat';
+import sailboat     from '../styles/sailboat';
 import neobrutalism from '../styles/neobrutalism';
 
 

@@ -2,14 +2,16 @@
 
 
 
+/**
+ * container component for action and value statements on info page.
+ */
 
 
 
 
 
 
-
-
+import   SectionTitle      from '../../../common/SectionTitle';   
 import   Statement         from './Statement';
 import { StatementsProps } from '../../../types/info';
 
@@ -19,111 +21,47 @@ import { StatementsProps } from '../../../types/info';
 export default function Statements({ title, blurb, statements, statementsOn = 'left', bgClass, textClass }: StatementsProps): JSX.Element {
 
 
-    const isLeft     = statementsOn === 'left';
+    // unless 'right' is passed in for statementsOn,
+    // we'll put the statements on the left and title on the right.
+    // for smaller screens, we'll always put the title on top.
+    const titleLeft     = statementsOn === 'right';
 
+    // if bgClass is passed in, we'll use the same colour
+    // for our icon stroke. otherwise, we'll use black.
     const iconStroke = bgClass ? textClass.slice(5) : 'black';  
-    const layout     = [
+  
 
-        <div 
-                  key='titleDiv' 
-            className={`
-                        col-span-1 
-                        flex items-center 
-                        ${isLeft ? 'justify-end' : 'justify-start'} 
-                        px-4 
-                        ${bgClass} ${textClass}
-                      `}
-        >
-            <div>
-                <h2 className='font-title'>{title}</h2>
-                <p className='font-heading'>{blurb}</p>
-            </div>
-        </div>,
-
-        <div 
-                  key='statementsDiv' 
-            className={`
-                        col-span-2 
-                        grid grid-cols-2 gap-8 
-                        p-28
-                        bg-whitesmoke 
-                      `}
-        >
-            {statements && statements.length > 0 ? statements.map( statement => <Statement key={statement.title} {...statement} stroke={iconStroke} />) : <p>No statements yet</p>}
-        </div>,
-    ];
-
-    !isLeft && layout.reverse();
 
     return <div className={`
-                            grid grid-cols-3
+                            flex flex-col ${ titleLeft ? 'xl:flex-row-reverse' : 'xl:flex-row' }
                             w-full 
-                        
                           `}
-            >{layout}</div>;
+            >
+                
+
+                {/* title div */}
+                <SectionTitle 
+                    title={title}
+                    blurb={blurb}
+                    bgClass={bgClass}
+                    textClass={textClass}
+                    textRight={titleLeft}
+                    responsive={true}
+                />
+
+               
+
+                {/* statements div */}
+                <div 
+                    className={`
+                                w-full xl:w-8/12 
+                                grid grid-cols-1 md:grid-cols-2 gap-8 
+                                p-8 md:p-28
+                                bg-whitesmoke 
+                            `}
+                >
+                    { statements && statements.length > 0 && statements.map( statement => <Statement key={statement.title} {...statement} stroke={iconStroke} />) }
+                </div>,    
+            </div>;
 }
 
-
-
-// import   Statement         from './Statement';
-// import { StatementsProps } from '../../../types/info';
-
-
-
-
-// export default function Statements( { title, blurb, statements, statementsOn = 'left', bgClass, textClass } : StatementsProps ) : JSX.Element {
-
-
-//     const isLeft = statementsOn === 'left';
-
-//     const titleDiv = (
-
-//         <div 
-//                    key='titleDiv'
-//              className={`
-//                             col-span-1 
-//                             flex items-center 
-//                             ${ isLeft ? 'justify-end' : 'justify-start' } 
-//                             ${ bgClass } 
-//                             ${ textClass }
-//                        `}
-//         >
-//             <div>
-//                 <h2 className='font-title'   >{title}</h2>
-//                 <p  className='font-heading' >{blurb}</p>
-//             </div>
-//         </div>
-//     );
-
-//     const statementsDiv = (
-
-//         <div 
-//                    key='statementsDiv'
-//              className={`
-//                             col-span-2 
-//                             grid grid-cols-2 gap-4
-//                             bg-whitesmoke
-//                             border border-yellow-500
-//                        `}
-//         >
-//             { 
-//                 statements && statements.length > 0 
-//                     ? statements.map( ( statement, index ) => <Statement key={index} { ...statement } /> ) 
-//                     : <p>no statements yet</p>
-//             }
-            
-//         </div>
-//     );
-
-//     const layout = [ titleDiv, statementsDiv ];
-
-//     !isLeft && layout.reverse();
-
-
-
-//     return (
-//         <div className="grid grid-cols-3 w-full">
-//             { layout }
-//         </div>
-//     );
-// }

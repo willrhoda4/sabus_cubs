@@ -22,15 +22,15 @@ export default function FAQ(): JSX.Element {
 
     const [ renderKey, renderFAQs ] = useRenderKey();
 
-    return (<>
-
-        <p>stories</p>
+    return (
+        <div>
                 
-        <StoryForm getData={renderFAQs} />
+            <StoryForm getData={renderFAQs} />
 
-        <StoryRack key={renderKey} admin={true}/>
+            <StoryRack key={renderKey} admin={true}/>
                 
-    </>)
+        </div>
+    )
 }
 
 
