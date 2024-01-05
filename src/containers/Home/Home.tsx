@@ -17,7 +17,7 @@ import { Helmet }      from 'react-helmet'
 
 
 
-export default function Home(): JSX.Element { 
+export default function Home(): JSX.Element {  
 
 
   return (
@@ -27,10 +27,12 @@ export default function Home(): JSX.Element {
                         flex flex-col items-center
                    `}
     >
+
       <Helmet>
         <title>Sabu's Cubs – Home</title>
         <meta name='description' content={`Sabu's Cubs is a Winnipeg-based non-profit focused on giving the youth of today the skills they need to become the leaders of tomorrow. We believe in equality, inclusion, and the aggregate potential of small direct actions to transform the communities we love. Come walk with us!`} />
       </Helmet>
+
 
       <img 
               src={logo} 
@@ -45,10 +47,14 @@ export default function Home(): JSX.Element {
 
       <Intro />
 
+
       <Navigator />
 
+
     </div>
+
   );
+  
 }
 
   

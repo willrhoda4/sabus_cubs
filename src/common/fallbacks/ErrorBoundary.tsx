@@ -9,8 +9,10 @@
 
 
 
-import   React    from 'react';
-import   Fallback from './Fallback';
+import        React    from 'react';
+import        Fallback from './Fallback';
+import   * as Sentry   from '@sentry/react';
+
 
 
 
@@ -40,6 +42,16 @@ class ErrorBoundary extends React.Component< ErrorBoundaryProps, ErrorBoundarySt
 
     // return an object to update the state, setting hasError to true.
     return { hasError: true };
+  }
+
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+
+    // Convert React.ErrorInfo to a plain object
+    const errorDetails = { componentStack: errorInfo.componentStack, };
+
+    // Log the error to Sentry
+    Sentry.captureException(error, { extra: errorDetails });
   }
 
 

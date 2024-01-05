@@ -67,6 +67,7 @@ export default function Support(): JSX.Element {
     
         <div className={`
                             w-full h-fit
+                            px-2
                             flex flex-col items-center 
                        `}
         >

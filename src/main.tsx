@@ -3,7 +3,7 @@
 
 
 import   * as Sentry      from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
+import { BrowserTracing } from '@sentry/browser';
 import   React            from 'react';
 import { BrowserRouter }  from 'react-router-dom';
 import { createRoot    }  from 'react-dom/client';
@@ -12,7 +12,7 @@ import   App              from './App';
 
 
 
-// Initialize Sentry
+// initialize Sentry
 Sentry.init( {
 
   dsn: import.meta.env.VITE_SENTRY_DSN,
@@ -30,18 +30,25 @@ Sentry.init( {
   tracesSampleRate: 1.0,         // capture 100% of the transactions for performance monitoring
   replaysSessionSampleRate: 0.1, // session replay sample rate
   replaysOnErrorSampleRate: 1.0, // increase sample rate when errors occur
-});
+
+} );
+
 
 const container = document.getElementById('root');
 
-if (container) {
+
+if ( container ) {
+
   const root = createRoot(container);
+
   root.render(
+
     <React.StrictMode>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </React.StrictMode>
+
   );
 }
 

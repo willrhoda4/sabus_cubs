@@ -165,6 +165,10 @@ export default function Input ({
     const field = type === 'text'     ?     <input      {...commonProps}  />
 
 
+                : type === 'password' ?     <input      {...commonProps}  
+                                                        type='password'   />
+
+
                 : type === 'textArea' ?     <textarea   {...commonProps}  />
 
 

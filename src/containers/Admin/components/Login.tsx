@@ -111,15 +111,15 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
                                         setAuthenticated(true);
                                         notification('login successful!');
                                    }
-        const emailFailure = () =>      newStatus('invalid email. please try again.');
-
         const loginFailure = () =>      newStatus('invalid password. please try again.');
-        
 
         const loginError   = () =>      newStatus('there was a problem with the server. please try again later.');
 
+        const emailFailure = () =>      newStatus('invalid email. please try again.');
+
+
         Axios.post(`${import.meta.env.VITE_API_URL}checkPassword`,  [ formState ] )
-             .then( res => {    console.log(res.data);
+             .then( res => {    
                                 res.data === 'match'    ? loginSuccess()
                               : res.data === 'no user'  ? emailFailure()
                               : res.data === 'invalid'  ? loginFailure()
@@ -254,7 +254,7 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
                         but the values they'll expect will change dynamically. */}
                     <Input                      
                         name={        reset ? 'password' : 'email'                      }
-                        type={       'text'                                             }
+                        type={        reset ? 'password' : 'text'                       }
                         state={       formState                                         }
                         setter={      setFormState                                      }
                         error={       errorState                                        }
@@ -265,7 +265,7 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
                                                                             
                     <Input                      
                         name={        reset ? 'confirm_password' : 'password'           }
-                        type={       'text'                                             }
+                        type={       'password'                                         }
                         state={       formState                                         }
                         setter={      setFormState                                      }
                         error={       errorState                                        }
