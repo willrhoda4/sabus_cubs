@@ -15,12 +15,12 @@ import   IconGallery          from '../../../assets/icons/gallery.svg?react';
 import   IconContact          from '../../../assets/icons/email.svg?react';
 import   IconSupport          from '../../../assets/icons/support.svg?react';
 import   IconNews             from '../../../assets/icons/news.svg?react';
-import   IconFAQ              from '../../../assets/icons/FAQ.svg?react';
-import   IconItems            from '../../../assets/icons/supplies.svg?react';
-import   IconBoard            from '../../../assets/icons/board.svg?react';
 import   IconStories          from '../../../assets/icons/stories.svg?react';
-import   IconJournalists      from '../../../assets/icons/email.svg?react';
+import   IconEmails           from '../../../assets/icons/email.svg?react';
 import   IconNewsReleases     from '../../../assets/icons/news_releases.svg?react';
+import   IconDonate           from '../../../assets/icons/donations.svg?react';
+import   IconUpdate           from '../../../assets/icons/update.svg?react';
+import   IconFAQ           from '../../../assets/icons/FAQ.svg?react';
 
 import { HeaderIconProps   }  from '../../../types/header';
 
@@ -36,8 +36,7 @@ export default function HeaderIcon ( { title, editing, height, width, className,
 
     let   Icon : IconType;
  
-
-
+    console.log(title, editing);
 
     switch (title) {
         case 'home':
@@ -58,24 +57,21 @@ export default function HeaderIcon ( { title, editing, height, width, className,
         case 'news':
             Icon = IconNews;
             break;
+        case 'update':
+            Icon = IconUpdate;
+            break;
         case 'simba':
             switch (editing) {
-                case 'faq':
-                    Icon = IconFAQ;
-                    break;
-                case 'items':
-                    Icon = IconItems;
-                    break;
-                case 'board':
-                    Icon = IconBoard;
-                    break;
-                case 'stories':
+                case 'content':
                     Icon = IconStories;
                     break;
-                case 'journalists':
-                    Icon = IconJournalists;
+                case 'donations':
+                    Icon = IconDonate;
                     break;
-                case 'newsreleases':
+                case 'emails':
+                    Icon = IconEmails;
+                    break;
+                case 'releases':
                     Icon = IconNewsReleases;
                     break;
                 default:
@@ -83,7 +79,7 @@ export default function HeaderIcon ( { title, editing, height, width, className,
             }
             break;
         default:
-            Icon = IconHome;
+            Icon = IconFAQ;
     }
     
 

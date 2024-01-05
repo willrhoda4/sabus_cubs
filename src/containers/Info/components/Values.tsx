@@ -11,12 +11,13 @@ import   Statements from './Statements';
 
 import { Statement } from '../../../types/info';
 
-import   Compassion from '../../../assets/icons/compassion.svg?react';
-import   Discipline from '../../../assets/icons/discipline.svg?react';
-import   Sport      from '../../../assets/icons/sport.svg?react';
-import   Community  from '../../../assets/icons/community.svg?react';
-import   Courage    from '../../../assets/icons/courage.svg?react';
-import   Family     from '../../../assets/icons/family.svg?react';
+import   Compassion       from '../../../assets/icons/compassion.svg?react';
+import   Transparency     from '../../../assets/icons/transparency.svg?react';
+import   Inclusion        from '../../../assets/icons/inclusion.svg?react';
+import   Community        from '../../../assets/icons/community.svg?react';
+import   Environment      from '../../../assets/icons/environment.svg?react';
+import   Knowledge        from '../../../assets/icons/knowledge.svg?react';
+import   Safety           from '../../../assets/icons/safety.svg?react';
 
 
 
@@ -25,35 +26,41 @@ export default function Values () : JSX.Element {
 
     const values : Statement[]= [
                                     {
+                                        title: 'Community',
+                                        icon:   Community,
+                                        copy:  'fostering a strong, supportive network that connects families and friends throughout the neighbourhood',
+                                    },
+                                    {
                                         title: 'Compassion',
                                         icon:   Compassion,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        copy:  'cultivating empathy and understanding and approaching others with respect for their personal journey',
                                     },
                                     
                                     {
-                                        title: 'Discipline',
-                                        icon:   Discipline,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        title: 'Transparency',
+                                        icon:   Transparency,
+                                        copy:  'demanding clarity, honesty, and deliberate openness in all our actions and communications',
                                     },
                                     {
-                                        title: 'Sport',
-                                        icon:   Sport,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        title: 'Inclusion',
+                                        icon:   Inclusion,
+                                        copy:  'embracing diversity, celebrating our differences and ensuring everyone among us has a voice that can be heard',
+                                    },
+                                    
+                                    {
+                                        title: 'Environment',
+                                        icon:   Environment,
+                                        copy:  'actively working to protect and sustain our natural world, for the benefit of ourselves and others',
                                     },
                                     {
-                                        title: 'Community',
-                                        icon:   Community,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        title: 'Knowledge',
+                                        icon:   Knowledge,
+                                        copy:  'empowering through education, increasing awareness, and preserving cherished wisdom for the future',
                                     },
                                     {
-                                        title: 'Courage',
-                                        icon:   Courage,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
-                                    },
-                                    {
-                                        title: 'Family',
-                                        icon:   Family,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        title: 'Safety',
+                                        icon:   Safety,
+                                        copy:  'prioritizing the well-being and security of everybody who walks with us, or lives in a neighbourhood where we do',
                                     },
 
                                 ]
@@ -61,7 +68,7 @@ export default function Values () : JSX.Element {
 
     return <Statements
                 title='Values'
-                blurb='the core beliefs that matter to us the most'
+                blurb='the core goals and beliefs that motivate us and bring us together'
                 statements={values}
                 bgClass='bg-brand-grey'
                 textClass='bg-brand-red'

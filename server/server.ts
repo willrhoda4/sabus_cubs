@@ -25,6 +25,7 @@ import { fileURLToPath } from 'url';
 import    db             from './handlers/database.ts';
 import    meta           from './handlers/meta.ts'; 
 import    auth           from './handlers/auth.ts'; 
+import    admin          from './handlers/admin.ts'; 
 import    email          from './handlers/email.ts';
 import    cloud          from './handlers/cloudinary.ts';
 import    stripe         from './handlers/stripe.ts';
@@ -114,19 +115,33 @@ app.post('/updateDoneeInfo',        stripe.updateDoneeInfo,                     
 app.post('/updateCreditCard',       stripe.updateCreditCard,                          );
 
 
-// simple auth handlers for subscription updaates
+// simple auth handlers for subscription updaates.
+// we'll also handle donation inquiries from here.
 app.post('/scheduleUpdate',         auth.scheduleUpdate,                              );
 app.post('/verifyUpdate',           auth.verifyUpdate,                                );
 
+
+app.post('/getDonationData',     admin.getDonationData,                               );
+
+
+app.post('/checkPassword',       admin.getPasswordData,
+                                 admin.checkPassword                                  ); // checks password for admin
+
+app.post('/resetLink',           admin.registerReset,
+                                 email.sendResetLink                                  ); // sends reset link to website email
+
+app.post('/resetPassword',       admin.getTokenData,
+                                 admin.verifyTokenData,
+                                 admin.resetPassword                                  ); // resets password for admin
 
 // news release handlers
 app.post('/generateNewsRelease',    newsRelease.generateHTML,
                                     newsRelease.generatePDF,
                                     cloud.upload,
                                     email.deliverNewsRelease,
-                                    newsRelease.logger,                                );
+                                    newsRelease.logger,                               );
 
-app.post('/publishNewsRelease',     email.deliverNewsRelease,                          );
+app.post('/publishNewsRelease',     email.deliverNewsRelease,                         );
 
 
 

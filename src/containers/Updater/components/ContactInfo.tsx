@@ -12,6 +12,8 @@ import { Field,
          FormState, 
          NewStatusFunction  }  from '../../../types/form';
 
+import   useNotification       from '../../../hooks/useNotification';
+
 
 import   Axios                 from 'axios';
 
@@ -20,7 +22,7 @@ import   Axios                 from 'axios';
 export default function ContactInfo( { doneeInfo } : { doneeInfo : FormState } ) {
 
 
-
+    const notification = useNotification();
 
     const fields : Field[] =    [
                                     {
@@ -51,14 +53,29 @@ export default function ContactInfo( { doneeInfo } : { doneeInfo : FormState } )
                             customerId: doneeInfo.customer_id,
                         }
 
+        // notification functions for failed and successful updates                  
+        const updateFailed     = () => {
+            newStatus('update error!');
+            notification('there was a problem updating your info...');
+        }
 
-      return  Axios.post(`${import.meta.env.VITE_API_URL}updateDoneeInfo`,       reqBody        )
-        .then(  res => { console.log(res); newStatus('information successfully updated!');    } )
-        .catch( err => { console.log(err); newStatus('there was an error saving your info.'); } );
+        const updateSucceeded = () =>  {
+            newStatus('update succeded!');
+            notification('thanks for keeping your information up to date!');
+        }
+
+
+        return  Axios.post(`${import.meta.env.VITE_API_URL}updateDoneeInfo`, reqBody     )
+                     .then(  res => { console.log(res); updateSucceeded();             } )
+                     .catch( err => { console.log(err); updateFailed();                } );
     }
 
+    const blurb = 'Please provide your preferred name and current email address.';
+
     return (
-            
+        <div>
+            <p className='text-body px-2 my-4'>{blurb}</p>
             <Form fields={fields} onSubmit={handleSubmit} initialValues={doneeInfo} />
+        </div>
     )
 }

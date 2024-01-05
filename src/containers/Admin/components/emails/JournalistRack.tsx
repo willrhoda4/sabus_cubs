@@ -17,16 +17,16 @@
 
 
 
-import   ContentRack                    from '../../../common/ContentRack';  
+import   ContentRack                    from '../../../../common/ContentRack';  
 
 import { ContentRackWrapperProps,
-         ContentControls            }   from '../../../types/content';
+         ContentControls            }   from '../../../../types/content';
 
-import   JournalistForm                from './forms/JournalistForm';
+import   JournalistForm                from '../forms/JournalistForm';
 
-import { Journalist                 }   from '../../../types/admin';
+import { Journalist                 }   from '../../../../types/admin';
 
-import   EditorButtons                  from '../../../common/buttons/EditorButtons';
+import   EditorButtons                  from '../../../../common/buttons/EditorButtons';
 
 
 
@@ -115,7 +115,9 @@ export default function JournalistRack({ admin } : ContentRackWrapperProps ): JS
                 renderContent={renderJournalist} 
                 wrapStyle={`
                             mt-24
-                            border-4 border-black
+                            rounded-md
+                            border-2 border-black
+                            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
                           `} 
             />
 

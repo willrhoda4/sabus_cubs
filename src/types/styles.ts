@@ -10,12 +10,15 @@
 
 
 // Theme type derived from array of strings in useStyles hook
-import      { Theme } from '../hooks/useStyles';
+import      { Theme }        from '../hooks/useStyles';
 export type { Theme };
+
+import      { BrandColours } from '../utils/brandColours';
 
 // Limits which styles can be tracked in a StyleFunctions object.
 export type ComponentType = 'button' 
                           | 'input' 
+                          | 'toggle'
                           | 'menuWrapper' 
                           | 'mainMenu' 
                           | 'subMenu' 
@@ -31,6 +34,7 @@ export interface StyleArgObject {
     animation?  : string;
     condition?  : boolean;
     extra?      : string;
+    colours?    : BrandColours;
 }
 
 // A type for functions that only take a StyleArgObject or a string as an argument

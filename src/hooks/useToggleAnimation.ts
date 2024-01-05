@@ -12,8 +12,35 @@
  * 
  * a note on closingTime: for complex animations, where isOpen controls a sequence of animations,
  * setClosing time to the total length of the sequence, not the specific animation's duration.
+ * additionally, you should only need to return the displayed sate once. here's an example:
+ * 
+ *  const [ mainMenuAnimation, menuIsOpen    ] = useToggleAnimation({  
+
+                                                                        isOpen:          menuDisplayed,
+                                                                        openAnimation:  'animate-slide-in-left',
+                                                                        closeAnimation: 'animate-slide-out-left-after',
+                                                                        closingTime:     800,
+                                                                   });
+  
+    const   subMenuAnimation                   = useToggleAnimation({
+                                                                        isOpen:          menuDisplayed,
+                                                                        openAnimation:  'animate-submenu-slide-in', 
+                                                                        closeAnimation: 'animate-submenu-slide-out', 
+                                                                        closingTime:     800, 
+                                                                   })[0]; // mainMenuAnimation and subMenuAnimation return the same menuIsOpen,
+                                                                         // therefore, we'll just need the animation class.
+  
+
+ * in the above example, menuIsOpen will control the main menu and the submenu.
+ * since both animations run for 400ms, we declare 800ms as the closingTime for both.
+ * (400 + 400 = 800)
  *
- * @param props - The properties to control the animation.
+ * we can also use [0] as a simple method to return only the animation class, if that's all we need.
+ * 
+ * 
+ * 
+ * 
+ *  @param props - The properties to control the animation.
  *                Includes isOpen (state of the element), open/close animation classes, and optional closing duration.
  * @returns An array with the current animation class and a boolean to indicate if the element should be displayed.
  */

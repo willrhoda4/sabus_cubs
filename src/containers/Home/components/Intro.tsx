@@ -30,6 +30,7 @@ export default function Intro () : JSX.Element {
                           text-title 
                           leading-[4.5rem]
                           text-center
+                          mb-4 mt-8
                        `}>Sabu's Cubs</h1>
        
         { copy('intro', 'mx-2 max-w-3xl text-center') }

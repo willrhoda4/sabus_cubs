@@ -6,10 +6,10 @@
 
 
 
-import JournalistForm from './forms/JournalistForm';
+import JournalistForm from '../forms/JournalistForm';
 import JournalistRack from './JournalistRack';
 
-import useRenderKey   from '../../../hooks/useRenderKey';
+import useRenderKey   from '../../../../hooks/useRenderKey';
 
 
 

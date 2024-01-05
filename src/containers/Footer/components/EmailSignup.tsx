@@ -14,6 +14,12 @@ import { NewStatusFunction  } from '../../../types/form';
 
 import   validate             from '../../../utils/validate';
 
+import useNotification        from '../../../hooks/useNotification';  
+
+
+
+
+
 interface EmailSignupProps {
     
         buttonColour : string
@@ -24,7 +30,9 @@ interface EmailSignupProps {
 export default function EmailSignup( { buttonColour, newStatus } : EmailSignupProps ) : JSX.Element {
 
 
-    const [ email,     setEmail  ] = useState('')
+    const [ email,     setEmail     ] = useState('')
+
+    const              notification   = useNotification();
 
 
 
@@ -39,12 +47,22 @@ export default function EmailSignup( { buttonColour, newStatus } : EmailSignupPr
                                                 newStatus( 'saving email...', false              ); 
 
 
-        const errorMsg   = 'error saving email. please try again later'
-        const successMsg = 'email saved! thanks for signing up!'
 
-        Axios.post(`${import.meta.env.VITE_API_URL}addData`,   [ 'emails', [ { email: email } ] ]  )
-             .then(   () => { newStatus(successMsg); setEmail(''); }                               )
-             .catch(  () =>   newStatus(errorMsg)                                                  );
+        const signupFailure = () => { 
+                                        newStatus('error saving email'); 
+                                        notification('there was a problem saving your email. plese try again.');
+                                    }
+
+        const signupSuccess = () => { 
+                                        newStatus('email saved!'); 
+                                        notification('thanks for signing up!');
+                                    }
+
+
+
+        Axios.post(`${import.meta.env.VITE_API_URL}addData`,   [ 'emails', [ { email: email } ] ] )
+             .then(   () =>  signupSuccess()                                                      )
+             .catch(  () =>  signupFailure()                                                      );
     }
 
     return (
@@ -81,7 +99,7 @@ export default function EmailSignup( { buttonColour, newStatus } : EmailSignupPr
             <button
                 className={`
                                 p-[10px] px-5
-                                rounded-e-[5px] 
+                                rounded-e-[4px] 
                                 border-l-2 border-black 
                                 ${buttonColour} 
                                 ${buttonColour === 'bg-brand-grey' ? 'text-white' : 'text-black'}

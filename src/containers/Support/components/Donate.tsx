@@ -8,41 +8,43 @@
 /**
  * donation component for the support page.
  * 
- * there's a lot going on here, so we'll break it down.
+ * there's a lot going on here, so we'll break it down as we go.
  */
 
 
 
 
+// hook inmports
 import { useState,
-         useEffect     }   from 'react';
+         useEffect     }     from 'react';
 
-import   useNewStatus      from '../../../hooks/useNewStatus';
-import   useRenderKey      from '../../../hooks/useRenderKey';
-import   useToggleRef      from '../../../hooks/useToggleRef';
+import   useNewStatus        from '../../../hooks/useNewStatus';
+import   useRenderKey        from '../../../hooks/useRenderKey';
+import   useToggleRef        from '../../../hooks/useToggleRef';
+import   useNotification     from '../../../hooks/useNotification';
 
-import   validate          from '../../../utils/validate';
+// function imports
+import   validate            from '../../../utils/validate';
+import   thisBuysUs          from './thisBuysUs';
+import   copy                from '../../../assets/copy';
 
+// stripe imports
 import { CardElement,
          useElements, 
-         useStripe,    }   from '@stripe/react-stripe-js';
+         useStripe,    }     from '@stripe/react-stripe-js';
 
-import   Axios             from 'axios'
-import { v4 as uuidv4  }   from 'uuid';
+// library imports
+import   Axios               from 'axios'
+import { v4 as uuidv4  }     from 'uuid';
 
+// component imports
+import   AmountSelector      from './AmountSelector';
+import   Input               from '../../../common/forms/Input'
+import   Button              from '../../../common/buttons/Button';
 
+// type imports
+import { MiscState       }   from '../../../types/form';    
 
-
-import   AmountSelector    from './AmountSelector';
-
-import   Input             from '../../../common/forms/Input'
-
-import   Button            from '../../../common/buttons/Button';
-
-
-import { MiscState       } from '../../../types/form';    
-
-import   copy              from '../../../assets/copy';
 
 
  
@@ -51,18 +53,34 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
 
 
 
-
+    /**
+     *  amount tracks the amount of the donation.
+     *  formState is the state object for the form.
+     *  errorState is the error object for the form.
+     *  attempted is a boolean that tracks whether the user has attempted to submit the form yet.
+     *  (this is used to activate error styles if needed)
+     */
     const [ amount,         setAmount        ]   = useState<number>(5);
     const [ formState,      setFormState     ]   = useState<Record< string, MiscState >>({});
     const [ errorState,     setErrorState    ]   = useState<Record< string, unknown   >>({});
     const [ attempted,      setAttempted     ]   = useState<boolean>(false);
     
-    
+
+    /**
+     *  statusRef is a reference to the status message element.
+     *  newStatus is a function that updates the status message.
+     *  renderKey is a key that is used to force the Stripe card element to re-render.
+     *  clearStripe is a function that clears the Stripe card element.
+     *  isClicked is a boolean that tracks whether the user has clicked the submit button yet.
+     *  (this is used to prevent multiple clicks)
+     *  notification is a function that displays a notification.
+     */
     const [ statusRef,      newStatus        ]   = useNewStatus();
     const [ renderKey,      clearStripe      ]   = useRenderKey();
     const [ isClicked,      setIsClicked     ]   = useToggleRef(false);
+    const                   notification         = useNotification();
     
-    
+    // stripe hooks
     const   stripe                               = useStripe();   // Hook to access the Stripe    object
     const   elements                             = useElements(); // Hook to access     Stripe.js elements
 
@@ -71,11 +89,9 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
 
 
 
-
     // manages error checking for name and email inputs
+    // this mostly depends on the validate() function
     useEffect(() => {
-
-
 
         setErrorState( prevState => ({
                                         ...prevState,
@@ -84,11 +100,12 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                                     }) 
                      );
 
-    }, [formState])
+    }, [ formState ] )
 
 
 
-
+    // the handleSubmit function is called when the user clicks the submit button.
+    // it's a big one, so we'll break it down as we go.
     const handleSubmit = async (e: React.FormEvent) => {         
 
 
@@ -103,7 +120,7 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
          setIsClicked(true);
 
 
-        // Set the attempted flag to true
+        // Set the attempted flag to true after first attempt,
         // to activate error styles if needed.
         setAttempted(true);
 
@@ -136,7 +153,7 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                    }
 
    
-        // we can assume it's monthly for updates.
+        // declare monthly for readability's sake.
         const monthly = formState.monthly as boolean;
 
 
@@ -158,12 +175,24 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                           } 
        
 
+        // declare cardId for readability's sake.
         const cardId  = result.paymentMethod.id;
 
-        const problem = 'there was a problem recieving you donation...';
 
-        const thanks  = 'thank you for your generosity!'
+     
+        // notification functions for failed donations                  
+        const donationFailed     = () => {
+                                            newStatus('donation error!');
+                                            notification('there was a problem recieving you donation...');
+                                         }
+        
+        // notification functions for successful donations                  
+        const donationSucceeded = () =>  {
+                                            newStatus('donation succeded!');
+                                            notification('thank you for your generosity!');
+                                         }
 
+        // request body for the donation request
         const reqBody = {
                             amount,
                             name:  formState.name,
@@ -172,6 +201,7 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                         }
 
 
+        // helper function to clear the form after a successful donation
         function clearForm () {
 
             setFormState({});
@@ -182,32 +212,33 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
         }
 
 
-                                                    
+        // monthly donations are handled by their own endpoint.                                            
         if ( monthly ) {
                             await Axios.post(`${import.meta.env.VITE_API_URL}startMonthlyDonations`, { ...reqBody, token: cardId } )
-                                       .then(   () =>  { clearForm();               return newStatus(thanks)                     } )
-                                       .catch(  () =>  { setIsClicked(false);       return newStatus(problem);                   } );
+                                       .then(   () =>  { clearForm();               return donationSucceeded();                  } )
+                                       .catch(  () =>  { setIsClicked(false);       return donationFailed();                     } );
                                   
                        }
 
-        else           {
+        else           {    // one-time donations need to retrieve a client secret
+                            // from the server before getting sent to Stripe.
                             const clientSecret = await Axios.post( `${import.meta.env.VITE_API_URL}oneTimeDonation`,    reqBody       )
                                                             .then( res => { return res.data.clientSecret;                           } )
-                                                            .catch( () => { setIsClicked(false); return newStatus(problem);         } );
+                                                            .catch( () => { setIsClicked(false); return donationFailed();           } );
                 
                 
-                            // Confirm the payment with the client secret from PaymentIntent
+                            // confirm the payment with the client secret from PaymentIntent.
                             const confirmResult = await stripe.confirmCardPayment( clientSecret,  { payment_method: cardId, } );
                 
                             if (confirmResult.error) {  
                                                         setIsClicked(false); 
                                                         console.log( confirmResult.error.message );
-                                                        newStatus( problem );                           
+                                                        return donationFailed();                           
                                                      } 
                             else                     {  
                                                         console.log( 'Payment succeeded:', confirmResult.paymentIntent.id );
-                                                        newStatus(thanks);
                                                         clearForm(); 
+                                                        return donationSucceeded();
                                                      }
                        }
     };
@@ -238,23 +269,6 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
     };
     
     
-
-    function thisBuysUs() {
-
-        if ( amount > 500 ) return 'Large donations like this make a huge difference in our ability to help the community. Thank you!';
-
-
-        const purchase =  amount >= 500 ? '300 hygiene kits'
-                        : amount >= 200 ? 'a new foldable wagon to haul supplies on our walks' 
-                        : amount >= 100 ? '100 ear warmers or 100 pairs of socks'
-                        : amount >= 50  ? 'a weeks worth of sandwiches'
-                        : amount >= 20  ? '48 granola bars or 40 hand warmers'
-                        : amount >= 10  ? 'a new heavy duty trash picker or headlamp'
-                        : amount >= 5   ? '24 bottles of water for thirsty community members'
-                        :                 ''
-    
-        return `With a ${formState.monthly ? 'monthly ' : ''}donation of $${amount}, we can afford ${purchase}.`;
-    }
     
 
 
@@ -293,7 +307,7 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                     setter={      setFormState           }
                     error={       errorState             }
                     errorStyles={ attempted              }
-                    errorMsg={   'Any name works.'       }
+                    errorMsg={   'any name works.'       }
                     wrapStyle={  'w-full max-w-xl'       }
                     />
                                                                         
@@ -328,7 +342,7 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
 
                 {/* impact paragraph generated by thisBuysUs() */}
                 <div className='h-36 my-8'>
-                    { amount >= 5 && <p className={pStyles}>{thisBuysUs()}</p> }
+                    { amount >= 5 && <p className={ pStyles }>{ thisBuysUs( amount, formState.monthly as boolean ) }</p> }
                 </div>
 
 
@@ -345,7 +359,7 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
 
 
                 {/* status message */}
-                <p ref={statusRef} />
+                <p ref={statusRef} className='h-8 py-8 self-center'/>
 
 
         </form>

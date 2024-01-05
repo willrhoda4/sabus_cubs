@@ -8,10 +8,10 @@
 
 
 
-import     useRenderKey     from '../../../hooks/useRenderKey';
+import     useRenderKey     from '../../../../hooks/useRenderKey';
 
-import     BoardRoster      from '../../Info/components/BoardRoster';
-import     BoardForm          from './forms/BoardForm';
+import     BoardRoster      from '../../../Info/components/BoardRoster';
+import     BoardForm          from '../forms/BoardForm';
 
 
 

@@ -11,11 +11,12 @@ import   Statements from './Statements';
 
 import { Statement } from '../../../types/info';
 
-import   Cleanup          from '../../../assets/icons/cleanup.svg?react';
-import   Communication    from '../../../assets/icons/communication.svg?react';
-import   Counselling      from '../../../assets/icons/counselling.svg?react';
-import   FamilyMeals      from '../../../assets/icons/familyMeals.svg?react';
 import   Walks            from '../../../assets/icons/walks.svg?react';
+import   Cleanup          from '../../../assets/icons/cleanup.svg?react';
+import   Sandwich    from '../../../assets/icons/sandwich.svg?react';
+import   Mentorship      from '../../../assets/icons/mentorship.svg?react';
+// import   Counselling      from '../../../assets/icons/counselling.svg?react';
+import   FamilyMeals      from '../../../assets/icons/familyMeals.svg?react';
 import   OpenGym          from '../../../assets/icons/openGym.svg?react';
 
 
@@ -27,41 +28,42 @@ export default function Actions () : JSX.Element {
                                     {
                                         title: 'Community Walks',
                                         icon:   Walks,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        copy:  'for us, walking the walk really starts with boots on the sidewalk',
                                     },
                                     {
-                                        title: 'Neighbourhood Cleanup',
+                                        title: 'Neighbourhood Cleanups',
                                         icon:   Cleanup,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        copy:  'picking up trash and disposing of dirty needles that are left as litter on the streets',
                                     },
                                     
                                     {
-                                        title: 'Transparent Communications',
-                                        icon:   Communication,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        title: 'Sabu\'s Kitchen',
+                                        icon:   Sandwich,
+                                        copy:  'handing out sandwiches and delivering hot meals to our hungry friends throughout the neighbourhood',
                                     },
                                     {
-                                        title: 'Action Counselling',
-                                        icon:   Counselling,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        title: 'Mentorship',
+                                        icon:   Mentorship,
+                                        copy:  'always available for the youth who volunteer with us, whenever they’re ready to receive it',
+                                    },
+                                    {
+                                        title: 'Athletics',
+                                        icon:   OpenGym,
+                                        copy:  'promoting good health and providing a positive outlet with gym time and access to sporting equipment',
                                     },
                                     {
                                         title: 'Family Meals',
                                         icon:   FamilyMeals,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
+                                        copy:  'after every weekly walk, we wind down by enjoying each other’s company and a plate of food',
                                     },
-                                    {
-                                        title: 'Open Gym',
-                                        icon:   OpenGym,
-                                        copy:  'This is just a quick description of the value, We should really try to keep it short and sweet.',
-                                    },
+                                   
 
                                 ]
 
 
     return  <Statements
                 title='Actions'
-                blurb='some of the ways we try to give back'
+                blurb={`steps we're taking to promote positive change in our community`}
                 statements={actions}
                 statementsOn='right'
                 bgClass='bg-brand-grey'

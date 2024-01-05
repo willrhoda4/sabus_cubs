@@ -40,18 +40,19 @@ const pool = process.env.NODE_ENV === 'production' ? new Pool({
 
 
 // type definition for the simpleQuery and atomicQuery functions.
-type CallbackFunction = (data: unknown, response?: Response) => void;
+export type CallbackFunction = (data: unknown[], response?: Response) => void;
 
 
 // accepts an array of queries, parameters, and callbacks, then
 // executes the queries in order, passing the results to the callbacks.
-function atomicQuery (  request:     Request, 
-                        response:    Response, 
-                        queries:     string[],
-                        parameters:  unknown[][], 
-                        callbacks:   (CallbackFunction | undefined)[],
-                        successMsg:  string, 
-                        next?:       NextFunction
+function atomicQuery (
+                        request: Request, 
+                        response: Response, 
+                        queries: string[],
+                        parameters: unknown[][], 
+                        callbacks: CallbackFunction[],
+                        successMsg: string, 
+                        next?: NextFunction
                      ) { 
 
 
@@ -147,26 +148,33 @@ function simpleQuery(
                         response    : Response,
                         query       : string, 
                         parameters? : unknown[], 
-                        cleanUp?    : CallbackFunction | undefined,
+                        cleanUp?    : CallbackFunction,
                         next?       : NextFunction
                     ) {
 
     // if there is a parameter array at the index, pass it in with the query.
-    const paramArgs : unknown[]   = parameters ? parameters : [];
+    const paramArgs : unknown[] = parameters ? parameters : [];
 
     pool.query(query, paramArgs, (err, res) => {
         
-        if (err) { console.log(err.stack);
-                   response.status(400).send(err.message);
+        if (err) {  
+                    console.log(err.stack);
+                    response.status(400).send(err.message);
                  } 
-        else     { cleanUp && cleanUp( res.rows, response );
-                   next     ? next() : response.send(res.rows); 
-                 }
-    });
-}
+        else     {  
+                    cleanUp && cleanUp( res.rows, response );
+                    if (!response.writableEnded) {  // Check if the headers (response) have already been sent (during cleanUp)
+                        next ? next() : response.send(res.rows); 
+                    }
+                 }    
+    } ) 
+}                 
 
 
-
+/**
+ * rgument of type 'any[]' is not assignable to parameter of type 'T'.
+  'any[]' is assignable to the constraint of type 'T', but 'T' could be instantiated with a different subtype of constraint 'unknown[]'.ts(2345)
+ */
 
 
 

@@ -41,6 +41,14 @@ export interface Journalist {
 }
 
 
+export interface EmailListUser {
+    [key: string]: string | number;
+
+    id:         number;
+    email:      string;
+}
+
+
 
 
 export interface NewsRelease {
@@ -83,4 +91,40 @@ export interface AdminFormParentProps {
 
 
 
+export interface LoginProps { 
+    
+    setAuthenticated : React.Dispatch<React.SetStateAction<boolean>> 
 
+}
+
+
+
+// interfaces for DonationRack
+export interface DonationRackProps { 
+    displayed : string 
+}
+
+export interface Donee {
+    name: string;
+    email: string;
+    created_on: string;
+}
+  
+ export  interface Donation {
+    name: string;
+    date: string;
+    amount: number;
+    subscription_id: string;
+}
+  
+export   interface Subscription {
+    name: string;
+    amount: number;
+    created_on: string;
+    cancelled_on: string;
+    cancelled_because: string;
+}
+  
+export type DonationData = Donee | Donation | Subscription;
+  
+ 

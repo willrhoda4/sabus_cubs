@@ -25,7 +25,7 @@ import { ContentControls,
 
 
 
-export default function FAQBuffet({ admin } : ContentRackWrapperProps ): JSX.Element {
+export default function FAQBuffet( { admin } : ContentRackWrapperProps ): JSX.Element {
 
 
 
@@ -102,7 +102,12 @@ export default function FAQBuffet({ admin } : ContentRackWrapperProps ): JSX.Ele
     return  <ContentRack<FAQ> 
                         table='faq' 
                 renderContent={renderFAQ} 
-                    wrapStyle={`mb-24 w-full`}
+                    wrapStyle={`
+                                mb-24
+                                w-full h-fit
+                                flex flex-col items-center
+                                px-2
+                              `}
             />
 
 }

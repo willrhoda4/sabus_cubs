@@ -2,7 +2,7 @@
 
 
 
-import   Card              from '../../common/Card';
+import   Card              from '../../common/cards/Card';
 import   GalleryImage      from '../../common/images/GalleryImage'
 
 import   IconInstagram     from '../../assets/icons/instagram.svg?react'
@@ -12,6 +12,7 @@ import { GalleryProps }    from '../../types/gallery'
 import   useLocationScroll from '../../hooks/useLocationScroll'
 import   copy              from '../../assets/copy';
 
+import { Helmet       }     from 'react-helmet';
 
 
 
@@ -28,6 +29,10 @@ export default function Gallery( { photoData } : GalleryProps): JSX.Element {
         
         <div className='mx-2'>
 
+            <Helmet>
+                <title>Sabu's Cubs – Gallery</title>
+                <meta name='description' content={`See the latest content that we've published on the Sabu's Cubs Instagram account.`} />
+            </Helmet>
 
 
 

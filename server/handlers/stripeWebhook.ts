@@ -37,7 +37,7 @@ declare module 'express-serve-static-core' {
     }
 }
 
-function captureRawBody(request: Request, response: Response, next: NextFunction): void {       
+function captureRawBody(request: Request, response: Response, next: NextFunction) : void {       
 
     console.log('preparing raw body for Stripe webhook...');
 

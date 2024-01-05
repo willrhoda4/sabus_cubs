@@ -33,11 +33,13 @@
 
 
 
-import   Axios from 'axios';
+import   Axios                 from 'axios';
 
-import   Form from '../../../common/forms/Form'; 
+import   Form                  from '../../../common/forms/Form'; 
 
-import { useState } from 'react';
+import { useState }            from 'react';
+
+import   useNotification       from '../../../hooks/useNotification';   
 
 
 
@@ -45,7 +47,7 @@ import { Field,
          FormState, 
          NewStatusFunction  }  from '../../../types/form';
 
-import   Card                  from '../../../common/Card';
+import   Card                  from '../../../common/cards/Card';
 import   Button                from '../../../common/buttons/Button';
 
 import   copy                  from '../../../assets/copy';
@@ -58,6 +60,7 @@ const UpdateTrigger: React.FC = () => {
 
     const [ loggingIn,   setLoggingIn   ] = useState(false);
 
+    const   notification                  = useNotification();
 
 
 
@@ -76,12 +79,16 @@ const UpdateTrigger: React.FC = () => {
 
 
         newStatus('generating login link...', false);
-      
-        const email = formState.email;
 
-        return Axios.post( `${import.meta.env.VITE_API_URL}scheduleUpdate`,                             { email } )   
-                    .then(  res => { console.log(res); newStatus('we sent you an update email.');               } )
-                    .catch( err => { console.log(err); newStatus('there was an error scheduling your update.'); } );
+        const successMsg          = 'link succesfully generated!';
+        const successNotification = 'a reset link should be waiting in your in box';
+        const failureMsg          = 'there was an error scheduling your update. Please try again.';
+      
+        const email               = formState.email;
+
+        return Axios.post( `${import.meta.env.VITE_API_URL}scheduleUpdate`,          { email } )   
+                    .then(  () => { newStatus(successMsg); notification(successNotification) } )
+                    .catch( () => { newStatus(failureMsg);                                   } );
     }
 
 

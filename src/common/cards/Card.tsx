@@ -7,19 +7,15 @@
 
 
 
-interface CardProps {
-    wrapClass?     : string;
-    headingClass?  : string;
-    heading        : string;
-    children       : React.ReactNode;
-  }
+import { CardProps } from '../../types/notifications';
   
 
 
-  export default function Card ( { wrapClass, headingClass, heading, children } : CardProps ) {
+  export default function Card ( { wrapClass, contentClass,  headingClass, heading, children } : CardProps ) {
 
 
     return (
+      
       <div className={`
                         w-full h-fit 
                         rounded-md 
@@ -38,7 +34,7 @@ interface CardProps {
           <h2 className="text-lg">{heading}</h2>
         </div>
 
-        <div className='py-8 px-8'>
+        <div className={`py-8 px-8 ${contentClass}`}>
             {children}
         </div>
 

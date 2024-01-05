@@ -9,13 +9,15 @@
 
 
 
-import SectionTitle     from '../../common/SectionTitle';
-import StoryRack        from './components/StoryRack';
-import NewsReleaseRack  from "./components/NewsReleaseRack";
+import   SectionTitle       from '../../common/SectionTitle';
+import   StoryRack          from './components/StoryRack';
+import   NewsReleaseRack    from "./components/NewsReleaseRack";
 
-import copy             from '../../assets/copy';
+import   copy               from '../../assets/copy';
 
-import useLocationScroll  from '../../hooks/useLocationScroll';
+import   useLocationScroll  from '../../hooks/useLocationScroll';
+
+import { Helmet }           from 'react-helmet';
 
 
 
@@ -28,7 +30,14 @@ export default function News () : JSX.Element {
 
     return (
 
+        
+
         <div className={`w-full h-fit flex flex-col`}>
+
+            <Helmet>
+                <title>Sabu's Cubs – News</title>
+                <meta name='description' content={`Peruse our collection of Sabu's Cubs news stories, or browse throuogh our archive of news releases.`} />
+            </Helmet>
 
 
             {/* leavek this div in place to eliminate white space */}

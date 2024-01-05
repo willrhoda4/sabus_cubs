@@ -123,11 +123,14 @@ export default function EditorButtons ({    id,
 
         const warning = "Are you sure you want to publish this news release?";
 
-        window.confirm(warning) &&
+        if  ( window.confirm(warning) ) { 
+
+            notification('publishing news release...');
 
             Axios.post(`${import.meta.env.VITE_API_URL}publishNewsRelease`, releaseData )
                  .then(  res => notification(res.data)                                  )
-                 .catch( err => console.log(err)                                        );
+                 .catch( err => notification(err)                                       );
+        }
     }
 
 
@@ -166,8 +169,3 @@ export default function EditorButtons ({    id,
         </div>
     )
 }
-/**
- * Type 'string[]' is not assignable to type 'ComponentType<SVGProps<SVGSVGElement>>[]'.
-  Type 'string' is not assignable to type 'ComponentType<SVGProps<SVGSVGElement>>'.ts(2322)
-button.ts(46, 5): The expected type comes from property 'icons' which is declared here on type 'IntrinsicAttributes & ButtonBankProps'
- */

@@ -28,6 +28,7 @@ export default function Mission () : JSX.Element {
                             pt-20 px-12 pb-40
                             bg-brand-blue
                             text-brand-yellow
+                            shadow-[inset_-12px_-8px_40px_#46464620]
                        `}
         >
 

@@ -48,10 +48,11 @@ export default function Story () : JSX.Element {
                                 self-center
                                 p-0 xl:p-10
                                 my-10
+                                
                            `}
             >
 
-                <CloudinaryImage id='groupshot' wrapStyle='w-full h-auto' />
+                <CloudinaryImage id='groupshot' wrapStyle='w-full h-auto shadow-brand-shadow' />
             </div>
 
         </div>

@@ -22,7 +22,7 @@ import { StyleArgObject } from '../../types/styles.js';
 
 // multifunctional input component for forms.
 // its props expect a state object, a setter function, and a name.
-// error checking is done by passing in an error object.
+// error checking is handled by passing in an error object.
 export default function Input ({
                                     name,
                                     type,
@@ -52,27 +52,27 @@ export default function Input ({
     const theme       = useStyles(style);
 
     const inputStyles = theme.input!({ error: mistakeMade, type: type } as StyleArgObject);
-                                    //Argument of type 'StyleArgObject' is not assignable to parameter of type 'StyleArgObject & string'.
-                                    //Type 'StyleArgObject' is not assignable to type 'string'.ts(2345)
-
+                                   
 
 
     
     // Handle input change events
     function handleInputChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
 
+        // if the input type is file, get the file from the input's files array
         if (type === 'file') {
 
             const input = e.target as HTMLInputElement;
 
             if   (input.files) {
 
-                const file = input.files[0];
+                const   file   = input.files[0];
 
-                if   (file) { setter(prevState => ( { ...prevState, [name]: file } ) ); }
+                if    ( file ) { setter( prevState => ( { ...prevState, [ name ]: file } ) ); }
             }
 
-        } else {              setter(prevState => ( { ...prevState, [name]: e.target.value } ) ); }
+        // otherwise, update the state object using the input's value and name
+        } else {                 setter( prevState => ( { ...prevState, [ name ]: e.target.value } ) ); }
     }
 
 
@@ -205,15 +205,10 @@ export default function Input ({
                                                 <p className="text-l">{options?.[0]}</p>
 
                                                 {/* wrapper for the switch */}
-                                                <div
-                                                    className={`h-4 w-8 m-2 bg-gray-300 rounded-2xl`}
-                                                >
-                                                    {/* the ball that bounces back and forth */}
-                                                    <div
-                                                        className={`h-4 w-4 bg-gray-100 shadow-inner rounded-2xl transition-all ${
-                                                        state[name] ? 'translate-x-4' : ''
-                                                        }`}
-                                                    />
+                                                <div className={theme.toggle!({ condition: !!state[name] } as StyleArgObject)}>
+                                                 {/* the ball that bounces back and forth 
+                                                     styles dictated by parent. */}
+                                                    <div/>
                                                 </div>
 
                                                 {/* second option (right) */}
@@ -237,7 +232,7 @@ export default function Input ({
     return (
 
         <div className={`${ wrapStyle ?? 'w-full' }`}>
-            <label className='p-2 w-9/12'>
+            <label className='p-2 w-9/12 font-body'>
                 { 
                     type !== 'check'  && 
                     type !== 'toggle' && <h3 className='font-sans'>{name.replace(/_/g, ' ')}</h3> 

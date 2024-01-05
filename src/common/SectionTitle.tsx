@@ -26,7 +26,8 @@ export default function SectionTitle ( { title, blurb, bgClass, textClass, textR
                             py-32                     
                             ${bgClass} ${textClass}
                             ${  responsive  && 'xl:w-4/12 xl:py-0' }
-                      `}
+                            shadow-brand-shadow
+                      `} 
         >
                 <div>
                     <h2 className={`${ commonClasses } text-title   leading-[5.5rem]` } >{title}</h2>

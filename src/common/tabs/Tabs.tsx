@@ -40,15 +40,15 @@ type TabsProps = {
                         className={`
                                         w-full
                                         cursor-pointer 
-                                        border-2 border-black 
+                                        border-b-4 border-r-2 border-black 
                                         py-3 
                                         text-center font-bold 
                                         transition-colors 
                                         ${ textClass  ?? 'text-black' }
                                         ${ bgClass    ?? 'bg-white'   }
                                         ${ activeTab === tab && 'opacity-75 ' }
-                                        ${ index === 0 ? 'rounded-tl-md' : '' } 
-                                        ${ index === tabsArray.length - 1 ? 'rounded-tr-md' : '' }
+                                        ${ index === 0 ? 'rounded-tl' : '' } 
+                                        ${ index === tabsArray.length - 1 ? 'rounded-tr' : '' }
                                   `}
                     >
                         {tab}

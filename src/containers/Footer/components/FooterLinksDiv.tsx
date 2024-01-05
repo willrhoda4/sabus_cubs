@@ -8,16 +8,18 @@
 
 
 
-import FooterLinks        from './FooterLinks';
+import   FooterLinks        from './FooterLinks';
 
-import infoLinks          from '../../../common/links/info';
-import supportLinks       from '../../../common/links/support';
-import galleryLinks       from '../../../common/links/gallery';
-import contactLinks       from '../../../common/links/contact';
+import   infoLinks          from '../../../common/links/info';
+import   supportLinks       from '../../../common/links/support';
+import   galleryLinks       from '../../../common/links/gallery';
+import   contactLinks       from '../../../common/links/contact';
 
+import   logoSmall          from '../../../assets/logo_small.png';
 
-import logoSmall          from '../../../assets/logo_small.png';
-import SocialLinkSelector from '../../../common/links/SocialLinkSelector';
+import   SocialLinkSelector from '../../../common/links/SocialLinkSelector';
+
+import { Link }             from 'react-router-dom';
 
 
 
@@ -46,9 +48,9 @@ export default function FooterLinksDiv () : JSX.Element {
                             `} 
             >
 
-                <FooterLinks page='support' links={supportLinks} />
-
                 <FooterLinks page='info'    links={infoLinks}    />
+
+                <FooterLinks page='support' links={supportLinks} />
 
                 <FooterLinks page='contact' links={contactLinks} />
             
@@ -62,8 +64,13 @@ export default function FooterLinksDiv () : JSX.Element {
                                 justify-between items-center
                             `}
             >
-                <img alt='logo' src={logoSmall} className='h-auto w-24 mb-8' />
-
+                <Link to='/'>
+                    <img 
+                        alt='logo' 
+                        src={logoSmall} 
+                        onClick={() => window.scrollTo(0, 0)}
+                        className='h-auto w-24 mb-8' />
+                </Link>
                 <SocialLinkSelector stroke='white' />
             </div>            
         </div>

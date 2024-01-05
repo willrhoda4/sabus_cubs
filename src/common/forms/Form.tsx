@@ -133,6 +133,16 @@ export default function Form ({ fields, style, onSubmit, initialValues,  } : For
     };
 
 
+    // onKeyDown handler that calls the submit handler if the user presses enter
+    function enterListener (e: React.KeyboardEvent) {
+
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleFormSubmit(e);
+        }
+    }
+
+
 
     /**
      * Inputs will be displayed if:
@@ -150,11 +160,13 @@ export default function Form ({ fields, style, onSubmit, initialValues,  } : For
 
     return (
 
-        <form className={`
-                            w-full max-w-3xl
-                            flex flex-col items-center
-                            px-2
-                        `}
+        <form 
+            onKeyDown={ enterListener }
+            className={`
+                        w-full max-w-3xl
+                        flex flex-col items-center
+                        px-2
+                      `}
         >
 
             {fields.map(field => {

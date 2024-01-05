@@ -49,9 +49,6 @@ const textResources : { [ key: string ] : string }  = {
 
 
 
-
-
-
     // contact resources       
     contact  : `We operate out Gonzaga Middle School, at 174 Maple St N in the Point Douglas neighbourhood. We meet most Wednesdays from 5:30 p.m. to 8:00 p.m., and we’d love to see you at our next walk! We recommend reaching out by email or social media before you come out, just to make sure that there isn’t a cancellation this week.`,
         
@@ -65,19 +62,23 @@ const textResources : { [ key: string ] : string }  = {
     // support resources
     donate          : `For those who can afford it, an online donation is often the easiest way to support the work we do. Whether it's a small, one-time amount or a substantial monthly contribution, we accept all major credit cards and we're always grateful for your generosity.`,
 
-    supplies        : `We're always in need of supplies to help keep community members safe and comfortable. If you have any of the following items to donate, please contact us to arrange a drop-off time.`,
+    supplies        : `There's a constant need for supplies to help keep community members safe and comfortable. If you have any of the following items to donate, please contact us to arrange a drop-off time.`,
 
-    fundraiser      : `We're always looking for new ways to raise funds for the neighbourhood. If you have an idea for a fundraiser, please contact us to discuss it.`,
+    fundraiser      : `We're always looking for new ways to raise funds for the neighbourhood. Whether it's an event or a supply drive, if you have an idea for a fundraiser, please contact us. We'd love to discuss it.`,
 
-    volunteer       : `For those who can make the time, volunteering with us can be an immensely rewarding way to make an impact in the neighbourhood. All volunteers are required to fill out a registration form and sign a waiver before participating in our walks. If you have access to a printer, links to the documents are available below. If not, we’ll have a hard copy ready for you at our next meeting.`,
+    volunteer       : `If you can can make the time, volunteering with us can be an immensely rewarding way to make an impact in the neighbourhood. All volunteers are required to fill out a registration form and sign a waiver before participating in our walks. If you have access to a printer, links to the documents are available below. If not, we’ll have a hard copy ready for you at our next meeting.`,
 
     update          : `If you're trying to update your information or adjust your payments, you're in the right place.`,
 
     login           : `To verify your identity, we'll send a login link to the email you registered with.`,
 
 
+
+
     // gallery resources
     instaCTA        : `Don't forget to follow us on Instagram for regular updates on the work we're doing.`,
+
+
 
 
     // news resources
@@ -85,6 +86,14 @@ const textResources : { [ key: string ] : string }  = {
 
     newsReleases    : `To promote a culture of transparency, we publish all our press releases for the community to read.`,
 
+
+
+    // update resources
+    cancel           : `We hate to see you go, but that doesn't mean we don't appreciate everything you've already done. Thank you for all the support you've offered us!`,
+
+
+    // admin resources
+    databaseError      :  `There was a problem retrieving your email list from the database. Please try again later. If the problem persists, call tech support.`,
 }
 
 

@@ -5,14 +5,9 @@
 
 
 
-// props interface for info copy
-export interface ActionValueProps {
-    title:      string;
-    copy:       string;
-    icon:       React.ComponentType<React.SVGProps<SVGSVGElement>>;
+export interface InfoProps {
+    shadow: string;
 }
-
-
 
 
 
@@ -56,6 +51,20 @@ export interface FAQ {
 
 
 
+// props interface for info copy
+export interface ActionValueProps {
+    title:      string;
+    copy:       string;
+    icon:       React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -75,4 +84,14 @@ export interface StatementsProps {
     statementsOn?: 'left' | 'right';
     bgClass:       string;
     textClass:     string;
+}
+
+
+
+export type FAQProps = {
+    id              : number    
+    question        : string
+    answer          : string
+    displayed       : false | number
+    setDisplayed    : (id: false | number) => void
 }

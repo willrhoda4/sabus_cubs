@@ -37,8 +37,10 @@ export default function ContentRack<T>( { table, renderContent, wrapStyle } : Co
         const reqBody = [ table , undefined, { orderBy: 'rank' } ];
 
         Axios.post(`${import.meta.env.VITE_API_URL}getData`, reqBody )
-             .then(   res => setContent(res.data)                    )
-             .catch(  err => console.log(err )                       );
+             .then(   res => setContent(table === 'news_releases' ? res.data.reverse() 
+                                                                  : res.data
+                                       )                                                )
+             .catch(  err => console.log(err )                                          );
     }
 
     // get content on initial load

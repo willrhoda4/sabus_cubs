@@ -7,7 +7,7 @@
 
 
 
-import   TabsDiv          from '../../common/TabsDiv';
+import   TabsDiv          from '../../common/tabs/TabsDiv';
 import   Supplies         from './components/Supplies';
 import   Donate           from './components/Donate';
 import   Fundraisers      from './components/Fundraisers';
@@ -19,7 +19,9 @@ import { useEffect }      from 'react'
 
 import   useLocationState from '../../hooks/useLocationState';
 
-import   scrollTo       from '../../utils/scrollTo';
+import   scrollTo         from '../../utils/scrollTo';
+
+import { Helmet }          from 'react-helmet';
 
 
 
@@ -68,6 +70,10 @@ export default function Support(): JSX.Element {
                             flex flex-col items-center 
                        `}
         >
+            <Helmet>
+                <title>Sabu's Cubs – Support</title>
+                <meta name='description' content={`Make an online donation or see a list of items we're always looking out for.`} />
+            </Helmet>
 
                                             
             <div id='support-tabs' className='w-full flex justify-center'>

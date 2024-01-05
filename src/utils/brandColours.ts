@@ -5,6 +5,16 @@
 
 
 
+/**
+ * this function stores a dozen colour objects in the combinations array.
+ * these objects consist of tailwind classes based on the organization's brand colours.
+ * 
+ * if you call it without any argumentsa: brandColours(), it will return the enteire array.
+ * 
+ * if you call it with the argument 'random': brandColours('random'), it will return a random palette.
+ */
+
+
 
 
 
@@ -18,8 +28,11 @@ export interface BrandColours {
     button      : string;
 }
 
-export default function brandColours() : BrandColours[] {
 
+// define overloads to explicitly type the return value
+export default function brandColours()                      : BrandColours[];
+export default function brandColours(random  : 'random')    : BrandColours;
+export default function brandColours(random? : 'random')    : BrandColours | BrandColours[] {
 
     const combinations : BrandColours[] = [
         {
@@ -119,7 +132,9 @@ export default function brandColours() : BrandColours[] {
             button: 'bg-brand-grey',
         }
     ];
-    
 
-    return combinations;
+    
+    if ( random ) { return combinations[ Math.floor( Math.random() * combinations.length ) ] }
+
+    else          { return combinations;                                                     }
 }

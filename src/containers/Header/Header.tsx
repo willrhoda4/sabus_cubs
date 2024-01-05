@@ -33,14 +33,25 @@ import { HeaderProps }        from '../../types/header';
 export default function Header ( { editing, colours } : HeaderProps ) : JSX.Element {
 
 
-    // get the location from the url
-    // we use this immediately to determine what titleto display,
-    // and then we use it to determine what icon to display.
-    // if path is /simba title will be based on editing prop.
-    const location         = useLocation();
-    const title            = location.pathname.slice(1).toLowerCase();
+   
 
+    // we'll use the url to determine the title of the header.
+    // start by grabbing the pathname, and removing the leading slash.
+    const pathName = useLocation().pathname.slice(1).toLowerCase();
 
+    // define an array of valid paths, so we don't display any typos.
+    const validPaths = ['home', 'info', 'gallery', 'contact', 'support', 'news', 'subscription-update', 'simba'];
+    
+    // for the sake of brevity, subscription-update and newsReleases will be truncated.
+    // otherwise, we'll just use the pathname as the title,
+    // except for the admin dashboard, where we'll use the editing state.
+    // if the pathname isn't valid, we'll just display an empty string.
+    const title  =  pathName === 'subscription-update'  ? 'update'
+                 : !validPaths.includes(pathName)       ? ''
+                 :  pathName !== 'simba'                ?  pathName
+                 :  editing  === 'newsReleases'         ? 'releases'
+                 :                                         editing;
+    
 
 
     // we'll memoize the content of the header,
@@ -61,7 +72,7 @@ export default function Header ( { editing, colours } : HeaderProps ) : JSX.Elem
         // the first class ensures images fill their boxes
         // the second class is for the top and bottom stripes.
         const fillBox       = 'child:object-cover child:w-full child:h-full';
-        const stripeClass   = `w-full h-[100px] flex justify-start items-center ${colours.flipBg}`;
+        const stripeClass   = `w-full h-[100px] flex justify-start items-center ${colours.flipBg} shadow-brand-shadow`;
 
 
         // a quick helper function that puts together the grid of images.
@@ -91,6 +102,7 @@ export default function Header ( { editing, colours } : HeaderProps ) : JSX.Elem
                                 flex flex-col 
                                 w-full h-fit
                                 mb-24 
+                                z-10
                            `}
             >
 
@@ -118,10 +130,9 @@ export default function Header ( { editing, colours } : HeaderProps ) : JSX.Elem
                             generateGrid(   leftGridIds,    
                         
                                             // don't forget to give the feature a unique key.
-                                            // the HeaderIcon component handles the
                                             <div key='leftGridFeature' className={`flex justify-center items-center ${colours.bg}`}>
                                                 <HeaderIcon
-                                                    title={title}
+                                                    title={ pathName === 'simba' ? 'simba' : title }
                                                     editing={editing}
                                                     height={'90px'}
                                                     width={'90px'}
@@ -134,22 +145,23 @@ export default function Header ( { editing, colours } : HeaderProps ) : JSX.Elem
 
                     </div>
 
-                    {/* center image. always visible, but borders change. */}
+                    {/* center image. visible for tablet and desktop. */}
                     <CloudinaryImage 
                                id={`${centerImageId}`}
                         wrapStyle={`
-                                        w-full md:w-1/2 xl:w-1/3 h-full 
-                                        bg-red-500 
+                                        w-1/2 xl:w-1/3 
+                                        hidden md:flex
+                                        bg-brand-red 
                                         border-0 md:border-r-[16px] xl:border-x-[16px] border-black 
                                         ${fillBox}
                                    `}       
                     />
 
 
-                    {/* right grid. only visible on medium and large screens. */}
+                    {/* right grid. always visisble. */}
                     <div className={`
-                                        w-1/2 xl:w-1/3 
-                                        hidden md:grid gap-4 
+                                        w-full md:w-1/2 xl:w-1/3 h-full 
+                                        grid  gap-4
                                         grid-cols-2 grid-rows-2 
                                         bg-black
                                    `}
@@ -175,18 +187,16 @@ export default function Header ( { editing, colours } : HeaderProps ) : JSX.Elem
                 </div>
 
                 {/* bottom stripe. title determined by url or editing in the case of location /simba. */}
-                <div className={`pl-4 ${stripeClass}`}>
+                <div className={`pl-4 ${stripeClass} `}>
                     <h2 className={`text-title ${colours.flipText}`}>
-                        {title !== 'simba' ? title : editing === 'newsReleases' ? 'news releases' : editing}
+                        {  title  }
                     </h2>
                 </div>
-
             </div>
 
         );
 
-    }, [ title, colours.flipBg, colours.bg, colours.icon, colours.flipText, editing ]);
-
+    }, [ colours.flipBg, colours.bg, colours.icon, colours.flipText, pathName, title, editing ] );
 
     
     return memoizedContent;

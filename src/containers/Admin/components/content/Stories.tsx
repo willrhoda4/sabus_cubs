@@ -8,10 +8,10 @@
 
 
 
-import     useRenderKey     from '../../../hooks/useRenderKey';
+import     useRenderKey     from '../../../../hooks/useRenderKey';
 
-import     StoryRack        from '../../News/components/StoryRack';
-import     StoryForm        from './forms/StoryForm';
+import     StoryRack        from '../../../News/components/StoryRack';
+import     StoryForm        from '../forms/StoryForm';
 
 
 

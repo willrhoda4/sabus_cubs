@@ -51,17 +51,19 @@ export default function Statements({ title, blurb, statements, statementsOn = 'l
 
                
 
-                {/* statements div */}
+                {/* statements div
+                    we'll add a little extra bottom padding for Actions, since it has one less item. */}
                 <div 
                     className={`
                                 w-full xl:w-8/12 
                                 grid grid-cols-1 md:grid-cols-2 gap-8 
-                                p-8 md:p-28
+                                p-8 md:p-20
                                 bg-whitesmoke 
-                            `}
-                >
+                                ${ title === 'Actions' && 'xl:pb-52' }
+                              `}
+                >               
                     { statements && statements.length > 0 && statements.map( statement => <Statement key={statement.title} {...statement} stroke={iconStroke} />) }
-                </div>,    
+                </div>   
             </div>;
 }
 

@@ -54,7 +54,7 @@ export default function Menu ( {
                                                                         closingTime:     800,
                                                                    });
   
-    const  subMenuAnimation                    = useToggleAnimation({
+    const   subMenuAnimation                   = useToggleAnimation({
                                                                         isOpen:          menuDisplayed,
                                                                         openAnimation:  'animate-submenu-slide-in', 
                                                                         closeAnimation: 'animate-submenu-slide-out', 
@@ -78,8 +78,8 @@ export default function Menu ( {
                )  { return; }
 
               
-            // Ensure that the menu is being displayed and that
-            //popOutnRef.current is an instance of Node
+            // ensure that the menu is being displayed and that
+            // popOutnRef.current is an instance of Node
             // before we bother checking if the click was outside the menu.
             if (
                     popOutRef.current                            &&
@@ -131,7 +131,7 @@ export default function Menu ( {
                         {/* right column : section links */}
                         <div className={theme.subMenu?.({ animation: subMenuAnimation })}>
                             <MenuIcons
-                                iconsDisplayed={iconsDisplayed}
+                                  iconsDisplayed={iconsDisplayed}
                                 setMenuDisplayed={setMenuDisplayed}
                             />
                         </div>

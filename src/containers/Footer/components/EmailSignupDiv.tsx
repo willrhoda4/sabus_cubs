@@ -35,6 +35,7 @@ export default function EmailSignupDiv ( { brandColours } : { brandColours : Bra
                             w-full h-fit 
                             py-24
                             ${brandColours.bg}
+                            shadow-brand-shadow
                        `}
         >
             <p className={`

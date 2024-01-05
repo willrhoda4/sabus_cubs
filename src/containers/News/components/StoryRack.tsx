@@ -66,6 +66,7 @@ export default function FAQBuffet( { admin } : ContentRackWrapperProps ): JSX.El
 
             <div key={id} className={`
                                         w-full h-fit 
+                                        flex flex-col items-center
                                     `}
             >
                 <a     

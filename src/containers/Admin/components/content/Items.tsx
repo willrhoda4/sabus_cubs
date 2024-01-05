@@ -6,10 +6,10 @@
 
 
 
-import   ItemsForm    from "./forms/ItemsForm";
-import   ItemsList    from '../../Support/components/ItemsList';
+import   ItemsForm    from "../forms/ItemsForm";
+import   ItemsList    from '../../../Support/components/ItemsList';
 
-import   useRenderKey from "../../../hooks/useRenderKey";
+import   useRenderKey from "../../../../hooks/useRenderKey";
  
 
 
@@ -29,6 +29,7 @@ export default function Items (): JSX.Element {
             
             <div className={`
                                 w-full h-fit
+                                px-2           
                                 flex flex-col
                                     first-child:mb-16
                         `}

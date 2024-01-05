@@ -24,7 +24,8 @@ export default function Button ( { text, onClick, theme = 'neobrutalism', styles
 
     const buttonStyle  = buttonTheme.button?.();
 
-    return (    <button     
+    return (    <button   
+                      type='button'  
                       onClick={ onClick } 
                       className={`${buttonStyle || ''} ${styles || ''}`}
 

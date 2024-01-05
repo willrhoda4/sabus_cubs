@@ -19,10 +19,12 @@ import   FAQBuffet          from './components/FAQBuffet';
 
 import   useLocationScroll  from '../../hooks/useLocationScroll';
 
+import { Helmet }           from 'react-helmet'
 
 
 
-export default function Info (): JSX.Element {
+export default function Info (): JSX.Element {   
+
 
 
     useLocationScroll();
@@ -35,6 +37,11 @@ export default function Info (): JSX.Element {
                             flex flex-col
                        `}
         >
+
+            <Helmet>
+                <title>Sabu's Cubs – Info</title>
+                <meta name='description' content={`Read about our story, values and actions. Then, meet our board and check out our FAQ section.`} />
+            </Helmet>
 
 
             <div id='story'>

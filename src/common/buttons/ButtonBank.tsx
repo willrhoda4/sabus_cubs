@@ -29,15 +29,15 @@ export default function ButtonBank ( { names, icons, stroke, onClicks, condition
     const theme = useStyles('neobrutalism')
    
 
-
+    // this is the class for the individual buttons.
+    // it accepts a condition and  additional classes as arguments.
     function button ( ...args : ButtonArgs ) {
 
         const [ name, Icon, stroke, onClick, thisCondition, index ] = args;    
 
          
 
-        // this is the class for the individual buttons.
-        // it accepts a condition and  additional classes as arguments.
+
 
 
       

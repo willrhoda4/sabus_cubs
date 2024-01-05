@@ -14,10 +14,12 @@ import {  CardElement,
 
 import    Axios           from 'axios';
 
+import    Button          from '../../../common/buttons/Button';
 
 import    useNewStatus    from '../../../hooks/useNewStatus';
 import    useToggleRef    from '../../../hooks/useToggleRef';
 import    useRenderKey    from '../../../hooks/useRenderKey'
+import    useNotification from '../../../hooks/useNotification';
 
 import {  FormState     } from '../../../types/form';
 
@@ -34,14 +36,15 @@ export default function CreditCard({ doneeInfo } : { doneeInfo : FormState } ) :
     
     
     // Stripe.js hooks for interacting with the Stripe library
-    const   stripe                     = useStripe();
-    const   elements                   = useElements();
+    const   stripe                       = useStripe();
+    const   elements                     = useElements();
 
     // custom hook for setting the status message
     const [  statusRef,  newStatus    ]  = useNewStatus();
     const [  isClicked,  setIsClicked ]  = useToggleRef();
     const [  renderKey,  clearStripe  ]  = useRenderKey();
-    const   exitForm                     = ( msg : string ) => { newStatus(msg); setIsClicked(false); }
+    const    notification                = useNotification();
+    const    exitForm                    = ( msg : string ) => { newStatus(msg); setIsClicked(false); }
 
 
 
@@ -114,32 +117,37 @@ export default function CreditCard({ doneeInfo } : { doneeInfo : FormState } ) :
 
             console.log('Card Info Updated:', response.data);
             clearStripe();
-            return exitForm('information successfully updated!'); 
+            notification('thanks for keeping your informationm up to date!');
+            return exitForm('Information successfully updated!'); 
 
         } catch (error) {
             
             console.error('Error updating card info:', error);
+            notification('looks like there was a problem. Please try again.');
             return exitForm('there was an error updating your information.');  
         }
     }
 
     return (
 
-        <div className="p-4 border border-gray-300 rounded-md">
+        <div className="h-fit w-full flex flex-col items-center">
 
             
             <h2 className="text-lg font-bold mb-4">Update Credit Card Info</h2>
 
-            <CardElement key={renderKey} options={cardElementOptions} />
+            <div className='w-full max-w-xl my-8'>
+                <CardElement key={renderKey} options={cardElementOptions} />
+            </div>
+            
+            {/* status message */}
+            <p ref={statusRef} className='h-8 py-8 self-center'/>
 
-            <button 
+            <Button 
                 onClick={handleSubmit} 
-                className="mt-4 px-4 py-2 text-white bg-blue-500 border border-blue-700 rounded-md hover:bg-blue-600"
-            >
-                Update Card Info
-            </button>
+                   text='Update Card Info'
+            />
+            
 
-            <p ref={statusRef} />
 
         </div>
     );

@@ -34,7 +34,7 @@ export default function FooterLink( { page, link } : FooterLinkProps ) : JSX.Ele
     const navigate    = useNavigate()
     const id          = link.id ?? link.name.replace(/ /g, '_');
     const timeStamp   = Date.now()
-    const linkClass   = 'hover:underline hover:text-brand-red leading-3'
+    const linkClass   = 'hover:text-brand-red leading-3'
 
     const handleClick = () => navigate(`/${page}`, { state: { id: id, timeStamp: timeStamp } } );
 
