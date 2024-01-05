@@ -4,6 +4,21 @@
 
 
 
+
+
+/**
+ * this is the front door for the backend.
+ * we initialize all middleware and declare all routes here.
+ * handlers are imported from the handlers directory.
+ */
+
+
+
+// setup Sentry
+import   * as Sentry            from '@sentry/node';
+import { ProfilingIntegration } from '@sentry/profiling-node';
+
+
 // configure your environment variables
 import   dotenv          from 'dotenv';
          dotenv.config();
@@ -14,37 +29,62 @@ import   express,
          Response }      from 'express';
 
 import   path            from 'path';
+
 import   cors            from 'cors';
 import   bodyParser      from 'body-parser';
 import   compression     from 'compression';
 
-import { dirname }       from 'path';
-import { fileURLToPath } from 'url';
 
 // import handlers                    
-import    db             from './handlers/database.ts';
-import    meta           from './handlers/meta.ts'; 
-import    auth           from './handlers/auth.ts'; 
-import    admin          from './handlers/admin.ts'; 
-import    email          from './handlers/email.ts';
-import    cloud          from './handlers/cloudinary.ts';
-import    stripe         from './handlers/stripe.ts';
-import    stripeWh       from './handlers/stripeWebhook.ts';
-import    newsRelease    from './handlers/newsRelease.ts';
+import    db             from './handlers/database';
+import    meta           from './handlers/meta'; 
+import    auth           from './handlers/auth'; 
+import    admin          from './handlers/admin'; 
+import    email          from './handlers/email';
+import    cloud          from './handlers/cloudinary';
+import    stripe         from './handlers/stripe';
+import    stripeWh       from './handlers/stripeWebhook';
+import    newsRelease    from './handlers/newsRelease';
 
 
 
 
 
-// we'll need this to set up a static file server.
-// because it's not commonjs, we have to use the fileURLToPath 
-// and dirname functions to get the directory name.
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 
 
 // ladies and gentlemen, start your app and initiate your middleware
 const app = express();     
+
+
+      // Sentry initialization
+      Sentry.init( {
+
+        dsn: process.env.SENTRY_DSN,
+
+        integrations: [
+          
+          // enable HTTP calls tracing
+          new Sentry.Integrations.Http( { tracing: true } ),
+
+          // enable Express.js middleware tracing
+          new Sentry.Integrations.Express( { app } ),
+
+          new ProfilingIntegration(),
+        ],
+
+        // Performance Monitoring
+        tracesSampleRate:   1.0,  // capture 100% of the transactions
+        profilesSampleRate: 1.0,  // set sampling rate for profiling - this is relative to tracesSampleRate
+
+      } );
+
+
+      // the request handler must be the first middleware on the app
+      app.use(Sentry.Handlers.requestHandler());
+
+      // tracingHandler creates a trace for every incoming request
+      app.use(Sentry.Handlers.tracingHandler());
 
 
       // Stripe webhook needs raw body buffer, not JSON, 
@@ -63,7 +103,7 @@ const app = express();
       app.use(bodyParser.json());   
     
       // sets up a static file server
-      app.use(express.static(path.resolve(__dirname, "../build")));   
+      app.use(express.static(path.join(__dirname, '../build')));
 
       // sets up cache control headers for static assets
       app.use((req, res, next) => {  
@@ -142,6 +182,11 @@ app.post('/generateNewsRelease',    newsRelease.generateHTML,
                                     newsRelease.logger,                               );
 
 app.post('/publishNewsRelease',     email.deliverNewsRelease,                         );
+
+
+// the error handler must be registered before 
+// any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler());
 
 
 

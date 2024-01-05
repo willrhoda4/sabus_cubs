@@ -20,11 +20,11 @@
 
 
 
-
+import      bcrypt           from 'bcrypt';
 
 import      crypto           from 'crypto';
 
-import      db               from './database.js';
+import      db               from './database';
 
 import { 
             Request, 
@@ -74,7 +74,7 @@ async function checkPassword ( request: Request, response: Response ) {
 
     try {
 
-        const match = await Bun.password.verify(password, passHash);
+        const match = await bcrypt.compare(password, passHash);
 
         if (match)  {
                         console.log('passwords match!');
@@ -183,7 +183,7 @@ async function resetPassword ( request: Request, response: Response ) {
     
     const id         =  request.body[2];
     const newPass    =  request.body[0];
-    const hashedPass =  await Bun.password.hash(newPass);
+    const hashedPass =  await bcrypt.hash(newPass, 10);
     const query      = `UPDATE admin SET password = $1 WHERE id = $2;`
 
 

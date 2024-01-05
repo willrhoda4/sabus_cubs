@@ -2,7 +2,7 @@
 
 
 
-import   db         from './database.ts';
+import   db         from './database';
 
 import   ejs        from 'ejs';
 import   pdf        from 'html-pdf';

@@ -8,7 +8,7 @@
 
 
 
-import   db         from './database.ts';
+import   db         from './database';
 import   Axios      from 'axios';
 import { Request, 
          Response } from 'express';

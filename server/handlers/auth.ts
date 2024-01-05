@@ -8,8 +8,8 @@
 
 
 
-import   db              from './database.ts';
-import   email           from './email.ts';
+import   db              from './database';
+import   email           from './email';
 
 import { Request, 
          Response      } from 'express';

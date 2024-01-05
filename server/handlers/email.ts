@@ -10,7 +10,7 @@
 
 
 
-import      db               from './database.ts';
+import      db               from './database';
 
 import      nodemailer       from 'nodemailer';
 import { 
