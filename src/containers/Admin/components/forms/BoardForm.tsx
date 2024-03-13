@@ -84,23 +84,23 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
        
 
             // if there are no name conflicts,
-            // and it isn't an update with !replace.image,
+            // and it isn't an update that isn't updating the headshot,
             // start the image upload.
             if ( !(update && !updatingHeadshot ) ) {
                     
                 newStatus('uploading headshot...', false);
 
                 // Fetch the signature and other signed parameters from your server
-                const   response   = await Axios.post( `${serverURL}signature`, [ public_id ] )
-                const   resData    = response.data; 
+                const   signature   = await Axios.post( `${serverURL}signature`, [ public_id ] )
+                const   sigData     = signature.data; 
         
 
                                                // Prepare the form data for the upload
                                          const formData = new FormData();
                                                formData.append( 'file', headshot );
-                for (const key in resData) {   formData.append(key, resData[key]); }
+                for (const key in sigData) {   formData.append(key, sigData[key]); }
                                                 /**
-                                                 * resData adds: 
+                                                 * sigData adds: 
                                                  *      - signature
                                                  *      - api key
                                                  *      - timestamp
@@ -159,7 +159,7 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
                             reqBody = [ 'board', updateState,  [ [  'id', update.id as number  ] ] ] 
 
                         }   // new board members also need a rank.
-            else        {   reqBody = [ 'board', [ { ...restOfFormState, public_id, rank } ] ] }
+            else        {   reqBody = [ 'board', [ { ...restOfFormState, public_id, rank }     ] ] }
 
          
 

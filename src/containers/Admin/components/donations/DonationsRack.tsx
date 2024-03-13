@@ -7,11 +7,12 @@
 
 /**
  *  display component that renders the appropriate data based on the displayed tab
- *  for the donations tab in the admin page.
+ *  for the donations page in the admin dashboard.
  * 
  *  we went with a bespoke component in lieu of using the ContentRack
- *  because the queries for this data require multiple tables, thereby
- *  making it impossible to leverage our curretn getData endpoint.
+ *  because the queries for this data require multiple tables, and
+ *  don't use ranks, thereby making it impossible to leverage
+ *   our currentgetData endpoint.
  */
 
 
@@ -38,6 +39,7 @@ import { DonationRackProps,
 import   formatDate             from '../../../../utils/formatDate';
 import   formatCost             from '../../../../utils/formatCost';
 
+import   authToken             from '../../../../utils/authToken';
 
 
 
@@ -55,9 +57,9 @@ export default function DonationsRack( { displayed } : DonationRackProps ) : JSX
       // to make sure the correct data is returned
       const reqBody = [ displayed ];
 
-      Axios.post(`${import.meta.env.VITE_API_URL}getDonationData`, reqBody )
-           .then(   res => setData(res.data)                               )
-           .catch(  err => console.log(err )                               );
+      Axios.post(`${import.meta.env.VITE_API_URL}getDonationData`, reqBody, authToken() )
+           .then(   res => setData(res.data)                                             )
+           .catch(  err => console.log(err )                                             );
    }
 
    // get content on initial load

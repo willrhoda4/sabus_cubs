@@ -17,6 +17,9 @@ import   useNotification       from '../../../hooks/useNotification';
 
 import   Axios                 from 'axios';
 
+import   authToken             from '../../../utils/authToken';
+
+
 
 
 export default function ContactInfo( { doneeInfo } : { doneeInfo : FormState } ) {
@@ -65,9 +68,9 @@ export default function ContactInfo( { doneeInfo } : { doneeInfo : FormState } )
         }
 
 
-        return  Axios.post(`${import.meta.env.VITE_API_URL}updateDoneeInfo`, reqBody     )
-                     .then(  res => { console.log(res); updateSucceeded();             } )
-                     .catch( err => { console.log(err); updateFailed();                } );
+        return  Axios.post(`${import.meta.env.VITE_API_URL}updateDoneeInfo`, reqBody, authToken() )
+                     .then(  res => { console.log(res); updateSucceeded(); }                      )
+                     .catch( err => { console.log(err); updateFailed();    }                      );
     }
 
     const blurb = 'Please provide your preferred name and current email address.';

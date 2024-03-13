@@ -1,6 +1,15 @@
 
 
 
+
+
+
+/*
+    A couple simple handlers to deal with Cloudinary uploads.
+    See functions for slightly more detailed descriptions.
+*/
+
+
   
 
 
@@ -23,10 +32,14 @@ const api_key     =     process.env.CLOUDINARY_API_KEY;
 
 
 
+// sends a bunch of parameters to the client, which are used to sign a request to Cloudinary.
+// this is used to upload board member headshots straight from the admin dashboard.
 function signature (request: Request, response: Response) {
     
     
-
+    // we'll first pass this parameter object to the api_sign_request method.
+    // then we'll bundle it with the api_key and signature, and send it as
+    // a response object for the client to use in their upload request.
     const params     = {
                             public_id: request.body[0],
                             timestamp: Math.round((new Date).getTime() / 1000),
@@ -34,18 +47,20 @@ function signature (request: Request, response: Response) {
                        }
 
 
-
     const signature  = cloudinary.utils.api_sign_request( params, api_secret as string );
-    
     
 
     response.json({ api_key, signature, ...params });
+
 }
 
 
 
 
-// upload function leveraged by newsRelease route.
+// middleware function leveraged by newsRelease route to upload PDFs directly to Cloudinary.
+// it uses the upload_stream method to pipe the buffer to Cloudinary.
+// it then stashes the URL in response.locals for the next middleware to
+// log in the database.
 function upload(request : Request, response: Response, next: NextFunction) {
 
     console.log('uploading PDF to Cloudinary...');

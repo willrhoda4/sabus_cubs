@@ -36,8 +36,8 @@ export default function HeaderIcon ( { title, editing, height, width, className,
 
     let   Icon : IconType;
  
-    console.log(title, editing);
 
+    
     switch (title) {
         case 'home':
             Icon = IconHome;

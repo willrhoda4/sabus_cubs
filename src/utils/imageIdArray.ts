@@ -32,6 +32,24 @@ export default function imageIdArray( amount : number ) : string[] {
                               'loading_cart', 
                               'preparing_smudge', 
                               'ready_to_walk', 
+                              'for_three',
+                              'cart_in_dark',
+                              'panda_sign',
+                              'trash_grab',
+                              'dinners_served',
+                              'rollerblading',
+                              'every_child_matters',
+                              'soup_stack',
+                              'crosswalk',
+                              'sidewalk_procession',
+                              'prewalk_prayer',
+                              'over_fence',
+                              'walkie_talkie_left',
+                              'walkie_talkie_right',
+                              'pass_up_stairs',
+                              'thumbs_up',
+                              'in_the_streets',
+
                            ];
       
     const randomizedIds = shuffleArray(ids);

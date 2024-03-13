@@ -24,6 +24,7 @@ export default function EmailList () : JSX.Element {
 
 
     return (
+        
         <div className={`
                             w-full h-fit
                             flex flex-col items-center

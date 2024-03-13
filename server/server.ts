@@ -20,33 +20,34 @@ import { ProfilingIntegration } from '@sentry/profiling-node';
 
 
 // configure your environment variables
-import   dotenv          from 'dotenv';
+import   dotenv                 from 'dotenv';
          dotenv.config();
          
 
 import   express, 
        { Request, 
-         Response }      from 'express';
+         Response }             from 'express';
 
-import   path            from 'path';
+import   path                   from 'path';
 
-import   cors            from 'cors';
-import   bodyParser      from 'body-parser';
-import   compression     from 'compression';
+import   cors                   from 'cors';
+import   bodyParser             from 'body-parser';
+import   compression            from 'compression';
 
 
 // import handlers                    
-import    db             from './handlers/database';
-import    meta           from './handlers/meta'; 
-import    auth           from './handlers/auth'; 
-import    admin          from './handlers/admin'; 
-import    email          from './handlers/email';
-import    cloud          from './handlers/cloudinary';
-import    stripe         from './handlers/stripe';
-import    stripeWh       from './handlers/stripeWebhook';
-import    newsRelease    from './handlers/newsRelease';
+import    db                    from './handlers/database';
+import    meta                  from './handlers/meta'; 
+import    auth                  from './handlers/auth'; 
+import    admin                 from './handlers/admin'; 
+import    email                 from './handlers/email';
+import    cloud                 from './handlers/cloudinary';
+import    stripe                from './handlers/stripe';
+import    stripeWh              from './handlers/stripeWebhook';
+import    newsRelease           from './handlers/newsRelease';
 
-
+// and the authentication middleware
+import    authenticateToken     from './handlers/jwt'; 
 
 
 
@@ -54,7 +55,7 @@ import    newsRelease    from './handlers/newsRelease';
 
 
 // ladies and gentlemen, start your app and initiate your middleware
-const app = express();     
+const app = express(); 
 
 
       // Sentry initialization
@@ -117,71 +118,107 @@ const app = express();
         next();
       });
 
-      // logs request bodies to the console for debugging
-      // app.use((req, res, next) => {
-      //   console.log('Another request!.\nRequest body:', req.body);
-      //   next();
-      // });
 
-// test route
+
+
+
+
+
+// logs request bodies to the console for debugging vvvvv
+// app.use((req, res, next) => {
+//   console.log('Another request!.\nRequest body:', req.body);
+//   next();
+// });
+
+
+
+
+// test routes
+
+// general test route
 app.get('/check', ( req: Request, res: Response ) => 
                   { console.log('hello!'); res.send('Hello, world!');  }              );
 
-// database handlers
-app.post('/getData',                db.getData                                        );
-app.post('/deleteData',             db.deleteData                                     );
-app.post('/reRankData',             db.reRankData                                     );
-app.post('/addData',                db.addData                                        );
-app.put( '/updateData',             db.updateData                                     );
+// Sentry test route
+app.get('/debug-sentry', () => { throw new Error("My first Sentry error!"); }         );
 
 
-// email handler
-app.post('/email',                  email.formMail                                    );
 
 
-// Cloudinary signature handler
-app.post('/signature',              cloud.signature                                   );
 
+console.log('before routes');
 
-// Meta API handlers
-app.get('/getIGtoken',              meta.getIGtoken                                   );
+// public routes
+// these routes are not protected by JWT authentication.
+app.post('/getData',                auth.checkTable, 
+                                    db.getData                                        ); // general data gopher. allowed restricted access via auth.checkTable
+app.get('/getIGtoken',              meta.getIGtoken                                   ); // Meta API handlers\
+app.post('/email',                  email.formMail                                    ); // email form handler
+app.post('/oneTimeDonation',        stripe.oneTimeDonation,                           ); // one-time donation handler
+app.post('/startMonthlyDonations',  stripe.startMonthlyDonations,                     ); // monthly donation handler
+app.post('/scheduleUpdate',         auth.scheduleUpdate,                              ); // delivers a login link for subscriber updates
+app.post('/verifyUpdate',           auth.verifyUpdate,                                ); // verifies subscriber login link
+app.post('/checkPassword',          admin.getPasswordData,
+                                    admin.checkPassword                               ); // checks password for admin
+
+app.post('/resetLink',              admin.registerReset,
+                                    email.sendResetLink                               ); // sends admin reset link to website email
+
+app.post('/resetPassword',          admin.getTokenData,
+                                    admin.verifyTokenData,
+                                    admin.resetPassword                               ); // resets password for admin, and logs them in
 
 
 // Stripe API handlers
-app.post('/oneTimeDonation',        stripe.oneTimeDonation,                           );
-app.post('/startMonthlyDonations',  stripe.startMonthlyDonations,                     );
-app.post('/manageSubscription',     stripe.manageSubscription,                        );  // deals with cancellations and amount adjustments.
-app.post('/updateDoneeInfo',        stripe.updateDoneeInfo,                           );
-app.post('/updateCreditCard',       stripe.updateCreditCard,                          );
+// ( 3/5 anyway, oneTimeDonation and startMonthlyDonations are in the public section )
+// these routes are protected by authentication,
+// and are only accessible with valid subscriber tokens.
+app.post('/manageSubscription',     ...authenticateToken('subscriber'),
+                                       stripe.manageSubscription,                     );  // deals with cancellations and amount adjustments.
+app.post('/updateDoneeInfo',        ...authenticateToken('subscriber'),
+                                       stripe.updateDoneeInfo,                        );  // handles email/name updates
+app.post('/updateCreditCard',       ...authenticateToken('subscriber'),
+                                       stripe.updateCreditCard,                       );  // handles credit card updates
 
 
-// simple auth handlers for subscription updaates.
-// we'll also handle donation inquiries from here.
-app.post('/scheduleUpdate',         auth.scheduleUpdate,                              );
-app.post('/verifyUpdate',           auth.verifyUpdate,                                );
 
 
-app.post('/getDonationData',     admin.getDonationData,                               );
+// admin routes
+// these routes are protected by authentication,
+// and are only accessible with a valid admin token.
+// we'll handle this with global middleware.
+app.use( ...authenticateToken('admin') );
 
 
-app.post('/checkPassword',       admin.getPasswordData,
-                                 admin.checkPassword                                  ); // checks password for admin
+// database handlers
+app.post('/getAdminData',           auth.checkTable, 
+                                    db.getData                                        );  // admin data gopher. alloed access to all exising table via auth.checkTable.
+app.post('/deleteData',             db.deleteData                                     );  // deletes data from the database
+app.post('/reRankData',             db.reRankData                                     );  // re-ranks data in the database
+app.post('/addData',                db.addData                                        );  // adds data to the database
+app.put( '/updateData',             db.updateData                                     );  // updates data in the database
 
-app.post('/resetLink',           admin.registerReset,
-                                 email.sendResetLink                                  ); // sends reset link to website email
 
-app.post('/resetPassword',       admin.getTokenData,
-                                 admin.verifyTokenData,
-                                 admin.resetPassword                                  ); // resets password for admin
+app.post('/signature',              cloud.signature                                   );  // handles Cloudinary signatures for 
+                                                                                          // news release uploads
+
+
+app.post('/getDonationData',     admin.getDonationData,                               ); // gets donation data from the database
+                                                                                         // for the admin dashboard
+
+
 
 // news release handlers
 app.post('/generateNewsRelease',    newsRelease.generateHTML,
                                     newsRelease.generatePDF,
                                     cloud.upload,
                                     email.deliverNewsRelease,
-                                    newsRelease.logger,                               );
+                                    newsRelease.logger,                               );  // generates a news release, uploads it to Cloudinary, 
+                                                                                          // emails a sample to the admin, and logs the release in the database.ds
 
-app.post('/publishNewsRelease',     email.deliverNewsRelease,                         );
+app.post('/publishNewsRelease',     email.deliverNewsRelease,                         );  // emails a news release to a list of journalists, following admin approval.
+
+
 
 
 // the error handler must be registered before 
@@ -191,10 +228,13 @@ app.use(Sentry.Handlers.errorHandler());
 
 
 
+
+// start the server
 const server = app.listen( process.env.PORT || 3000, () => {
 
     const address = server?.address();
 
+           // if the server is running, log the address.
            if (            typeof address      === 'string' ) { console.log(`Listening on ${address}`);                             }
       else if ( address && typeof address.port === 'number' ) { console.log(`Listening on http://localhost:${address.port} ...`)    }
       else                                                    { console.log('Server is null or undefined');                         }

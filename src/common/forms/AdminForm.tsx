@@ -17,6 +17,8 @@ import { AdminFormProps     } from '../../types/admin';
 import { FormState, 
          NewStatusFunction  } from '../../types/form';
 
+import   authToken           from '../../utils/authToken';
+
 
 
 
@@ -46,12 +48,18 @@ export default function AdminForm( { table, update, getData, setEditing, fields,
         try {
 
 
+            // for the faq table, if they forget to add a ? to the question, add it for them.
+            if (table === 'faq' && !( ( formState.question as string ).endsWith('?') ) ) {
+                formState.question += '?';
+            }
+
+
             // for new items, request the table, so we can get the length and set the rank
             let rank;
             
             if ( !update ) {
                 
-                const rankResponse = await Axios.post(`${import.meta.env.VITE_API_URL}getData`, [table]);
+                const rankResponse = await Axios.post(`${import.meta.env.VITE_API_URL}getData`, [table], authToken() );
                       rank         = rankResponse.data.length + 1; 
             
             }
@@ -70,8 +78,8 @@ export default function AdminForm( { table, update, getData, setEditing, fields,
 
 
             // second request to add the question to the database
-            !update ? await Axios.post(`${import.meta.env.VITE_API_URL}addData`,    reqBody )
-                    : await Axios.put( `${import.meta.env.VITE_API_URL}updateData`, reqBody );
+            !update ? await Axios.post(`${import.meta.env.VITE_API_URL}addData`,    reqBody, authToken() )
+                    : await Axios.put( `${import.meta.env.VITE_API_URL}updateData`, reqBody, authToken() );
 
 
 

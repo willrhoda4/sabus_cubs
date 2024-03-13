@@ -67,10 +67,12 @@ export interface EditorButtonsProps {
     wrapStyle?:   string;
     setEditing?:  (arg0: false | number) => void;
     releaseData?: {
-                    html:     string;
-                    publish:  boolean; 
-                    pdf_url:  string;
-                    headline: string;
+                    id:        number;
+                    html:      string;
+                    pdf_url:   string;
+                    headline:  string;
+                    publish:   boolean;
+                    published: boolean
                   }       
 }
 

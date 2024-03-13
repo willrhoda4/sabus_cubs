@@ -23,7 +23,7 @@ import   MailIcon                     from '../../assets/icons/mail.svg?react';
 
 import   Axios                        from 'axios';  
 
-
+import   authToken                   from '../../utils/authToken.js';
 
 
 
@@ -82,9 +82,9 @@ export default function EditorButtons ({    id,
 
         window.confirm(warning) &&
 
-            Axios.post(`${import.meta.env.VITE_API_URL}deleteData`, reqBody )
-                 .then( ()   => loadData()                                  )
-                 .catch( err => console.log(err)                            );
+            Axios.post(`${import.meta.env.VITE_API_URL}deleteData`, reqBody, authToken() )
+                 .then( ()   => loadData()                                                )
+                 .catch( err => console.log(err)                                          );
         
       }
 
@@ -102,9 +102,9 @@ export default function EditorButtons ({    id,
 
             const reqBody =  [ table, pkName, id, rank, newRank ];
                     
-            Axios.post( `${import.meta.env.VITE_API_URL}reRankData`,  reqBody   )  
-                 .then(  ()  => loadData()                                      )
-                .catch(  err => console.log(err)                                );  
+            Axios.post( `${import.meta.env.VITE_API_URL}reRankData`,  reqBody,  authToken()  )  
+                 .then(  ()  => loadData()                                                    )
+                .catch(  err => console.log(err)                                              );              
 
     }
 
@@ -121,15 +121,35 @@ export default function EditorButtons ({    id,
     // triggers a news release publication.
     function publish () {
 
-        const warning = "Are you sure you want to publish this news release?";
 
+        // typeguard to faciliatate destructuring.
+        if ( !releaseData || !( 'published' in releaseData ) ) { return; }
+
+
+        // remove the published property from the release data.
+        // the remaining object will be our request body.
+        const { published, ...reqBody } = releaseData;
+        /**
+         * Property 'published' does not exist on type '{ id: number; html: string; pdf_url: string; headline: string; publish: boolean; published: boolean; } | undefined'.ts(2339)
+         */
+
+
+        // if the release has already been published,
+        // alert the user and abort the request.
+        if ( published ) return window.alert('this news release has already been published.')
+
+        
+        const warning = "Are you sure you want to publish this news release?";
+        
+
+        // otherwise, confirm the publication
         if  ( window.confirm(warning) ) { 
 
             notification('publishing news release...');
 
-            Axios.post(`${import.meta.env.VITE_API_URL}publishNewsRelease`, releaseData )
-                 .then(  res => notification(res.data)                                  )
-                 .catch( err => notification(err)                                       );
+            Axios.post(`${import.meta.env.VITE_API_URL}publishNewsRelease`, reqBody, authToken()  )
+                 .then(  res => { notification(res.data);   loadData() }                          )
+                 .catch( err =>   notification(err.message)                                       );
         }
     }
 

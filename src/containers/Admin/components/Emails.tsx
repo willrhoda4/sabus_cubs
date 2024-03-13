@@ -43,6 +43,7 @@ export default function Emails(): JSX.Element {
                 bgClass='bg-brand-red'
                 textClass='text-white'
             >
+
                 <div className={`
                                     w-full h-fit 
                                         child:flex 
@@ -50,11 +51,14 @@ export default function Emails(): JSX.Element {
                                         child:items-center
                                `}
                 >
-                {
-                    displayed === 'email list' ? <EmailList     />       
-                                               : <Journalists   /> 
-                }
+
+                    {
+                        displayed === 'email list' ? <EmailList     />       
+                                                   : <Journalists   /> 
+                    }
+
                 </div>
+
             </TabsDiv>
 
         </div>

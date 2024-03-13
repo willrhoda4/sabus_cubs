@@ -54,13 +54,13 @@ export default function Info (): JSX.Element {
                 <Mission />
             </div>
 
-            <ImageStrip bgClass='bg-brand-brown' ids={ [ 'sandwich_pass', 'double_dunk', 'past_house', ] } />
+            <ImageStrip bgClass='bg-brand-brown' ids={ [ 'sandwich_pass', 'past_house', 'double_dunk', ] } />
     
             <div id='values'>
                 <Values />
             </div>
 
-            <ImageStrip bgClass='bg-brand-yellow'   ids={ [ 'peace_signs', 'teeter_totter', 'the_boys', ] } />
+            <ImageStrip bgClass='bg-brand-yellow'   ids={ [ 'peace_signs', 'the_boys', 'thumbs_up' ] } />
 
             <div id='actions'>
                 <Actions />

@@ -8,6 +8,11 @@
  * 
  *  we use the useRenderKey hook to force a re-render of 
  *  the FAQBuffet component after a new FAQ is added.
+ * 
+ *  as a redundnacy, we check if a token is in local storage
+ *  before rendering the admin controls for the FAQ buffet.
+ *  this is easy to workaround, but the EditorButtons component
+ *  gets all its requests tested on the server anyway.
  */
 
 
@@ -29,6 +34,8 @@ import     FAQForm          from '../forms/FAQForm';
 
 export default function FAQ(): JSX.Element {
 
+    
+    const  admin                    = localStorage.getItem('jwt') !== null;
 
     const [ renderKey, renderFAQs ] = useRenderKey();
 
@@ -42,7 +49,7 @@ export default function FAQ(): JSX.Element {
                     
             <FAQForm getData={renderFAQs} />
 
-            <FAQBuffet key={renderKey} admin={true}/>
+            <FAQBuffet key={renderKey} admin={admin}/>
                   
         </div>
     )

@@ -35,7 +35,7 @@ export interface ContentRackProps<T> {
     renderContent: (    content:   T, 
                         index:     number,
                         controls : ContentControls     
-                   ) => JSX.Element;
+                   ) => JSX.Element | null;
 }
 
 

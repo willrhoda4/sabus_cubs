@@ -41,6 +41,7 @@ import { LoginProps }       from '../../../types/admin';
 
 import { MiscState  }       from '../../../types/form';
 
+import   clearParams        from '../../../utils/clearParams';
 
 
 
@@ -50,11 +51,14 @@ import { MiscState  }       from '../../../types/form';
 export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Element {
 
 
+
+
     // start by checking if there's a token in the url.
     // if there is, we're resetting the password, otherwise, we're logging in.
     // declare reset for readability.
     const   id                                       = new URLSearchParams(window.location.search).get('id');
     const   token                                    = new URLSearchParams(window.location.search).get('token');
+    const   tokenError                               = new URLSearchParams(window.location.search).get('tokenError');
     const   reset                                    = !!token;
 
 
@@ -64,13 +68,31 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
     // errors are tracked in errorState.
     // attempted tracks whether the user has tried to submit the form.
     // we use this to determine whether to display error messages.
+    // tokenError tracks whether we wound up here due to a bad token.
     const [ formState,         setFormState        ] = useState<Record< string, MiscState >>({});
     const [ errorState,        setErrorState       ] = useState<Record< string, unknown   >>({});
     const [ attempted,         setAttempted        ] = useState<boolean>(false);
+    const [ isTokenError,      setIsTokenError     ] = useState<boolean>(false);
 
     // custom hooks to handle the status message and notification.
     const [ statusRef,         newStatus           ] = useNewStatus();
     const                      notification          = useNotification();
+
+
+
+    // if there is a token error, display a message.
+    // activate the tokenErrorState to display the message,
+    // throw up a notification,
+    // and clear the tokenError from the url.
+    useEffect(() => { 
+        
+        if (tokenError) { 
+                            setIsTokenError(true);
+                            notification('there was a problem with your token...')
+                            clearParams(); 
+                        } 
+                    
+    }, [notification, tokenError])
 
     // manages error checking for name and password inputs
     // this mostly depends on the validate() function
@@ -98,7 +120,6 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
     // otherwise, display an error message.
     function login () {
 
-        console.log('login attempt')
 
         setAttempted(true);
 
@@ -106,11 +127,16 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
              errorState.password ){ return newStatus('make sure all fields are filled out correctly.'); }
             
         newStatus('verifying password...', false)
-            
-        const loginSuccess = () => {
-                                        setAuthenticated(true);
-                                        notification('login successful!');
-                                   }
+           
+        // if this goes through, we'll set the authenticated state to true,
+        // throw up a notification and store the token in local storage.
+        // set
+        // otherwise, we'll display an error message with newStatus().
+        const loginSuccess = (token : string) => {
+                                                    setAuthenticated( true );
+                                                    notification( 'login successful!' );
+                                                    localStorage.setItem( 'jwt', token );
+                                                 }
         const loginFailure = () =>      newStatus('invalid password. please try again.');
 
         const loginError   = () =>      newStatus('there was a problem with the server. please try again later.');
@@ -120,7 +146,7 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
 
         Axios.post(`${import.meta.env.VITE_API_URL}checkPassword`,  [ formState ] )
              .then( res => {    
-                                res.data === 'match'    ? loginSuccess()
+                                res.data.token          ? loginSuccess(res.data.token)
                               : res.data === 'no user'  ? emailFailure()
                               : res.data === 'invalid'  ? loginFailure()
                                                         : loginError();
@@ -186,21 +212,20 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
                                     if (res.data === 'invalid token'  ||
                                         res.data === 'expired token'  ){ newStatus( res.data ) }    
                                         
-                                    // otherwise, let them in
+                                    // otherwise, let them in.
                                     else                               { 
-                                                                         setAuthenticated(true); 
-                                                                         notification('password reset successful!');
+                                                                            // set the authenticated state to true,
+                                                                            // throw up a notification and store the token in local storage.
+                                                                            setAuthenticated(true); 
+                                                                            notification('password reset successful!');
+                                                                            localStorage.setItem( 'jwt', res.data.token );
 
-                                                                         // Remove query parameters from the URL
-                                                                        if (window.history.pushState) {
-                                                                            const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname; 
-                                                                            window.history.pushState({path:newurl}, '', newurl);
-                                                                        }
-
+                                                                            // Remove query parameters from the URL
+                                                                            clearParams();
                                                                        }
                                }                                                                   
-                      )
-                .catch( () => newStatus('there was an error resetting your password. please refresh the browser and reattempt.') );
+                      )       // if anything goes wrong, notify the user with a status message.
+                .catch( () => newStatus('there was an error resetting your password. please refresh the browser and try again.') );
         }
     }
 
@@ -231,6 +256,8 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
                         mismatch: 'make sure your passwords match.',
                      }
 
+    const tokenErrorMsg = 'It looks like your token is either invalid or expired. Please log back in.'
+
 
     return (
 
@@ -249,6 +276,16 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
             >
 
                 <form onKeyDown={enterListener} onSubmit={onSubmit} className='w-full flex flex-col items-center'>
+
+                    {/* if there's a token error, display a message. */}
+                    { isTokenError &&
+                        <p className={`
+                                        text-center 
+                                        text-brand-red 
+                                        font-body 
+                                        mt-4 mb-2`
+                        }>{tokenErrorMsg}</p>
+                    }
 
                     {/* we'll need two text fields in any case,
                         but the values they'll expect will change dynamically. */}

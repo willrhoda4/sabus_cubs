@@ -33,7 +33,7 @@ const textResources : { [ key: string ] : string }  = {
 
     // home resources
 
-    intro       : `is a Winnipeg-based non-profit focused on giving the youth of today the skills they need to become the leaders of tomorrow. We believe in equality, inclusion, and the aggregate potential of small direct actions to transform the communities we love. Come walk with us!`,
+    intro       : `is a Winnipeg-based non-profit focused on giving today's youth the skills they need to become tomorrow's leaders. We believe in equality, inclusion, and the aggregate potential of small direct actions to transform the communities we love. Come walk with us!`,
 
     
     //info resources

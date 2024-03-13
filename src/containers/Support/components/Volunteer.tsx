@@ -50,7 +50,7 @@ export default function Volunteer ( { pStyles } : { pStyles : string } ) : JSX.E
                 </a>
 
                 <a  
-                      href='https://res.cloudinary.com/sabus-cubs/image/upload/pdf/form.pdf'
+                      href='https://res.cloudinary.com/sabus-cubs/image/upload/pdf/waiver.pdf'
                     target="_blank" 
                        rel="noopener noreferrer"
                 >

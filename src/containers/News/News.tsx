@@ -19,6 +19,8 @@ import   useLocationScroll  from '../../hooks/useLocationScroll';
 
 import { Helmet }           from 'react-helmet';
 
+import   ImageStrip         from '../../common/images/ImageStrip';
+
 
 
 
@@ -43,6 +45,7 @@ export default function News () : JSX.Element {
             {/* leavek this div in place to eliminate white space */}
             <div className={`w-full h-fit flex flex-col items-center mt-[-96px]`}>
 
+
                 <div id='news_stories'  className='w-full h-fit flex flex-col'>
                     {/* title div */}
                     <SectionTitle 
@@ -62,6 +65,8 @@ export default function News () : JSX.Element {
                                                     flex flex-col 
                                                   `}
                 >
+                    <ImageStrip bgClass='bg-brand-blue' ids={ [ 'walkie_talkie_left', 'teeter_totter', 'walkie_talkie_right', ] } />
+
                     {/* title div */}
                     <SectionTitle 
                             title={'News Releases'}
@@ -72,7 +77,7 @@ export default function News () : JSX.Element {
                             responsive={false}
                         />
 
-                    <div className='px-2'>
+                    <div className='px-2 flex justify-center'>
                         <NewsReleaseRack />
                     </div>
                 </div>

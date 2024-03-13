@@ -5,23 +5,23 @@
 
 
 
-import   Login              from './components/Login';
+import   Login                   from './components/Login';
 
 
-import   Emails             from './components/Emails';
-import   NewsReleases       from './components/NewsReleases';
-import   Content            from './components/Content';
-import   Donations          from './components/Donations';
+import   Emails                  from './components/Emails';
+import   NewsReleases            from './components/NewsReleases';
+import   Content                 from './components/Content';
+import   Donations               from './components/Donations';
 
 
 
-import { useState   }       from 'react';
+import { useState   }            from 'react';
 
-import { AdminProps }       from '../../types/admin'
+import { AdminProps }            from '../../types/admin'
 
-import   logoSmall          from '../../assets/logo_small.png';
+import   logoSmall               from '../../assets/logo_small.png';
 
-import { Helmet     }       from 'react-helmet';
+import {  Helmet    }            from 'react-helmet';
 
 
 
@@ -32,9 +32,10 @@ export default function Admin ( { editing, brandColours } : AdminProps ) : JSX.E
 
 
 
-    const [ authenticated, setAuthenticated ] = useState(false);
+    const [ authenticated, setAuthenticated ] =   useState(false);
 
 
+   
 
     const displaying = editing === 'content'       ? <Content      />
                      : editing === 'releases'      ? <NewsReleases />
@@ -43,8 +44,7 @@ export default function Admin ( { editing, brandColours } : AdminProps ) : JSX.E
                      :                               <p className='text-body'>please select a page.</p>;
 
 
-
-
+   
 
 
     return (
@@ -71,7 +71,7 @@ export default function Admin ( { editing, brandColours } : AdminProps ) : JSX.E
                                 child:my-24 child:px-2
                         `}
             >
-                { !authenticated ?    <Login setAuthenticated={setAuthenticated} /> : displaying }
+                { !authenticated ? <Login setAuthenticated={setAuthenticated} /> : displaying }
             </div>
 
             {/* footer with Sabu's Cubs logo */}

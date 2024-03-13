@@ -2,7 +2,7 @@
 
 /**
  * this component is responsible for rendering the 'Friends of Sabu's Cubs' section of the footer
- * the map function is setup to handle conditionakl placeholders for the grid layout,
+ * the map function is setup to handle conditional placeholders for the grid layout,
  * allowing for symmetrical appearance on all screen sizes.
  * 
  * since we have 12 friends, this isn't necessary, but if we wanted to have 10, 
@@ -83,7 +83,7 @@ export default function Friends () : JSX.Element {
             
             <p className='text-heading text-center  text-brand-red'>Friends of Sabu</p>
 
-            <p className='text-body text-center my-16'>We're grateful and proud to be supported by all of these amazing organizations.</p>
+            <p className='text-body text-center my-16'>We're grateful to be supported by all of these amazing organizations.</p>
 
             <div className={`
                                 w-1/2 

@@ -137,6 +137,8 @@ function App() {
         {/* header collage component */}
         <Header editing={editing} colours={brandColours} />
 
+        
+
         {/* container for page elements handled by react router */}
         <div     id='pageContainer'
           className={`
@@ -149,6 +151,7 @@ function App() {
           <NotificationProvider>
 
             <Elements stripe={stripePromise}>
+            
 
               <Routes>
                 <Route path='/'                       element={<Home />} />

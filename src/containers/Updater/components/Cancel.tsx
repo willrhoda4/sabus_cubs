@@ -14,6 +14,9 @@ import { FormState }        from "../../../types/form";
 import   useNewStatus       from '../../../hooks/useNewStatus';
 import   useNotification    from '../../../hooks/useNotification';
 
+import   authToken          from '../../../utils/authToken';
+
+
 
 
 
@@ -39,9 +42,9 @@ export default function Cancel ({ doneeInfo } : { doneeInfo : FormState } )   : 
 
             newStatus('cancelling subscription...', false);
 
-            Axios.post(`${import.meta.env.VITE_API_URL}manageSubscription`, reqBody          )
-                 .then(  () => { newStatus(successMsg); notification(successNotification); } )
-                 .catch( () => { newStatus(failureMsg); notification(failureNotification); } );
+            Axios.post(`${import.meta.env.VITE_API_URL}manageSubscription`, reqBody, authToken() )
+                 .then(  () => { newStatus(successMsg); notification(successNotification); }     )
+                 .catch( () => { newStatus(failureMsg); notification(failureNotification); }     );
         }
 
         window.confirm('are you sure you want to cancel?') && cancel();

@@ -29,7 +29,6 @@ export interface AdminProps {
 
 
 
-
 export interface Journalist {
     [key: string]: string | number;
 
@@ -52,7 +51,7 @@ export interface EmailListUser {
 
 
 export interface NewsRelease {
-    [key: string]: string | number | Date;
+    [key: string]: string | number | Date | boolean;
 
     id:         number;
     date:       Date;
@@ -61,6 +60,7 @@ export interface NewsRelease {
     pdf_url:    string;
     html:       string;
     rank:       number;
+    published:  boolean;
 }
 
 

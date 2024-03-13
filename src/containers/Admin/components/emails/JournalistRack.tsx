@@ -111,7 +111,7 @@ export default function JournalistRack({ admin } : ContentRackWrapperProps ): JS
     }
 
     return  <ContentRack<Journalist> 
-                table="journalists" 
+                table='journalists' 
                 renderContent={renderJournalist} 
                 wrapStyle={`
                             mt-24

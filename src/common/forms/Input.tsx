@@ -115,9 +115,7 @@ export default function Input ({
                                 required: true,
                                 ...(type !== 'file' ? valueProp : {}),
                         };
-                        /*Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '(type: string, mistakeMade: boolean) => StyleObject'.
-  No index signature with a parameter of type 'string' was found on type '(type: string, mistakeMade: boolean) => StyleObject'.ts(7053)*/
-
+                      
     
     // prepares options for the select input.
     // if minMax values are supplied (eg: [1, 10]), a range of numbers will be generated.

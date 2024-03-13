@@ -23,6 +23,7 @@ import    useNotification from '../../../hooks/useNotification';
 
 import {  FormState     } from '../../../types/form';
 
+import    authToken       from '../../../utils/authToken';
 
 
 
@@ -113,7 +114,7 @@ export default function CreditCard({ doneeInfo } : { doneeInfo : FormState } ) :
                             }
 
             // Send token ID to your server to handle the next steps
-            const response = await Axios.post(`${import.meta.env.VITE_API_URL}updateCreditCard`, reqBody );
+            const response = await Axios.post(`${import.meta.env.VITE_API_URL}updateCreditCard`, reqBody, authToken() );
 
             console.log('Card Info Updated:', response.data);
             clearStripe();

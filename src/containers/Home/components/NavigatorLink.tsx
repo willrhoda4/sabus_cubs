@@ -32,9 +32,14 @@ export default function NavigatorLink ( { index, data } : NavigatorLinkProps ) :
 
     const palettes = [ 5, 6, 7, 8, 0, 1 ];
 
-    const handleClick =  () => data.name === 'donate' ? navigate('/support',     { state: { id: 'donate' } } )
-                                                      : navigate(`/${data.name}`                             );
-   
+    const handleClick =  () =>  {   // this should be implicit, but we'll make sure to pass in the donate state if it's the donate button
+                                    data.name === 'donate' ? navigate('/support',     { state: { id: 'donate' } } )
+                                                           : navigate(`/${data.name}`                             );
+
+                                    // scroll to top of page
+                                    window.scrollTo(0, 0);
+
+                                }
 
 
     return (

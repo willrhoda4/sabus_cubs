@@ -46,13 +46,13 @@ export type CallbackFunction = (data: unknown[], response?: Response) => void;
 // accepts an array of queries, parameters, and callbacks, then
 // executes the queries in order, passing the results to the callbacks.
 function atomicQuery (
-                        request: Request, 
-                        response: Response, 
-                        queries: string[],
+                        request:    Request, 
+                        response:   Response, 
+                        queries:    string[],
                         parameters: unknown[][], 
-                        callbacks: CallbackFunction[],
+                        callbacks:  CallbackFunction[],
                         successMsg: string, 
-                        next?: NextFunction
+                        next?:      NextFunction
                      ) { 
 
 
@@ -60,14 +60,14 @@ function atomicQuery (
     let steps : number = 0;
 
     // recursive function that executes the queries in order.
-    function step( err: Error, client: PoolClient, release: () => void ) : void {
+    function step( err: Error, client: PoolClient, release: () => void ) : void {   console.log('stepping')
 
 
         // set our index before incrementing steps.
         // if there is a parameter array at the index, pass it in with the query.
         const index     : number      = steps;
         const query     : string      = queries[index];
-        const paramArgs : unknown[]   = parameters[index] ? parameters[index] : [];
+        const paramArgs : unknown[]   = parameters[index] ?? [];
 
       
 
@@ -78,10 +78,10 @@ function atomicQuery (
 
             // increment steps.
             steps++;
-
+                                    console.log('prequery\n')
            
             // execute the query.
-            client.query( query, paramArgs, (err, res) => {
+            client.query( query, paramArgs, (err, res) => {         console.log('postquery\n')
 
                 // if there is an error, rollback the transaction and send the error message.
                 if (err) { return client.query('ROLLBACK', () => {   release(); 
@@ -95,7 +95,7 @@ function atomicQuery (
                             callbacks[index]?.(res.rows, response); 
                             step(err, client, release);
                          }
-            })
+            } )
 
 
         // if there are no more queries to execute, commit the transaction.
@@ -122,14 +122,16 @@ function atomicQuery (
     }
 
     // start the transaction.
-    pool.connect((err, client, release) => {
+    pool.connect((err, client, release) => {    console.log('connecting')
 
         if (err) { return console.error('Error acquiring client', err.stack) }
 
-        client.query('BEGIN', (err) => {
+        console.log('about to begin');
+        client.query('BEGIN', (err) => {    console.log('beginnig\n');
 
             if (err) { return console.error('Error starting transaction', err.stack) }
 
+            console.log('about to step\n');
             // execute the first query.
             step(err, client, release);
         })
@@ -163,19 +165,13 @@ function simpleQuery(
                  } 
         else     {  
                     cleanUp && cleanUp( res.rows, response );
-                    if (!response.writableEnded) {  // Check if the headers (response) have already been sent (during cleanUp)
+                    if (!response.writableEnded) {  // check if the headers (response) have already been sent (during cleanUp)
+                                                    // if they haven't, either call next() or send the response.
                         next ? next() : response.send(res.rows); 
                     }
                  }    
     } ) 
 }                 
-
-
-/**
- * rgument of type 'any[]' is not assignable to parameter of type 'T'.
-  'any[]' is assignable to the constraint of type 'T', but 'T' could be instantiated with a different subtype of constraint 'unknown[]'.ts(2345)
- */
-
 
 
 
@@ -184,7 +180,7 @@ function simpleQuery(
 Universal getData function that accepts request bodies in this format => [   'table_name', 
                                                                            [ [array, of], [filter, arrays] ],
                                                                            { 
-                                                                                orderBy: optional,
+                                                                                orderBy: 'optional',
                                                                                 groupBy: option_object,
                                                                                 limit:   7
                                                                                 columns: comma-separated string of columns to select. Default is *
@@ -349,66 +345,6 @@ const reRankData = (request: Request, response: Response) => {
 
 
 
-// accepts a table name, an array of columns, a two-dimensional array of parameters, and a returning clause, then
-// inserts a new row into the table with the specified columns and parameters.
-
-
-                                                                        // example request body: [
-                                                                        //      table ==>              'articles',
-                                                                        //      columns ==>         [  'headline', 'link', 'image', 'description' ], 
-                                                                        //      parameters ==>      [ 
-                                                                        //                              [ headline1, link1, imageUrl1, description1 ] 
-                                                                        //                              [ headline2, link2, imageUrl2, description2 ] 
-                                                                        //                          ],
-                                                                        //      returning ==>            'article_id'
-                                                                        //                        ]
-// async function addData (request : Request, response : Response) {
-
-
-//     // destructure the request body.
-//     // convert columns to a string.
-//     const table        :   string      = request.body[0];
-//     const columns      :   string[]    = request.body[1].join(', ');
-//     const columnCount  :   number      = request.body[1].length;
-//     const parameters   :   unknown[][] = request.body[2];
-//     const returning    :   string | number      = request.body[3];
- 
-//     // log to the console before starting query
-//     console.log(`Adding data to ${table} \n`);
-    
-//     // transform the parameters array into a values string.
-//     const values       =    parameters.map((row, rowIndex) => {
-
-//                                 // make a string of parameter placeholders for each row.
-//                                 // get the values into an array, then join them together with commas.
-//                                 // return the string wrapped in parentheses and followed by a comma.
-//                                 const      rowValues = row.map((value, colIndex) => `$${ colIndex + 1 + (rowIndex * columnCount) }` ).join(', ');
-//                                 return `(${rowValues}),`;
-
-
-//                             // join the rows together with spaces and remove the trailing comma.
-//                             }).join(' ').slice(0,-1);
-
-//     // build the query.
-//     let query      = `INSERT INTO "${table}" (${columns}) VALUES ${values}`;
-
-//     // if there's a returning clause, add it to the end.
-//     // otherwise, just add a semicolon.
-//     if (returning) { query+=` RETURNING ${returning};` }
-//     else           { query+=';'                        }
-
-//     // log the query to the console.
-//     console.log(`${query}\n`);
-
-//     // execute the query.   
-//     // flatten the parameters array before passing it in.                        
-//     simpleQuery(response, query, parameters.flat());
-// }
-
-
-
-
-
 
     type AddDataRequest = [ string, Array<Record<string, unknown>>, (string | number)?  ];
                        // [ table,  parameters,                     returning?          ]
@@ -457,53 +393,11 @@ const reRankData = (request: Request, response: Response) => {
 
 
 
-
-
-// accepts a table name (string), an array of columns, an array of values,
-// and a two-dimensional array of conditions, then updates the row with the matching conditions.
-// the conditions array must be in the format [[column, value], [column, value], ...]
-// here's an example of a request body:
-//
-    // const reqBody = [
-    //       'archive',                                                     <== table name
-    //     [ 'headline',  'link', 'image',  'description'   ],              <== columns
-    //     [  headline,    link,   imageUrl, description    ],              <== parameters
-    //   [ [ 'article_id', articleId                        ] ]             <== conditions
-    // ]
-// const updateData = (request : Request, response : Response) => {
-
-    
-//     // destructure the request body.
-//     const table      : string      = request.body[0];
-//     const columns    : string[]    = request.body[1];
-//     const parameters : unknown[]   = request.body[2];
-//     const conditions : unknown[][] = request.body[3];
-    
-//     // log to the console before starting query
-//     console.log(`Updating table ${table} \n`);
-
-//     // build a string of comma-separated column names and parameter placeholders for the SET clause.
-//     const colString : string  = columns.map( (column, index)    => `${column} = $${index+1}`).join(', ');
-
-//     // build a string of AND-separated column names and parameter placeholders for the WHERE clause.
-//     const conString : string   = conditions.map( (condition, index) => `${condition[0]} = $${index+1+columns.length}`).join(' AND ');
-
-//     // build the query.
-//     const query     : string   = `UPDATE ${table} SET ${colString} WHERE ${conString};`;
-
-//     // log the query to the console.
-//     console.log(`${query}\n`);
-
-//     // combine the parameters and condition values into a single array.
-//     const values   : unknown[] =  !conditions? parameters : parameters.concat( conditions.map( condition => condition[1] ) );
-
-//     // execute the query.
-//     simpleQuery(response, query, values);
-// }
-
-
-const updateData = (request: Request, response: Response) => {                  console.log('here it is : ',request.body[1]);
-                                                                                console.log('here it is again: ',request.body[2]);
+// updateData function that accepts a table name, 
+// an object containing the columns and values to update as key-value pairs, 
+// and an array of arrays containing the columns and values to filter by.
+// [ 'table', { column: value, column2: value2 }, [ [column, value], [column, value] ] ]
+const updateData = (request: Request, response: Response) => {                 
 
 
     // destructure the request body.

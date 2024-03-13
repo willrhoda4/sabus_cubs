@@ -170,3 +170,6 @@ dist
 
 # IntelliJ based IDEs
 .idea
+
+# Sentry Config File
+.env.sentry-build-plugin

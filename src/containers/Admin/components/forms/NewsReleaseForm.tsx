@@ -5,6 +5,15 @@
 
 
 
+/**
+ * news release form for the admin dashboard.
+ * unlike other admin forms, this one doesn't leverage
+ * the AdminForm component, because it uses a different
+ * endpoint.
+ */
+
+
+
 
 
 import   Form                 from '../../../../common/forms/Form';
@@ -16,15 +25,24 @@ import {
          FormState, 
          NewStatusFunction  } from '../../../../types/form';
 
+import   authToken           from '../../../../utils/authToken';
+
+import   useNotification     from '../../../../hooks/useNotification';
 
 
 
 
-export default function NewsReleaseForm ( { getData } : { getData : () => void }): JSX.Element {
+
+export default function NewsReleaseForm ( { getData } : { getData : () => void } ): JSX.Element {
+
+
+    const notification = useNotification();
 
 
 
-
+    // even though this form doesn't use the AdminForm component,
+    // it still uses the Form component that AdminForm is built on,
+    // so we need to define the fields like this.
     const fields : Field[] =    [
                                     {
                                         name:             'headline',
@@ -43,6 +61,10 @@ export default function NewsReleaseForm ( { getData } : { getData : () => void }
                                 ]
 
 
+    // this is the submit function that gets passed to the Form component
+    // it's pretty straightforward, shipping the headline and content to the
+    // generateNewsRelease endpoint, and then resetting the form.
+    // a valid JWT is required to access this endpoint, so we use authToken().
     async function handleSubmit( formState : FormState, newStatus : NewStatusFunction, resetForm : () => void ) {
 
         newStatus( 'generating news release...', false )
@@ -50,16 +72,20 @@ export default function NewsReleaseForm ( { getData } : { getData : () => void }
         const reqBody = { ...formState, date: new Date() }
 
         try   {
-                    const res = await Axios.post( `${import.meta.env.VITE_API_URL}generateNewsRelease`, reqBody )
+                    const response = await Axios.post( `${import.meta.env.VITE_API_URL}generateNewsRelease`, 
+                                                          reqBody, 
+                                                          authToken() 
+                                                     );
 
-                    console.log(res);
-                    newStatus( 'news release successfully generated!' )
+                    console.log(response);
+                    newStatus( 'news release successfully generated!' );
+                    notification('a sample release has been delivered to your email.')
                     getData();
                     return resetForm();
               }
 
         catch {
-                    newStatus( 'something went wrong, please try again later.' )
+                    newStatus( 'something went wrong, please try again later.' );
               }
 
     }

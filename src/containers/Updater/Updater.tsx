@@ -53,9 +53,7 @@ export default function Updater(): JSX.Element {
     const [ doneeInfo,      setDoneeInfo  ] = useState<FormState>({});
     const [ tokenError,     setTokenError ] = useState< 'noToken' | 'badToken' | false>(false);
 
-    // const [ newStatusRef,   newStatus     ] = useNewStatus();
-    // const                   notification    = useNotificatiion();
-
+    
 
     
 
@@ -67,12 +65,16 @@ export default function Updater(): JSX.Element {
         // if there's no token, there's no update happening.
         if ( !token ) { return setTokenError('noToken'); }
 
+     
 
         // check the token against the database
         // if it's valid, set the doneeInfo state to the user's current info
         // if not, set the error state to 'badToken'
         Axios.post(`${import.meta.env.VITE_API_URL}verifyUpdate`, { token } ) 
-             .then( res => setDoneeInfo(res.data)                           )
+             .then( res => {
+                                setDoneeInfo(res.data.doneeInfo);
+                                localStorage.setItem( 'jwt', res.data.token );
+                           }                                                )
             .catch( ()  => setTokenError('badToken')                        );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -4,9 +4,8 @@
 
 
 
-
 /**
- * handler script for admin login routes.
+ * handler script for login routes.
  * 
  * in order to avoid clutter, this file is only for admin login routes,
  * while authentication routes for user subscription updates are handled
@@ -18,7 +17,7 @@
 
 
 
-
+import      jwt              from 'jsonwebtoken';
 
 import      bcrypt           from 'bcrypt';
 
@@ -46,7 +45,7 @@ function getPasswordData ( request: Request, response: Response, next: NextFunct
     const email       =  request.body[0].email;
     const query       = `SELECT password FROM admin WHERE email = $1;`;
 
-    const stashedPass = ( data: unknown[] ) => {   console.log('here is the data:\n',data);   
+    const stashedPass = ( data: unknown[] ) => {   
 
         if ( data.length === 0 ) { 
                                     console.log('email not found in database.')
@@ -62,15 +61,34 @@ function getPasswordData ( request: Request, response: Response, next: NextFunct
 
 
 
+// helper function to generate JWT for admins.
+// checkPassword and returnToken both use this.
+function adminJWT ( email: string ) {
+
+    const payload = {
+        email: email,
+        role: 'admin' 
+    };
+
+    return jwt.sign( payload, process.env.JWT_SECRET as string, { expiresIn: '2h' } ); 
+}
+
+
+
+
 // receives a password from the client and 
 // compares it to the hashed password retrieved by getPasswordData.
 async function checkPassword ( request: Request, response: Response ) {
 
 
+
     console.log('Checking password...');
 
-    const password = request.body[0].password;
-    const passHash = response.locals.password;
+
+
+    const email    : string = request.body[0].email;
+    const password : string = request.body[0].password;
+    const passHash : string = response.locals.password;
 
     try {
 
@@ -78,10 +96,12 @@ async function checkPassword ( request: Request, response: Response ) {
 
         if (match)  {
                         console.log('passwords match!');
-                        response.send('match');
+
+                        const           token = adminJWT(email);
+                        response.json({ token }); // Send the token to the client
                     } 
         else        {
-                        console.log('invalid password.');
+                        console.log(  'invalid password.'  );
                         response.send('invalid');
                     }
     } catch (error) {
@@ -175,9 +195,10 @@ function verifyTokenData ( request: Request, response: Response, next: NextFunct
 
 
 
-// end of the line after checkPassword and verifyTokenData.
-// hashes the new password and stores it in the database.
-async function resetPassword ( request: Request, response: Response ) {
+// third stop after checkPassword and verifyTokenData.
+// hashes the new password and stores it in the database,
+// then passes the request returnToken to wrap things up.
+async function resetPassword ( request: Request, response: Response, next: NextFunction ) {
 
     console.log('Resetting password...');
     
@@ -190,12 +211,35 @@ async function resetPassword ( request: Request, response: Response ) {
     return db.simpleQuery(    response,
                               query,
                             [ hashedPass, id  ],
+                              undefined,
+                              next
                          );
+}
+
+
+// last stop after resetPassword.
+// generates a new JWT and sends it to the client.
+function returnToken ( request : Request, response : Response ) {
+
+
+    console.log('Returning token...');
+
+    const email = request.body[1];
+
+
+    const           token = adminJWT(email);
+    response.json({ token }); // Send the token to the client
+
 }
 
 
 
 
+
+
+// retrieves donation data from the database
+// for the admin dashboard.
+// sends different columns back depending on the type of data requested.
 function getDonationData ( request : Request, response : Response ) {
 
 
@@ -244,6 +288,7 @@ export default  {
                    checkPassword, 
                    registerReset,
                    resetPassword,
+                   returnToken,
                    verifyTokenData,
                    getPasswordData,
                    getDonationData,

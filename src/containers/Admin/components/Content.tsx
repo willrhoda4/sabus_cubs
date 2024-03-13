@@ -24,10 +24,10 @@ export default function Content(): JSX.Element {
 
 
 
-    const [ displayed, setDisplayed ] = useState('FAQ');
+    const [ displayed, setDisplayed ] = useState('faq');
 
 
-    const   tabNames   : string[]  = [ 'FAQ', 'Board', 'Items', 'Stories' ];
+    const   tabNames   : string[]  = [ 'faq', 'board', 'items', 'stories' ];
     
     
     return (
@@ -56,9 +56,9 @@ export default function Content(): JSX.Element {
                 >
 
                 {
-                    displayed === 'FAQ'           ? <FAQ     />       
-                :   displayed === 'Board'         ? <Board   />    
-                :   displayed === 'Stories'       ? <Stories />    
+                    displayed === 'faq'           ? <FAQ     />       
+                :   displayed === 'board'         ? <Board   />    
+                :   displayed === 'stories'       ? <Stories />    
                 :                                   <Items   /> 
                 }
                 </div>

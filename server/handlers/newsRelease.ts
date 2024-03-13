@@ -190,11 +190,12 @@ const   {
 
 
 const     query  =   `
-                        INSERT INTO news_releases ( date, html, content, headline, pdf_url)
-                        VALUES ($1, $2, $3, $4, $5)
+                        INSERT INTO news_releases ( date, html, content, headline, pdf_url, published)
+                        VALUES ($1, $2, $3, $4, $5, $6)
                     `;
 
-const parameters = [ date, html, content, headline, pdf_url ];
+// published is false by default, and will remain false until the admin publishes.
+const parameters = [ date, html, content, headline, pdf_url, false ];
 
 
 // note that simple query will handle delivering the response to the client.

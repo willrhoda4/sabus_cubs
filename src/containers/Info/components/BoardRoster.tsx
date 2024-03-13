@@ -1,6 +1,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 /**
  * displays the board roster on the info page,
  * as well as on the admin dashboard
@@ -8,47 +18,44 @@
 
 
 
-import BoardForm from '../../Admin/components/forms/BoardForm';
+import   BoardForm                 from '../../Admin/components/forms/BoardForm';
 
-import boardProfile from './BoardProfile';
+import   boardProfile              from './BoardProfile';
 
-import EditorButtons from '../../../common/buttons/EditorButtons';
+import   EditorButtons             from '../../../common/buttons/EditorButtons';
 
-import Axios from 'axios';
+import { BoardMember             } from '../../../types/info';
 
-import { useState, useEffect } from 'react';
+import   ContentRack               from '../../../common/ContentRack';
 
-import { BoardMember } from '../../../types/info';
-
-
-
-
-export default function Board ( { admin } : { admin? : boolean } ): JSX.Element {
+import { ContentControls,
+         ContentRackWrapperProps } from '../../../types/content';
 
 
-    const [ boardData, setBoardData ] = useState<BoardMember[]>([]);
-    const [ editing,   setEditing   ] = useState<false | number>(false);
 
 
-    // getBoard is a function that makes a POST request to the server for the board data.
-    const   getBoard = () => {
+export default function Board ( { admin } : ContentRackWrapperProps ): JSX.Element {
 
-        const reqBody =  [ 'board', undefined, { orderBy: 'rank' } ]
 
-        Axios.post( `${import.meta.env.VITE_API_URL}getData`, reqBody   )
-             .then(   res => { setBoardData(res.data)                 } )
-             .catch(  err => { console.log(err)                       } )
 
-    }
-    // get the data when the component mounts.
-    useEffect(() => { getBoard(); }, [])
 
 
     // package boardProfile with conditionaly rendered EditorButtons and updateForm
-    function BoardProfile (boardMember: BoardMember, index : number) : JSX.Element {
+    function BoardProfile ( boardMember : BoardMember, 
+                            index       : number, 
+                            controls    : ContentControls ) : JSX.Element {
 
 
         const {  id, rank } = boardMember;
+
+        const { 
+                getData,
+                editing, 
+                dataSize,
+                setEditing, 
+        
+              } = controls;
+
 
         return (
 
@@ -58,6 +65,7 @@ export default function Board ( { admin } : { admin? : boolean } ): JSX.Element 
 
                 {
                     admin && 
+                    
                     <>
                     
                         <EditorButtons  
@@ -67,13 +75,13 @@ export default function Board ( { admin } : { admin? : boolean } ): JSX.Element 
                                  table={ 'board'          }
                                 pkName={ 'id'             }
                                editing={ editing          }
-                              loadData={ getBoard         }
-                              dataSize={ boardData.length }
+                              loadData={ getData          }
+                              dataSize={ dataSize         }
                              wrapStyle={ 'mt-4'           }
                             setEditing={ setEditing       } 
                         />
 
-                    { editing === id && <BoardForm getData={getBoard} update={boardMember} /> }
+                    { editing === id && <BoardForm getData={getData} update={boardMember} /> }
                     
                     </>
                 }
@@ -87,24 +95,14 @@ export default function Board ( { admin } : { admin? : boolean } ): JSX.Element 
 
     
 
-    return (
-
-        <div className={`
-                            w-full h-fit
-                            py-24 px-8 xl:px-24
-                            grid gap-8 xl:gap-16
-                            grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-                       `}
-        >
-
-
-            { boardData.length > 0 && boardData.map( (boardMember, index) =>    <div key={boardMember.public_id as string} className='flex justify-center'>
-                                                                                    { BoardProfile(boardMember, index) }
-                                                                                </div> 
-                                                   ) 
-            }
-
-        </div>
-
-    )
+    return  <ContentRack<BoardMember> 
+                        table='board' 
+                renderContent={BoardProfile} 
+                    wrapStyle={`
+                                w-full h-fit
+                                py-24 px-8 xl:px-24
+                                grid gap-8 xl:gap-16
+                                grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+                              `}
+            />
 }
