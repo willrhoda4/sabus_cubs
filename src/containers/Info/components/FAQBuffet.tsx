@@ -107,6 +107,9 @@ export default function FAQBuffet( { admin } : ContentRackWrapperProps ): JSX.El
                                 w-full h-fit
                                 flex flex-col items-center
                                 px-2
+                                border border-green-300 
+                                    child:w-full
+                                    child:max-w-4xl
                               `}
             />
 

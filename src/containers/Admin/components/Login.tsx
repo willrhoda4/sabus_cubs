@@ -144,7 +144,7 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
         const emailFailure = () =>      newStatus('invalid email. please try again.');
 
 
-        Axios.post(`${import.meta.env.VITE_API_URL}checkPassword`,  [ formState ] )
+        Axios.post(`${import.meta.env.VITE_API_URL}public/checkPassword`,  [ formState ] )
              .then( res => {    
                                 res.data.token          ? loginSuccess(res.data.token)
                               : res.data === 'no user'  ? emailFailure()
@@ -176,9 +176,9 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
         const resetError   = () =>      newStatus('there was a problem resetting your pasword. please try again later.');
 
 
-        Axios.post(`${import.meta.env.VITE_API_URL}resetLink`, [ formState.email ]  )
-             .then( () => resetSuccess()                                            )
-            .catch( () => resetError()                                              );
+        Axios.post(`${import.meta.env.VITE_API_URL}public/resetLink`, [ formState.email ]  )
+             .then( () => resetSuccess()                                                   )
+            .catch( () => resetError()                                                     );
 
     }
 
@@ -206,7 +206,7 @@ export default function Login ( { setAuthenticated } : LoginProps ) : JSX.Elemen
             newStatus('Storing new password. You should be redirected shortly...', false)
             
             // send the new password and token to the server.
-            Axios.post(`${import.meta.env.VITE_API_URL}resetPassword`,  [ formState.password, token, id ] )
+            Axios.post(`${import.meta.env.VITE_API_URL}public/resetPassword`,  [ formState.password, token, id ] )
                  .then( res => {
                                      // if the server returns an error message, update the status message.
                                     if (res.data === 'invalid token'  ||

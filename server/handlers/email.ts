@@ -251,9 +251,29 @@ function sendResetLink( request: Request, response: Response ) {
 
 
 
+function addEmail( request: Request, response: Response ) {
+
+    // Extract the email from the request body
+    const email = request.body[0];
+
+    // Define the SQL query for inserting the email
+    const query = 'INSERT INTO emails (email) VALUES ($1)';
+
+    // Define the parameters to be used in the SQL query
+    const parameters = [ email ];
+
+    // Call simpleQuery to execute the insertion
+    db.simpleQuery(response, query, parameters);
+}
+
+
+
+
 export default  { 
+                    addEmail,
                     formMail, 
                     updateMail,
+                    deliverEmail,
                     sendResetLink,
                     deliverNewsRelease, 
                 };

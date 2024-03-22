@@ -57,9 +57,9 @@ export default function DonationsRack( { displayed } : DonationRackProps ) : JSX
       // to make sure the correct data is returned
       const reqBody = [ displayed ];
 
-      Axios.post(`${import.meta.env.VITE_API_URL}getDonationData`, reqBody, authToken() )
-           .then(   res => setData(res.data)                                             )
-           .catch(  err => console.log(err )                                             );
+      Axios.post(`${import.meta.env.VITE_API_URL}admin/getDonationData`, reqBody, authToken() )
+           .then(   res => setData(res.data)                                                  )
+           .catch(  err => console.log(err )                                                  );
    }
 
    // get content on initial load
@@ -94,8 +94,8 @@ export default function DonationsRack( { displayed } : DonationRackProps ) : JSX
 
 
    // renders the appropriate data based on the displayed tab
-   const listItem =      (data : DonationData) =>  displayed === 'donees'        ? donee( data        as Donee )
-                                                 : displayed === 'donations'     ? donation( data     as Donation )
+   const listItem =      (data : DonationData) =>  displayed === 'donees'        ? donee( data        as Donee        )
+                                                 : displayed === 'donations'     ? donation( data     as Donation     )
                                                  : displayed === 'subscriptions' ? subscription( data as Subscription )
                                                  : null;
 

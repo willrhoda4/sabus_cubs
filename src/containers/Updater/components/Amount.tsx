@@ -56,9 +56,9 @@ export default function Amount({ doneeInfo } : { doneeInfo : FormState } ) : JSX
                             newAmount:      amount
                         }
 
-        return Axios.post( `${import.meta.env.VITE_API_URL}manageSubscription`, reqBody, authToken()  )
-                    .then(  res => { console.log(res); updateSucceeded;                }              )
-                    .catch( err => { console.log(err); updateFailed();                 }              );
+        return Axios.post( `${import.meta.env.VITE_API_URL}stripe/manageSubscription`, reqBody, authToken()  )
+                    .then(  res => { console.log(res); updateSucceeded;                                   }  )
+                    .catch( err => { console.log(err); updateFailed();                                    }  );
 
     }
 

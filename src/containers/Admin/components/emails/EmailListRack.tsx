@@ -56,9 +56,9 @@ export default function EmailListRack(): JSX.Element {
     // requests email data from server 
     function loadData() {
 
-        Axios.post(`${import.meta.env.VITE_API_URL}getAdminData`, ['emails'], authToken() )    
-             .then( res => setUsers(res.data)                                             )
-             .catch( () => setUsers('error')                                              )
+        Axios.post(`${import.meta.env.VITE_API_URL}admin/getAdminData`, ['emails'], authToken() )    
+             .then( res => setUsers(res.data)                                                   )
+             .catch( () => setUsers('error')                                                    )
     }
 
     // sets data to state on initial render
@@ -101,9 +101,9 @@ export default function EmailListRack(): JSX.Element {
             // confirm the delete before you send the request
             window.confirm(warning) &&
 
-                Axios.post(`${import.meta.env.VITE_API_URL}deleteData`, reqBody, authToken() )
-                     .then(  ()  => deleteSuccess()                                           )
-                     .catch( ()  => deleteFailure()                                           );
+                Axios.post(`${import.meta.env.VITE_API_URL}admin/deleteData`, reqBody, authToken() )
+                     .then(  ()  => deleteSuccess()                                                )
+                     .catch( ()  => deleteFailure()                                                );
         }
 
 

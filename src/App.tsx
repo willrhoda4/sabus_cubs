@@ -81,9 +81,9 @@ function App() {
 
   const   hamburgerRef                        = useRef<HTMLDivElement | null>(null);
 
-  const   editor                              = location === '/simba';
+  const   admin                               = location === '/simba';
 
-  const   pages : string[] = !editor ? [ 'home',    'info',   'support',  'gallery', 'contact', 'news' ]
+  const   pages : string[] = !admin  ? [ 'home',    'info',   'support',  'gallery', 'contact', 'news' ]
                                      : [ 'content', 'emails', 'releases', 'donations'                  ];
 
   // memoized to tame the stripe warning about multiple instances of the stripe object
@@ -127,7 +127,7 @@ function App() {
                 iconsDisplayed={iconsDisplayed}
                   hamburgerRef={hamburgerRef}
                     setEditing={setEditing}
-                        editor={editor}
+                        admin ={admin }
                         pages={pages} 
         /> 
 

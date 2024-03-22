@@ -4,12 +4,10 @@
 
 
 /**
- * Note to future self: 
  * 
- * For a simple gallery like this, don't bother with
- * getting an access token and that whole rigamarole.
- * Instead, just use the Instagram Basic Display API
- * and get a token through the Long Lived Key Generator.
+ * for a simple gallery like this, we can use Instagram Basic Display API.
+ * once we connect the IG account to the app as a test user,
+ * we can get a token through the Long Lived Key Generator and we're in business.
  */
 
 
@@ -51,7 +49,7 @@ export default function useIGData () {
 
             try             {
                                 // start by requesting a token from the server
-                                const response    = await Axios.get(`${import.meta.env.VITE_API_URL}getIGToken`);
+                                const response    = await Axios.get(`${import.meta.env.VITE_API_URL}public/getIGToken`);
                                 const token       = response.data.token;
                                 
                                 // then use the token to fetch data from Instagram

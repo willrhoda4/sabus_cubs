@@ -12,7 +12,7 @@
  * 
  * a note on closingTime: for complex animations, where isOpen controls a sequence of animations,
  * setClosing time to the total length of the sequence, not the specific animation's duration.
- * additionally, you should only need to return the displayed sate once. here's an example:
+ * additionally, you should only need to return the displayed state once. here's an example:
  * 
  *  const [ mainMenuAnimation, menuIsOpen    ] = useToggleAnimation({  
 
@@ -78,7 +78,7 @@ export default function useToggleAnimation( {
 
     useEffect( () => {
 
-        let timeoutId : NodeJS.Timeout | undefined;
+        let timeoutId : number | undefined;
 
         if ( isOpen ) {
                         setAnimation( openAnimation   );

@@ -39,6 +39,9 @@ export default function HeaderIcon ( { title, editing, height, width, className,
 
     
     switch (title) {
+        case '':
+            Icon = IconHome;
+            break;
         case 'home':
             Icon = IconHome;
             break;

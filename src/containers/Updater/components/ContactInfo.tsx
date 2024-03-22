@@ -68,9 +68,9 @@ export default function ContactInfo( { doneeInfo } : { doneeInfo : FormState } )
         }
 
 
-        return  Axios.post(`${import.meta.env.VITE_API_URL}updateDoneeInfo`, reqBody, authToken() )
-                     .then(  res => { console.log(res); updateSucceeded(); }                      )
-                     .catch( err => { console.log(err); updateFailed();    }                      );
+        return  Axios.post(`${import.meta.env.VITE_API_URL}stripe/updateDoneeInfo`, reqBody, authToken() )
+                     .then(  res => { console.log(res); updateSucceeded();        }                      )
+                     .catch( err => { console.log(err); updateFailed();           }                      );
     }
 
     const blurb = 'Please provide your preferred name and current email address.';

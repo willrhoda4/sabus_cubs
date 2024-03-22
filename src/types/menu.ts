@@ -19,7 +19,7 @@ export interface MenuProps {
     setMenuDisplayed  : SetState<boolean>; 
     hamburgerRef      : React.RefObject<HTMLDivElement>;       
     setEditing        : (newState: string) => void;
-    editor            : boolean;
+    admin            : boolean;
 }
 
 
@@ -28,7 +28,7 @@ export interface NavLinkProps {
 
     index             : number;
     page              : string;
-    editor            : boolean;
+    admin             : boolean;
     setMenuDisplayed  : SetState<boolean>;        
     setEditing        : (newState: string) => void;
     onMouseOver       : () => void;

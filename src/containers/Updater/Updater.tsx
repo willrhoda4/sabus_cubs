@@ -70,7 +70,7 @@ export default function Updater(): JSX.Element {
         // check the token against the database
         // if it's valid, set the doneeInfo state to the user's current info
         // if not, set the error state to 'badToken'
-        Axios.post(`${import.meta.env.VITE_API_URL}verifyUpdate`, { token } ) 
+        Axios.post(`${import.meta.env.VITE_API_URL}public/verifyUpdate`, { token } ) 
              .then( res => {
                                 setDoneeInfo(res.data.doneeInfo);
                                 localStorage.setItem( 'jwt', res.data.token );

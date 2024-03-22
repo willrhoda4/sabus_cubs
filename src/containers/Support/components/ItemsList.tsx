@@ -35,9 +35,9 @@ export default function ItemsList ({ admin } : ItemsListProps) : JSX.Element {
 
         const reqBody = ['items', undefined, { orderBy: 'rank' }];
 
-        Axios.post(`${import.meta.env.VITE_API_URL}getData`, reqBody )
-             .then(   res => setItems(res.data)                      )
-            .catch(   err => console.log(err )                       );
+        Axios.post(`${import.meta.env.VITE_API_URL}public/getData`, reqBody )
+             .then(   res => setItems(res.data)                             )
+            .catch(   err => console.log(err )                              );
 
     }
 

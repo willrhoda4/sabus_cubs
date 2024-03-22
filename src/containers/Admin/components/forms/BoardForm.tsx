@@ -64,7 +64,7 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
             // start by fetching the names of all existing board members.
             // this is necessary for calculating the new board member's rank,
             // and also for checking for name conflicts.
-            const names = await Axios.post( `${serverURL}getData`, [ 'board', null, { columns: 'full_name' } ] );
+            const names = await Axios.post( `${serverURL}public/getData`, [ 'board', null, { columns: 'full_name' } ] );
 
 
             // if it's not an update, check for name conflicts.
@@ -91,7 +91,7 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
                 newStatus('uploading headshot...', false);
 
                 // Fetch the signature and other signed parameters from your server
-                const   signature   = await Axios.post( `${serverURL}signature`, [ public_id ] )
+                const   signature   = await Axios.post( `${serverURL}admin/signature`, [ public_id ] )
                 const   sigData     = signature.data; 
         
 
@@ -165,8 +165,8 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
 
 
             // add the board member to the database
-            !update ? await Axios.post(`${serverURL}addData`,    reqBody )
-                    : await Axios.put( `${serverURL}updateData`, reqBody );
+            !update ? await Axios.post(`${serverURL}admin/addData`,    reqBody )
+                    : await Axios.put( `${serverURL}admin/updateData`, reqBody );
 
 
             /**

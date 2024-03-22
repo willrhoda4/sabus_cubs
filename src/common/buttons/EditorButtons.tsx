@@ -82,7 +82,7 @@ export default function EditorButtons ({    id,
 
         window.confirm(warning) &&
 
-            Axios.post(`${import.meta.env.VITE_API_URL}deleteData`, reqBody, authToken() )
+            Axios.post(`${import.meta.env.VITE_API_URL}admin/deleteData`, reqBody, authToken() )
                  .then( ()   => loadData()                                                )
                  .catch( err => console.log(err)                                          );
         
@@ -102,7 +102,7 @@ export default function EditorButtons ({    id,
 
             const reqBody =  [ table, pkName, id, rank, newRank ];
                     
-            Axios.post( `${import.meta.env.VITE_API_URL}reRankData`,  reqBody,  authToken()  )  
+            Axios.post( `${import.meta.env.VITE_API_URL}admin/reRankData`,  reqBody,  authToken()  )  
                  .then(  ()  => loadData()                                                    )
                 .catch(  err => console.log(err)                                              );              
 
@@ -147,7 +147,7 @@ export default function EditorButtons ({    id,
 
             notification('publishing news release...');
 
-            Axios.post(`${import.meta.env.VITE_API_URL}publishNewsRelease`, reqBody, authToken()  )
+            Axios.post(`${import.meta.env.VITE_API_URL}admin/publishNewsRelease`, reqBody, authToken()  )
                  .then(  res => { notification(res.data);   loadData() }                          )
                  .catch( err =>   notification(err.message)                                       );
         }

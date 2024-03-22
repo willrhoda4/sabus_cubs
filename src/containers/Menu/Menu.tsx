@@ -35,7 +35,7 @@ export default function Menu ( {
                                     setIconsDisplayed, 
                                     hamburgerRef,
                                     setEditing, 
-                                    editor 
+                                    admin 
                                 } : MenuProps) : JSX.Element {
     
     
@@ -119,7 +119,7 @@ export default function Menu ( {
                                     key={index}
                                     index={index} 
                                     page={page}
-                                    editor={editor}
+                                    admin={admin}
                                     setEditing={setEditing}
                                     setMenuDisplayed={setMenuDisplayed}
                                     onMouseOver={() => setIconsDisplayed(page)}

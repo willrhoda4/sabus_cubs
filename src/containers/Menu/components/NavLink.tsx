@@ -19,7 +19,7 @@ import { NavLinkProps }  from '../../../types/menu';
 
 
 // generate nav links for the Menu
-export default function NavLink ( { index, page, editor, setMenuDisplayed, setEditing, onMouseOver } : NavLinkProps) : JSX.Element {
+export default function NavLink ( { index, page, admin, setMenuDisplayed, setEditing, onMouseOver } : NavLinkProps) : JSX.Element {
 
 
 
@@ -31,9 +31,9 @@ export default function NavLink ( { index, page, editor, setMenuDisplayed, setEd
         
    
 
-                           // there's no icons for the editor menu,
+                           // there's no icons for the admin menu,
                            // so we'll just change the page and close the menu            
-   const link = editor ?    <div  
+   const link = admin ?    <div  
                                         key={index} 
                                 onMouseOver={onMouseOver}
                                     onClick={ () => {   

@@ -38,7 +38,7 @@ export default function ContentRack<T>( { table, renderContent, wrapStyle } : Co
 
         
         // we'll usually use the getData route
-        let endpoint = 'getData';
+        let endpoint = 'public/getData';
 
         // and we won't need a config object for most racks.
         let config = {};
@@ -52,7 +52,7 @@ export default function ContentRack<T>( { table, renderContent, wrapStyle } : Co
         // we'll also need to append an authToken() to the request.
         if ( table === 'journalists' ) {
 
-            endpoint = 'getAdminData';
+            endpoint = 'admin/getAdminData';
             config   =  authToken();
         }
 

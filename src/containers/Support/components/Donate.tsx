@@ -214,17 +214,17 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
 
         // monthly donations are handled by their own endpoint.                                            
         if ( monthly ) {
-                            await Axios.post(`${import.meta.env.VITE_API_URL}startMonthlyDonations`, { ...reqBody, token: cardId } )
-                                       .then(   () =>  { clearForm();               return donationSucceeded();                  } )
-                                       .catch(  () =>  { setIsClicked(false);       return donationFailed();                     } );
+                            await Axios.post(`${import.meta.env.VITE_API_URL}public/startMonthlyDonations`, { ...reqBody, token: cardId } )
+                                       .then(   () =>  { clearForm();               return donationSucceeded();                         } )
+                                       .catch(  () =>  { setIsClicked(false);       return donationFailed();                            } );
                                   
                        }
 
         else           {    // one-time donations need to retrieve a client secret
                             // from the server before getting sent to Stripe.
-                            const clientSecret = await Axios.post( `${import.meta.env.VITE_API_URL}oneTimeDonation`,    reqBody       )
-                                                            .then( res => { return res.data.clientSecret;                           } )
-                                                            .catch( () => { setIsClicked(false); return donationFailed();           } );
+                            const clientSecret = await Axios.post( `${import.meta.env.VITE_API_URL}public/oneTimeDonation`,    reqBody       )
+                                                            .then( res => { return res.data.clientSecret;                                  } )
+                                                            .catch( () => { setIsClicked(false); return donationFailed();                  } );
                 
                 
                             // confirm the payment with the client secret from PaymentIntent.

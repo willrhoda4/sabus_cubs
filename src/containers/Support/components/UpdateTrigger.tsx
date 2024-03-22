@@ -86,7 +86,7 @@ const UpdateTrigger: React.FC = () => {
       
         const email               = formState.email;
 
-        return Axios.post( `${import.meta.env.VITE_API_URL}scheduleUpdate`,          { email } )   
+        return Axios.post( `${import.meta.env.VITE_API_URL}public/scheduleUpdate`,   { email } )   
                     .then(  () => { newStatus(successMsg); notification(successNotification) } )
                     .catch( () => { newStatus(failureMsg);                                   } );
     }

@@ -215,7 +215,9 @@ function checkTable ( request : Request, response : Response, next : NextFunctio
                                     'ig_token',
                                     'stories',
                                     'admin', 
-                                 ];
+                                    'site_settings',
+                                 ];  // since site_settings' only job is tracking maintenance mode, we'll include it here for convenience.
+                                     // if we graylist it, we windup with a race condition when we try moving to the admin dashboard.
 
     const graylist  : string[] = [
                                     'journalists',

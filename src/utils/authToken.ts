@@ -7,14 +7,14 @@
 
 /**
  *  prepares a a headers object with the authorization header set 
- *  to the admin token, it it exists in local storage.
+ *  to the admin token, if it exists in local storage.
  */
 
 
 
 
 
-import  {jwtDecode } from 'jwt-decode';
+import  { jwtDecode } from 'jwt-decode';
 
 
 interface DecodedToken {

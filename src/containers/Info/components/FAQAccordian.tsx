@@ -37,7 +37,7 @@ export default function FAQAccordian( { id, question, answer, displayed, setDisp
             setAnswerHeight( open ? contentRef.current.scrollHeight : 0 );
         }
 
-    }, [ open ]);
+    }, [ open ] );
 
 
     return ( 
@@ -45,7 +45,7 @@ export default function FAQAccordian( { id, question, answer, displayed, setDisp
         //  wrapper component.
         //  dictates the FAQ shadow and shape.
         <div className={`
-                            w-full max-w-4xl
+                            min-w-full
                             my-8
                             rounded-md 
                             border-2 border-black 
@@ -92,13 +92,14 @@ export default function FAQAccordian( { id, question, answer, displayed, setDisp
                       ref={   contentRef }
                     style={ { height: open ? `${answerHeight}px` : '0px', }} 
                 className={`
-                                w-full
+                                min-w-full
                                 overflow-hidden
                                 transition-all
                                 duration-400 ease-in-out
                           `}
                 >
-               <p className='p-5 font-body'>{answer}</p>
+               <p className='p-5 font-body min-
+               w-full'>{answer}</p>
             </div>
 
         </div>

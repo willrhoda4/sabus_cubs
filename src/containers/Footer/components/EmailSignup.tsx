@@ -60,9 +60,9 @@ export default function EmailSignup( { buttonColour, newStatus } : EmailSignupPr
 
 
 
-        Axios.post(`${import.meta.env.VITE_API_URL}addData`,   [ 'emails', [ { email: email } ] ] )
-             .then(   () =>  signupSuccess()                                                      )
-             .catch(  () =>  signupFailure()                                                      );
+        Axios.post(`${import.meta.env.VITE_API_URL}public/addEmail`, [ email ] )
+             .then(   () =>  signupSuccess()                                   )
+             .catch(  () =>  signupFailure()                                   );
     }
 
     return (

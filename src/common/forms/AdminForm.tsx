@@ -59,7 +59,7 @@ export default function AdminForm( { table, update, getData, setEditing, fields,
             
             if ( !update ) {
                 
-                const rankResponse = await Axios.post(`${import.meta.env.VITE_API_URL}getData`, [table], authToken() );
+                const rankResponse = await Axios.post(`${import.meta.env.VITE_API_URL}admin/getAdminData`, [table], authToken() );
                       rank         = rankResponse.data.length + 1; 
             
             }
@@ -78,8 +78,8 @@ export default function AdminForm( { table, update, getData, setEditing, fields,
 
 
             // second request to add the question to the database
-            !update ? await Axios.post(`${import.meta.env.VITE_API_URL}addData`,    reqBody, authToken() )
-                    : await Axios.put( `${import.meta.env.VITE_API_URL}updateData`, reqBody, authToken() );
+            !update ? await Axios.post(`${import.meta.env.VITE_API_URL}admin/addData`,    reqBody, authToken() )
+                    : await Axios.put( `${import.meta.env.VITE_API_URL}admin/updateData`, reqBody, authToken() );
 
 
 

@@ -5,7 +5,7 @@
 
 
 /**
- * handler script for login routes.
+ * handler module for login routes and maintenance-mode toggler.
  * 
  * in order to avoid clutter, this file is only for admin login routes,
  * while authentication routes for user subscription updates are handled
@@ -29,6 +29,7 @@ import {
             Request, 
             Response,
             NextFunction,    } from 'express';
+
 
 
 
@@ -279,6 +280,23 @@ function getDonationData ( request : Request, response : Response ) {
 
 
 
+export async function getMaintenanceMode() {
+
+    const { rows } = await db.pool.query("SELECT setting_value FROM site_settings WHERE setting_name = 'maintenance_mode'");  
+    console.log('Maintenance mode: ', rows[0].setting_value)
+    return  rows[0].setting_value;
+  }
+
+
+
+async function toggleMaintenanceMode ( request : Request, response : Response ) {
+
+    const currentMode = await getMaintenanceMode();
+    await db.pool.query("UPDATE site_settings SET setting_value = $1 WHERE setting_name = 'maintenance_mode'", [!currentMode]);
+
+    response.json( { isMaintenanceMode: !currentMode } );
+}
+
 
 
 
@@ -292,6 +310,8 @@ export default  {
                    verifyTokenData,
                    getPasswordData,
                    getDonationData,
+                   getMaintenanceMode,
+                   toggleMaintenanceMode,
                 };
 
 

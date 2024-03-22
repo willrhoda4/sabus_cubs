@@ -77,7 +77,7 @@ export default function EmailForm(): JSX.Element {
         
       
             // send email to server for delivery        email endpoint expects a req.body object, not an array.
-        return    Axios.post(`${import.meta.env.VITE_API_URL}email`,  formState      )
+        return    Axios.post(`${import.meta.env.VITE_API_URL}public/email`,  formState      )
                        .then( ()  =>  {   newStatus(reqSuccess); resetForm();     }  )
                       .catch( ()  =>      newStatus(reqFailure)                      );
     }

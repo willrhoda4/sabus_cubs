@@ -72,7 +72,7 @@ export default function NewsReleaseForm ( { getData } : { getData : () => void }
         const reqBody = { ...formState, date: new Date() }
 
         try   {
-                    const response = await Axios.post( `${import.meta.env.VITE_API_URL}generateNewsRelease`, 
+                    const response = await Axios.post( `${import.meta.env.VITE_API_URL}admin/generateNewsRelease`, 
                                                           reqBody, 
                                                           authToken() 
                                                      );

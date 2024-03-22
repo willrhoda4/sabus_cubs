@@ -20,22 +20,21 @@ import { Request,
 
 
 
-// set NODE_ENV to 'production' to activate Heroku configuration.
-// otherwise, use local configuration.
-const port = process.env.PG_PORT   ?   parseInt(process.env.PG_PORT, 10) : undefined;
 
-const pool = process.env.NODE_ENV === 'production' ? new Pool({
-                                                                connectionString: process.env.DATABASE_URL,
-                                                                ssl: { rejectUnauthorized: false },
-                                                             }) 
-                                                   : new Pool({
-                                                                user:     process.env.PG_USER,
-                                                                host:     process.env.PG_HOST,
-                                                                database: process.env.PG_DATABASE,
-                                                                password: process.env.PG_PASSWORD,
-                                                                port:     port,
-                                                                ssl:      false
-                                                             });
+
+// Assuming your environment variables are correctly set for your production environment
+// and there's no need for SSL in the internal communication between your app and database.
+
+const pool = new Pool({
+    user:     process.env.PG_USER,     // e.g., 'sabus_cubs_admin'
+    host:     process.env.PG_HOST,     // Since it's on the same droplet, this could be 'localhost'
+    database: process.env.PG_DATABASE, // e.g., 'sabus_cubs'
+    password: process.env.PG_PASSWORD,
+    port:     process.env.PG_PORT ? parseInt(process.env.PG_PORT, 10) 
+                                  : 5432, // Default PostgreSQL port
+} );
+
+
 
 
 
@@ -163,7 +162,7 @@ function simpleQuery(
                     console.log(err.stack);
                     response.status(400).send(err.message);
                  } 
-        else     {  
+        else     {   
                     cleanUp && cleanUp( res.rows, response );
                     if (!response.writableEnded) {  // check if the headers (response) have already been sent (during cleanUp)
                                                     // if they haven't, either call next() or send the response.
@@ -218,7 +217,7 @@ const getData = (request:Request, response:Response) => {
 
         query += ' WHERE ';
 
-        for (let i = 0; i < filters.length; i++) {                  console.log(query);
+        for (let i = 0; i < filters.length; i++) {                
                   
             // filter arrays with length 2 look for strict equivalence and are parameterized
             if        (filters[i].length === 2)              {      query += `${filters[i][0]} = $${index} AND `; 
