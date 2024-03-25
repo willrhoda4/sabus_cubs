@@ -20,10 +20,13 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build
+    - name: Build frontend
       run: npm run build
 
-    - name: Deploy to Digital Ocean
+    - name: Install PM2 globally
+      run: npm install pm2 -g
+
+    - name: Deploy frontend to Digital Ocean
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -31,4 +34,27 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
         source: "dist/*"
-        target: "/var/www/html/pr3v13w"
+        target: "/var/www/html/pr3v13w/dist"
+
+    - name: Deploy backend to Digital Ocean
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        source: "."
+        target: "/var/www/html/pr3v13w/backend"
+        rm: true # Optional: Remove all files in the target directory before copying
+
+    - name: Restart backend with PM2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /var/www/html/pr3v13w/backend
+          npm install # Install backend dependencies
+          pm2 restart all || pm2 start app.js --name my-app # Replace app.js with your backend entry file
