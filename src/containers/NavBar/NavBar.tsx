@@ -85,7 +85,7 @@ export default function Navbar ({ hamburgerRef, setMenuDisplayed } : NavbarProps
 
     // maintenance mode button for admin dashboard
     const maintenanceButton = <Button onClick={ toggleMaintenanceMode }
-                                      text='Maintenance Mode'
+                                      text={`${ maintenanceMode ? 'stop' : 'start' } maintenance`}
                                       theme='neobrutalism'
                               />;
 
