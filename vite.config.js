@@ -30,7 +30,7 @@ export default defineConfig({
     sentryVitePlugin({
       org: "william-rhoda",
       project: "sabus_cubs-react",
-      authToken: process.env.VITE_SENTRY_CLIENT_AUTH_TOKEN, //'process' is not defined.eslintno-undef
+      authToken: process.env.VITE_SENTRY_CLIENT_AUTH_TOKEN,
 
     }),
 
@@ -38,7 +38,7 @@ export default defineConfig({
     sentryVitePlugin({
       org: "william-rhoda",
       project: "sabus_cubs-node",
-      authToken: process.env.VITE_SENTRY_SERVER_AUTH_TOKEN, //'process' is not defined.eslintno-undef
+      authToken: process.env.VITE_SENTRY_SERVER_AUTH_TOKEN,
 
 
     } ),
@@ -49,23 +49,3 @@ export default defineConfig({
   }
   
 });
-
-
-
-
-// import { sentryVitePlugin } from "@sentry/vite-plugin";
-// import { defineConfig     } from 'vite'
-// import   react              from '@vitejs/plugin-react-swc'
-// import   svgr               from 'vite-plugin-svgr';
-
-
-// export default defineConfig({
-//   plugins:  [react(), svgr(), sentryVitePlugin({
-//     org: "william-rhoda",
-//     project: "sabus_cubs-react"
-//   })],
-
-//   build: {
-//     sourcemap: true
-//   }
-// })

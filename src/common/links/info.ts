@@ -9,7 +9,7 @@ import Mission from '../../assets/icons/mission.svg?react'
 import Values  from '../../assets/icons/values.svg?react'
 import Actions from '../../assets/icons/actions.svg?react'
 import Board   from '../../assets/icons/board.svg?react'
-import FAQ     from '../../assets/icons/faq.svg?react'
+import FAQ     from '../../assets/icons/FAQ.svg?react'
 
 
 import { LinkProps } from '../../types/menu'
