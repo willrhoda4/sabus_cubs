@@ -3,7 +3,8 @@
   "module": "server.ts",
   "scripts": {
     "start": "nodemon --exec ts-node server.ts",
-    "test": "jest --watchAll --verbose"
+    "test": "jest --watchAll --verbose",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

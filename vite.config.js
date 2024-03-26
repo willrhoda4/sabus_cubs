@@ -45,6 +45,7 @@ export default defineConfig({
   ],
 
   build: {
+    outDir: './client',
     sourcemap: true
   }
   

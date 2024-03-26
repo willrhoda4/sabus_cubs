@@ -3,10 +3,6 @@
 
 
 
-
-
-
-
 {
   "compilerOptions": {
     "lib": ["esnext"],
@@ -19,6 +15,10 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "noEmit": true,
-  },
+    "noEmit": false, // Change to false to enable file emission
+    "outDir": "./server", // Specify output directory for compiled JS files
+    "rootDir": "./", // Specify the root directory of source files
+  }
 }
+
+
