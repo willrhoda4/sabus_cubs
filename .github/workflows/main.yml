@@ -7,7 +7,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
 
@@ -17,21 +16,27 @@ jobs:
         node-version: '16'
         cache: 'npm'
 
+    # install and build frontend
     - name: Install frontend dependencies
       run: npm install
 
     - name: Build frontend
       run: npm run build
 
+
+    # install backend dependencies and build backend
     - name: Install backend dependencies
       run: npm install --prefix server
 
     - name: Build backend
       run: npm run build --prefix server
 
-    - name: Install PM2 globally
-      run: npm install pm2 -g
+    # include public directory with server build
+    # this folder is home to the html document for maintenance mode 
+    - name: Adjust backend build directory
+      run: cp -R server/public compiled_server/public
 
+    # deploy frontend to Digital Ocean
     - name: Deploy frontend to Digital Ocean
       uses: appleboy/scp-action@master
       with:
@@ -42,6 +47,7 @@ jobs:
         source: "./client/*"
         target: "/var/www/html/sabus_cubs/"
 
+    # deploy backend to Digital Ocean
     - name: Deploy backend to Digital Ocean
       uses: appleboy/scp-action@master
       with:
@@ -49,9 +55,21 @@ jobs:
         username: ${{ secrets.USERNAME }}
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
-        source: "./server/server/*"
+        source: "./compiled_server/*"
         target: "/var/www/html/sabus_cubs/"
 
+    # rename production_server to server on the droplet
+    - name: Rename production_server to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          mv /var/www/html/sabus_cubs/compiled_server /var/www/html/sabus_cubs/server
+
+    # restart backend with PM2
     - name: Restart backend with PM2
       uses: appleboy/ssh-action@master
       with:
@@ -60,6 +78,5 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          cd /var/www/html/sabus_cubs/
-          npm install --prefix server # Install backend dependencies
-          pm2 restart all || pm2 start server/server.js --name sabus_cubs
+          cd /var/www/html/sabus_cubs/server
+          pm2 restart all || pm2 start index.js --name sabus_cubs
