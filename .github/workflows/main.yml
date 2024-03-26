@@ -34,7 +34,7 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
         source: "dist/*"
-        target: "/var/www/html/sabus_cubs"
+        target: "/var/www/html/sabus_cubs/dist"
 
     - name: Deploy backend to Digital Ocean
       uses: appleboy/scp-action@master
