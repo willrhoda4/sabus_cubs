@@ -44,7 +44,7 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
         source: "server/*"
-        target: "/var/www/html/sabus_cubs/server/"
+        target: "/var/www/html/sabus_cubs/"
 
     - name: Restart backend with PM2
       uses: appleboy/ssh-action@master
