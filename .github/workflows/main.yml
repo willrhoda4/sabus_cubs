@@ -34,7 +34,7 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
         source: "dist/*"
-        target: "/var/www/html/pr3v13w"
+        target: "/var/www/html/sabus_cubs"
 
     - name: Deploy backend to Digital Ocean
       uses: appleboy/scp-action@master
@@ -44,7 +44,7 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
         source: "server/*"
-        target: "/var/www/html/pr3v13w/server"
+        target: "/var/www/html/sabus_cubs/server"
         rm: true # Optional: Remove all files in the target directory before copying
 
     - name: Restart backend with PM2
@@ -55,6 +55,6 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          cd /var/www/html/pr3v13w/server
+          cd /var/www/html/sabus_cubs/server
           npm install # Install backend dependencies
-          pm2 restart all || pm2 start server.ts 
+          pm2 restart all || pm2 start server
