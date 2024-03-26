@@ -44,7 +44,7 @@ jobs:
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
         source: "server/*"
-        target: "/var/www/html/sabus_cubs/server"
+        target: "/var/www/html/sabus_cubs"
         rm: true # Optional: Remove all files in the target directory before copying
 
     - name: Restart backend with PM2
