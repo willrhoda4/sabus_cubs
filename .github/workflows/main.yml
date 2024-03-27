@@ -22,6 +22,14 @@ jobs:
 
     - name: Build frontend
       run: npm run build
+      env:
+        VITE_API_URL: ${{ secrets.VITE_API_URL }}
+        VITE_CLOUD_NAME: ${{ secrets.VITE_CLOUD_NAME }}
+        VITE_UPLOAD_PRESET: ${{ secrets.VITE_UPLOAD_PRESET }}
+        VITE_PUBLISHABLE_KEY: ${{ secrets.VITE_PUBLISHABLE_KEY }}
+        VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
+        VITE_SENTRY_CLIENT_AUTH_TOKEN: ${{ secrets.VITE_SENTRY_CLIENT_AUTH_TOKEN }}
+        VITE_SENTRY_SERVER_AUTH_TOKEN: ${{ secrets.VITE_SENTRY_SERVER_AUTH_TOKEN }}
 
     # Install backend dependencies and build backend
     - name: Install backend dependencies
