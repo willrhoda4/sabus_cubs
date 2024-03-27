@@ -139,7 +139,7 @@ app.use(async (req, res, next) => {
 
 // Catch-all route to serve React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client', 'index.html'));
 } );
 
 

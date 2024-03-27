@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "noEmit": false, // Change to false to enable file emission
-    "outDir": "../compiled_server", // Specify output directory for compiled JS files
+    "outDir": "../api", // Specify output directory for compiled JS files
     "rootDir": "./", // Specify the root directory of source files
   }
 }
