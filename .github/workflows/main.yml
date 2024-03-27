@@ -31,11 +31,12 @@ jobs:
     - name: Build backend
       run: npm run build --prefix server
 
-    # include public directory with server build
-    # this folder is home to the html document for maintenance mode 
-    - name: Adjust backend build directory
-      run: cp -R server/public compiled_server/public
-
+    # copy necessary non-code files into the compiled_server directory
+    - name: Prepare backend for deployment
+      run: |
+        cp server/package.json compiled_server/package.json
+        cp -R server/public compiled_server/public
+        
     # deploy frontend to Digital Ocean
     - name: Deploy frontend to Digital Ocean
       uses: appleboy/scp-action@master
