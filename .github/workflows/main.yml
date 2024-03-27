@@ -69,4 +69,4 @@ jobs:
         script: |
           cd /var/www/html/sabus_cubs/api
           npm install # Install backend dependencies
-          pm2 restart all || pm2 start index.js --name sabus_cubs
+          pm2 restart all || pm2 start server.js --name sabus_cubs
