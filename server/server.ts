@@ -96,7 +96,7 @@ app.use(cors());
 // sets up gzip
 app.use(compression());
 // static file server setup for client-side assets
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, '../client')));
 // Serve static files from the 'public' directory under '/public' path
 app.use('/public', express.static(path.join(__dirname, 'public')));
 // cache control for static assets
