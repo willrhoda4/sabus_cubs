@@ -10,18 +10,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Use Node.js
+    - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '16'
-        cache: 'npm'
 
     # Install and build frontend
     - name: Install frontend dependencies
       run: npm install
 
     - name: Build frontend
-      run: npm run build
+      run: |
+        npm run build
       env:
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
         VITE_CLOUD_NAME: ${{ secrets.VITE_CLOUD_NAME }}
@@ -31,43 +31,54 @@ jobs:
         VITE_SENTRY_CLIENT_AUTH_TOKEN: ${{ secrets.VITE_SENTRY_CLIENT_AUTH_TOKEN }}
         VITE_SENTRY_SERVER_AUTH_TOKEN: ${{ secrets.VITE_SENTRY_SERVER_AUTH_TOKEN }}
 
-    # Install backend dependencies and build backend
-    - name: Install backend dependencies
-      run: npm install --prefix server
-
-    - name: Build backend
-      run: npm run build --prefix server
-
-    # Copy necessary non-code files into the api directory
-    - name: Prepare backend for deployment
+    # Install dependencies and build backend
+    - name: Install server dependencies and build
       run: |
-        cp server/package.json api/package.json
-        cp -R server/public api/public
-        
-    # Deploy frontend to Digital Ocean
-    - name: Deploy frontend to Digital Ocean
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        port: ${{ secrets.PORT }}
-        key: ${{ secrets.SSH_KEY }}
-        source: "./client/*"
-        target: "/var/www/html/sabus_cubs/"
+        npm install --prefix server
+        npm run build --prefix server
 
-    # Deploy backend to Digital Ocean
-    - name: Deploy backend to Digital Ocean
+    # Move package.json and public/ to api
+    - name: Prepare api directory
+      run: |
+        mv server/package.json api/
+        mv server/public api/public
+
+    # Create .env in api and populate it
+    - name: Create .env and populate
+      run: |
+        echo "PG_USER=${{ secrets.PG_USER }}" >> api/.env
+        echo "PG_HOST=${{ secrets.PG_HOST }}" >> api/.env
+        echo "PG_DATABASE=${{ secrets.PG_DATABASE }}" >> api/.env
+        echo "PG_PASSWORD=${{ secrets.PG_PASSWORD }}" >> api/.env
+        echo "PG_PORT=${{ secrets.PG_PORT }}" >> api/.env
+        echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> api/.env
+        echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> api/.env
+        echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> api/.env
+        echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> api/.env
+        echo "STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}" >> api/.env
+        echo "WEBHOOK_SECRET=${{ secrets.WEBHOOK_SECRET }}" >> api/.env
+        echo "ACCOUNT_ID=${{ secrets.ACCOUNT_ID }}" >> api/.env
+        echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> api/.env
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> api/.env
+
+    # Install dependencies in api
+    - name: Install api dependencies
+      run: |
+        npm install --prefix api
+
+    # Deploy frontend and backend to Digital Ocean
+    - name: Deploy to Digital Ocean
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSH_KEY }}
-        source: "./api/*"
+        source: "./client/*,./api/*"
         target: "/var/www/html/sabus_cubs/"
 
     # Restart backend with PM2
-    - name: Restart backend with PM2
+    - name: Restart backend
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -76,5 +87,4 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           cd /var/www/html/sabus_cubs/api
-          npm install # Install backend dependencies
           pm2 restart all || pm2 start server.js --name sabus_cubs
