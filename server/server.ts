@@ -26,7 +26,7 @@ import { ProfilingIntegration } from '@sentry/profiling-node';
 // configure your environment variables
 import dotenv                   from 'dotenv';
        dotenv.config();
-1
+
 
 // import cron job update Instagram token monthly
 import                                './cron/IGToken'
@@ -106,7 +106,7 @@ app.use((req, res, next) => {
     res.set('Cache-Control', 'public, max-age=86400'); // Cache for one day
   }
   return next();
-});
+} );
 
 
 
