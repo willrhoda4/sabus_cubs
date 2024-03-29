@@ -37,11 +37,12 @@ jobs:
         npm install --prefix server
         npm run build --prefix server
 
-    # Move package.json and public/ to api
+    # Move package.json, logs/ and public/ to api
     - name: Prepare api directory
       run: |
         mv server/package.json api/
-        mv server/public api/public
+        mv server/logs         api/logs
+        mv server/public       api/public
 
     # Create .env in api and populate it
     - name: Create .env and populate
