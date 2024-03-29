@@ -37,12 +37,15 @@ jobs:
         npm install --prefix server
         npm run build --prefix server
 
-    # Move package.json, logs/ and public/ to api
+    # Move package.json and public/ to api
+    # Create a log directory and file to track cron job
     - name: Prepare api directory
       run: |
         mv server/package.json api/
-        mv server/logs         api/logs
         mv server/public       api/public
+        mkdir                  api/logs
+        touch                  api/logs/IGToken.txt
+
 
     # Create .env in api and populate it
     - name: Create .env and populate
