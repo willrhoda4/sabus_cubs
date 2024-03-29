@@ -95,6 +95,27 @@ app.use(bodyParser.json());
 app.use(cors());
 // sets up gzip
 app.use(compression());
+
+
+
+// Check for maintenance mode on root and /index.html explicitly
+app.get(['/', '/index.html'], async (req, res) => {
+  const isMaintenanceMode = await admin.getMaintenanceMode();
+  if (isMaintenanceMode) {
+    return res.sendFile(path.join(__dirname, 'public/maintenance.html'));
+  } else {
+    // Explicitly serve the index.html from the client directory if not in maintenance
+    return res.sendFile(path.join(__dirname, '../client/index.html'));
+  }
+});
+
+// Static file serving setup
+app.use(express.static(path.join(__dirname, '../client')));
+
+
+
+
+
 // static file server setup for client-side assets
 app.use(express.static(path.join(__dirname, '../client')));
 // Serve static files from the 'public' directory under '/public' path
