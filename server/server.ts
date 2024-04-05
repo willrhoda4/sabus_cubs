@@ -77,6 +77,7 @@ Sentry.init( {
 
  // the request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
+
 // tracingHandler creates a trace for every incoming request
 app.use(Sentry.Handlers.tracingHandler());
 
@@ -91,8 +92,10 @@ app.post('/webhookListener', stripeWh.captureRawBody, stripeWh.handleWebhook);
 
 // now we can use bodyParser.json() for the rest of the routes
 app.use(bodyParser.json());
+
 // sets up cors
 app.use(cors());
+
 // sets up gzip
 app.use(compression());
 
@@ -100,33 +103,48 @@ app.use(compression());
 
 // Check for maintenance mode on root and /index.html explicitly
 app.get(['/', '/index.html'], async (req, res) => {
+
   const isMaintenanceMode = await admin.getMaintenanceMode();
-  if (isMaintenanceMode) {
+
+  if  ( isMaintenanceMode ) {
+
     return res.sendFile(path.join(__dirname, 'public/maintenance.html'));
+
   } else {
+
     // Explicitly serve the index.html from the client directory if not in maintenance
     return res.sendFile(path.join(__dirname, '../client/index.html'));
+
   }
 });
-
-// Static file serving setup
-app.use(express.static(path.join(__dirname, '../client')));
-
-
 
 
 
 // static file server setup for client-side assets
-app.use(express.static(path.join(__dirname, '../client')));
-// Serve static files from the 'public' directory under '/public' path
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../client') ) );
+
+
+
+
+// static file server setup for server. 
+// this is basically responsible for maintenance.html and a logo.png
+app.use('/public', express.static(path.join(__dirname, 'public') ) );
+
+
+
 // cache control for static assets
 app.use((req, res, next) => {
+
   const staticAssetExtensions = ['.js', '.css', '.jpg', '.png', '.gif', '.jpeg'];
-  if (staticAssetExtensions.some(ext => req.url.endsWith(ext))) {
+
+  if  ( staticAssetExtensions.some(ext => req.url.endsWith(ext) ) ) {
+
     res.set('Cache-Control', 'public, max-age=86400'); // Cache for one day
+
   }
+
   return next();
+
 } );
 
 

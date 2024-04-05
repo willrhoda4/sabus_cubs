@@ -12,12 +12,13 @@
 import   Axios                from 'axios';
 
 import   Form                 from './Form';
+import   useNotification      from '../../hooks/useNotification';
 
 import { AdminFormProps     } from '../../types/admin';
 import { FormState, 
          NewStatusFunction  } from '../../types/form';
 
-import   authToken           from '../../utils/authToken';
+import   authToken            from '../../utils/authToken';
 
 
 
@@ -31,6 +32,8 @@ import   authToken           from '../../utils/authToken';
 export default function AdminForm( { table, update, getData, setEditing, fields, style = 'neobrutalism' } : AdminFormProps ): JSX.Element {
 
 
+    
+    const notification = useNotification();
 
 
 
@@ -73,7 +76,7 @@ export default function AdminForm( { table, update, getData, setEditing, fields,
                                   reqBody = [ table, formState,  [ [  'id', update.id as number  ] ] ] 
 
                         }         // new items also need a rank.
-            else        {         reqBody = [ table, [ { ...formState, rank } ] ] }
+            else        {         reqBody = [ table,             [ { ...formState, rank          } ] ] }
 
 
 
@@ -84,8 +87,10 @@ export default function AdminForm( { table, update, getData, setEditing, fields,
 
 
 
-            // if successful, update the status, reset the form for non-updates and re-render the FAQ
+            // if successful, update the status, throw up a notification,
+            // reset the form for non-updates and re-render the FAQ
                            newStatus(reqSuccess);
+                        notification(`data successfully ${update ? 'updated' : 'added'}!`, 4000)
             setEditing && setEditing(false);
             !update    &&  resetForm(); 
             return           getData();

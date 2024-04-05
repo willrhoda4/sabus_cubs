@@ -1,4 +1,4 @@
-
+    
 
 
 
@@ -80,7 +80,7 @@ const neobrutalism: StyleFunctions = {
         w-8/12 h-full
         bg-white
         text-heading
-        overflow-scroll
+        overflow-auto
         cursor-pointer
         child:w-full child:h-fit
         child:px-4
@@ -105,7 +105,7 @@ const neobrutalism: StyleFunctions = {
         flex flex-col items-center
         border-r-4 border-black
         bg-brand-grey
-        overflow-scroll
+        overflow-auto
     `,
 
 

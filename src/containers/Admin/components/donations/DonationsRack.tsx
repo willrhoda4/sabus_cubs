@@ -109,15 +109,15 @@ export default function DonationsRack( { displayed } : DonationRackProps ) : JSX
                         flex flex-col
                      `}
       >
-         { data && data.map( ( row : DonationData, index : number ) =>  <div key={index}
-                                                                     className={`
-                                                                                 w-full h-fit
-                                                                                 overflow-scroll
-                                                                                 p-2
-                                                                                 border-b-2 border-black
-                                                                                 flex flex-col
-                                                                               `}
-                                                               >{listItem(row)}</div> 
+         { data && data.map( ( row : DonationData, index : number ) =>  <div     key={index}
+                                                                           className={`
+                                                                                       w-full h-fit
+                                                                                       overflow-auto
+                                                                                       p-2
+                                                                                       border-b-2 border-black
+                                                                                       flex flex-col
+                                                                                     `}
+                                                                        >{listItem(row)}</div> 
                            ) }
       </div>
 

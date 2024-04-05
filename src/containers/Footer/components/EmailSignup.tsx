@@ -3,6 +3,14 @@
 
 
 
+/**
+ * simple signup component for email list.
+ * lives inside EmailSignupDiv in the Footer component.
+ */
+
+
+
+
 
 
 
@@ -50,12 +58,13 @@ export default function EmailSignup( { buttonColour, newStatus } : EmailSignupPr
 
         const signupFailure = () => { 
                                         newStatus('error saving email'); 
-                                        notification('there was a problem saving your email. plese try again.');
+                                        notification('there was a problem saving your email. please try again.');
                                     }
 
         const signupSuccess = () => { 
                                         newStatus('email saved!'); 
                                         notification('thanks for signing up!');
+                                        setEmail('');
                                     }
 
 

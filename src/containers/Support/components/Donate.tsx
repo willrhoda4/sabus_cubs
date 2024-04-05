@@ -232,11 +232,9 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                 
                             if (confirmResult.error) {  
                                                         setIsClicked(false); 
-                                                        console.log( confirmResult.error.message );
                                                         return donationFailed();                           
                                                      } 
                             else                     {  
-                                                        console.log( 'Payment succeeded:', confirmResult.paymentIntent.id );
                                                         clearForm(); 
                                                         return donationSucceeded();
                                                      }

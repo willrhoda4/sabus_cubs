@@ -26,9 +26,9 @@ import { Request,
 // and there's no need for SSL in the internal communication between your app and database.
 
 const pool = new Pool({
-    user:     process.env.PG_USER,     // e.g., 'sabus_cubs_admin'
-    host:     process.env.PG_HOST,     // Since it's on the same droplet, this could be 'localhost'
-    database: process.env.PG_DATABASE, // e.g., 'sabus_cubs'
+    user:     process.env.PG_USER,       
+    host:     process.env.PG_HOST,       
+    database: process.env.PG_DATABASE,    
     password: process.env.PG_PASSWORD,
     port:     process.env.PG_PORT ? parseInt(process.env.PG_PORT, 10) 
                                   : 5432, // Default PostgreSQL port

@@ -46,7 +46,7 @@ export default function Menu ( {
 
     const   thisPage                          = useLocation().pathname.slice(1)
 
-    const [ mainMenuAnimation, menuIsOpen    ] = useToggleAnimation({  
+    const [ mainMenuAnimation, menuIsOpen   ] = useToggleAnimation({  
 
                                                                         isOpen:          menuDisplayed,
                                                                         openAnimation:  'animate-slide-in-left',
@@ -60,7 +60,7 @@ export default function Menu ( {
                                                                         closeAnimation: 'animate-submenu-slide-out', 
                                                                         closingTime:     800, 
                                                                    })[0]; // mainMenuAnimation and subMenuAnimation return the same menuIsOpen,
-                                                                         // therefore, we'll just need the animation class.
+                                                                          // therefore, we'll just need the animation class.
   
   
 
