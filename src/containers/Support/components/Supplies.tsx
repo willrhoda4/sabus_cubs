@@ -23,7 +23,6 @@ export default function Supplies ( { pStyles } : { pStyles : string } ) : JSX.El
         <div   className={` 
                             w-full h-fit
                             flex flex-col items-center
-                            px-4 md:px-8 lg:px-12   
                          `} 
         >
 

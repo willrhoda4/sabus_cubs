@@ -14,7 +14,7 @@
  *  implementing it as is easy as importing it,
  *  and declaring it just like a useState hook:
  * 
- *          import useLocationScroll from 'src/hooks/useLocationScroll';
+ *          import useLocationState from 'src/hooks/useLocationState';
  * 
  *          const [ locationState, setLocationState ] useLocationState();
  * 

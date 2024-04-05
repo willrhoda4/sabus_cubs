@@ -287,8 +287,7 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
         <form className={`
                             h-fit w-full 
                             flex flex-col 
-                            px-4 md:px-8 lg:px-12   
-                            py-8
+                           
                         `}
         >
             

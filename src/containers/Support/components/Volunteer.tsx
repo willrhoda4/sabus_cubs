@@ -26,8 +26,6 @@ export default function Volunteer ( { pStyles } : { pStyles : string } ) : JSX.E
     return (
         <div className={`
                             w-full h-fit 
-                            px-4 md:px-8 lg:px-12   
-                            my-8
                             flex flex-col items-center
                        `}
         >

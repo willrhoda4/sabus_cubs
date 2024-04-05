@@ -11,7 +11,7 @@ import   EmailForm       from './components/EmailForm';
 import   Social          from './components/Social';
 import   TabsDiv         from '../../common/tabs/TabsDiv';
 
-import  useStateFromURL  from '../../hooks/useStateFromURL';
+import  useLocationState from '../../hooks/useLocationState'
 
 import { ContactProps }  from '../../types/contact';
 
@@ -23,10 +23,9 @@ export default function Contact( { photoData } : ContactProps): JSX.Element {
 
 
 
-    const [ displayed, setDisplayed ] = useStateFromURL('section', 'location');
+    const [ displayed, setDisplayed ] = useLocationState<string>('location', 'contact-tabs');
 
-
-    const   tabNames   : string[]  = [ 'location', 'email', 'social' ];
+    const   tabNames   : string[]     = [ 'location', 'email', 'social-media' ];
     
     
     return (
@@ -43,22 +42,23 @@ export default function Contact( { photoData } : ContactProps): JSX.Element {
             </Helmet>
 
 
+            <div id='contact-tabs' className='w-full flex justify-center'>
+                <TabsDiv 
+                    activeTab={displayed} 
+                    setActiveTab={setDisplayed} 
+                    tabsArray={tabNames}
+                    bgClass='bg-brand-blue'
+                    textClass='text-white'
+                >
 
-            <TabsDiv 
-                activeTab={displayed} 
-                setActiveTab={setDisplayed} 
-                tabsArray={tabNames}
-                bgClass='bg-brand-blue'
-                textClass='text-white'
-            >
+                    {
+                        displayed === 'location'     ? <Map                             />       
+                    :   displayed === 'social-media' ? <Social    photoData={photoData} />    
+                    :                                  <EmailForm                       /> 
+                    }
 
-                {
-                    displayed === 'location'     ? <Map                             />       
-                :   displayed === 'social'       ? <Social    photoData={photoData} />    
-                :                                  <EmailForm                       /> 
-                }
-
-            </TabsDiv>
+                </TabsDiv>
+            </div>
 
         </div>
     );

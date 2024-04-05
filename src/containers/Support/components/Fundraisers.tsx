@@ -32,8 +32,8 @@ export default function Fundraisers ( { pStyles } : { pStyles : string } ) : JSX
     return ( 
         <div className={`
                             w-full h-fit 
-                            p-8 my-8
                             flex flex-col items-center
+                            
                        `}
         >
             

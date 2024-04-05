@@ -31,7 +31,7 @@ export default function Support(): JSX.Element {
 
 
 
-    // common style for components p elements
+    // common styles for components p elements
     const pStyles = `
                         text-body 
                         w-full max-w-xl
@@ -67,7 +67,6 @@ export default function Support(): JSX.Element {
     
         <div className={`
                             w-full h-fit
-                            px-2
                             flex flex-col items-center 
                        `}
         >
@@ -96,7 +95,7 @@ export default function Support(): JSX.Element {
                 </TabsDiv>
             </div>
 
-            
+            {/* allows regular donees to login and update their info. */}
             <div id='subscriptions' className='w-fit mt-24'>
                 { displayed === 'donate' && <UpdateTrigger /> }
             </div>

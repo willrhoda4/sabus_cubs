@@ -28,6 +28,7 @@ export default function TabsDiv( { tabsArray, activeTab, setActiveTab, children,
 
         <div className={`
                             w-full max-w-6xl h-fit 
+                            mx-2
                             rounded-md 
                             border-2 border-black 
                             shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
@@ -45,7 +46,8 @@ export default function TabsDiv( { tabsArray, activeTab, setActiveTab, children,
 
             <div className={`
                                 w-full h-fit 
-                                px-2 xl:px-8 py-12 
+                                px-2 md:px-6 xl:px-16 
+                                py-12 
                                 flex flex-col items-center
                            `}
             >

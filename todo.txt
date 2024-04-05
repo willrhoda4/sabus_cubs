@@ -1,0 +1,12 @@
+
+
+
+todos for sabu's cubs cleanup:
+
+
+- fundraising padding
+- contact margin
+- footer links for contact page.
+
+- configure stripe webhooks for production
+- configure stripe to accept donations
