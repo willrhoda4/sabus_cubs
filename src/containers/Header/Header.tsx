@@ -22,7 +22,6 @@ import   HeaderIcon           from './components/HeaderIcon';
 
 import   logo                 from '../../assets/logo_large.png';
 
-import   authToken            from '../../utils/authToken';
 import   shuffleArray         from '../../utils/shuffleArray';
 import   imageIdArray         from '../../utils/imageIdArray';
 import { HeaderProps }        from '../../types/header';
@@ -42,7 +41,7 @@ export default function Header ( { editing, colours } : HeaderProps ) : JSX.Elem
 
     
     // check if the admin is authenticated.
-    const isAdminAuthenticated = authToken('check');
+    const isAdminAuthenticated = !!localStorage.getItem('jwt');
 
     // for the sake of brevity, subscription-update and newsReleases will be truncated.
     // otherwise, we'll just use the pathname as the title,

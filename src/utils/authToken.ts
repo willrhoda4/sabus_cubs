@@ -24,7 +24,7 @@ interface DecodedToken {
 
 
 
-export default function authToken( check? : 'check' ) : Partial<{ headers: { Authorization: string } }> | boolean {
+export default function authToken(): Partial<{ headers: { Authorization: string } }> {
 
 
     // helper function to redirect to login page
@@ -32,19 +32,14 @@ export default function authToken( check? : 'check' ) : Partial<{ headers: { Aut
         window.location.href = '/simba?tokenError=true';
     }
 
-
     // check for token in local storage
     const token = localStorage.getItem('jwt');
-
-
-    // if check is set to 'check' return true if token exists
-    if ( check ) return !!token;
     
 
     // handle missing token - redirect and return empty config
     if ( !token ) {
 
-        window.location.href !== '/simba' && redirectToLogin();
+        redirectToLogin();
         return {};
     }
 
