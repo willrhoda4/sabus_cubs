@@ -50,6 +50,7 @@ jobs:
     # Create .env in api and populate it
     - name: Create .env and populate
       run: |
+        echo "URL=${{ secrets.URL }}" >> api/.env
         echo "EMAIL=${{ secrets.EMAIL }}" >> api/.env
         echo "EMAILPASS=${{ secrets.EMAILPASS }}" >> api/.env
         echo "PG_USER=${{ secrets.PG_USER }}" >> api/.env        
