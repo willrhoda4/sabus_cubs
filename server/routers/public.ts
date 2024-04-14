@@ -43,7 +43,7 @@ router.post('/verifyUpdate',          auth.verifyUpdate);            // Verifies
 router.post('/checkPassword',         admin.getPasswordData, 
                                       admin.checkPassword);          // Checks password for admin
 router.post('/resetLink',             admin.registerReset, 
-                                      email.sendResetLink);          // Sends admin reset link to website email
+                                      email.sendResetLink);          // Sends admin reset link from website email
 router.post('/resetPassword',         admin.getTokenData, 
                                       admin.verifyTokenData,
                                       admin.resetPassword);          // Resets password for admin, and logs them in

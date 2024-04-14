@@ -22,6 +22,7 @@ import   HeaderIcon           from './components/HeaderIcon';
 
 import   logo                 from '../../assets/logo_large.png';
 
+import   authToken            from '../../utils/authToken';
 import   shuffleArray         from '../../utils/shuffleArray';
 import   imageIdArray         from '../../utils/imageIdArray';
 import { HeaderProps }        from '../../types/header';
@@ -39,20 +40,33 @@ export default function Header ( { editing, colours } : HeaderProps ) : JSX.Elem
     // start by grabbing the pathname, and removing the leading slash.
     const pathName = useLocation().pathname.slice(1).toLowerCase();
 
-    // define an array of valid paths, so we don't display any typos.
-    const validPaths = ['home', 'info', 'gallery', 'contact', 'support', 'news', 'subscription-update', 'simba'];
     
+    // check if the admin is authenticated.
+    const isAdminAuthenticated = !!authToken().headers?.Authorization;
+
     // for the sake of brevity, subscription-update and newsReleases will be truncated.
     // otherwise, we'll just use the pathname as the title,
     // except for the admin dashboard, where we'll use the editing state.
     // if the pathname isn't valid, we'll just display an empty string.
-    const title  =  pathName === 'subscription-update'  ? 'update'
-                 : !validPaths.includes(pathName)       ? ''
-                 :  pathName !== 'simba'                ?  pathName
-                 :  editing  === 'newsReleases'         ? 'releases'
-                 :                                         editing;
+    // if the admin isn't authenticated, we'll display an empty string.
+    const title = useMemo(() => {
+
+        // define an array of valid paths, so we don't display any typos.
+        const validPaths = [ 'home', 'info', 'gallery', 'contact', 'support', 'news', 'subscription-update', 'simba' ];
     
 
+        if (  pathName === 'subscription-update' ) return 'update';
+        if ( !validPaths.includes( pathName )    ) return '';
+        if (  pathName === 'simba'               ) return isAdminAuthenticated ? ( editing === 'newsReleases' ? 'releases' 
+                                                                                                              :  editing 
+                                                                                 ) 
+                                                                               : '';
+        return pathName;
+        
+    }, [ pathName, isAdminAuthenticated, editing ] );
+ 
+   
+   
 
     // we'll memoize the content of the header,
     // so it won't  to re-render every time we open the menu.

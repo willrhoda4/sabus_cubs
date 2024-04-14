@@ -72,6 +72,8 @@ async function deliverEmail(options : MailOptions, cleanUp? : () => void): Promi
 
 
 
+
+
 // receives email from contact form and sets it to the email address in the .env file.
 async function formMail(request: Request, response: Response) {
 
@@ -108,6 +110,8 @@ async function formMail(request: Request, response: Response) {
 
 
 
+
+
 // emails a login link to subscribers who wish to update or cancel their subscription.
 async function updateMail(email: string, token: string, res: Response) {
 
@@ -135,6 +139,8 @@ async function updateMail(email: string, token: string, res: Response) {
                     res.status(400).send(`Error scheduling update for ${email}`);
                   }
 }
+
+
 
 
 
@@ -195,6 +201,8 @@ async function deliverNewsRelease(request: Request, response: Response, next: Ne
                                   :  response.status(400).send('Newsletter delivery failed'); 
                       }
     }
+    
+
 
 
     // helper function that gets called if publish is true,
@@ -227,7 +235,9 @@ async function deliverNewsRelease(request: Request, response: Response, next: Ne
 
 
 
-// sends a reset link to the website's gmail account.
+
+
+// sends a reset link from the website's gmail account.
 function sendResetLink( request: Request, response: Response ) {
 
 
@@ -251,9 +261,11 @@ function sendResetLink( request: Request, response: Response ) {
 
 
 
+
+
 function addEmail( request: Request, response: Response ) {
 
-    // Extract the email from the request body
+    // Extract the email from the request body 
     const email = request.body[0];
 
     // Define the SQL query for inserting the email
@@ -265,6 +277,8 @@ function addEmail( request: Request, response: Response ) {
     // Call simpleQuery to execute the insertion
     db.simpleQuery(response, query, parameters);
 }
+
+
 
 
 
