@@ -42,7 +42,7 @@ export default function Header ( { editing, colours } : HeaderProps ) : JSX.Elem
 
     
     // check if the admin is authenticated.
-    const isAdminAuthenticated = !!authToken().headers?.Authorization;
+    const isAdminAuthenticated = authToken('check');
 
     // for the sake of brevity, subscription-update and newsReleases will be truncated.
     // otherwise, we'll just use the pathname as the title,
