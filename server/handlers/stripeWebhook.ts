@@ -39,7 +39,7 @@ declare module 'express-serve-static-core' {
 
 function captureRawBody(request: Request, response: Response, next: NextFunction) : void {       
 
-    console.log('preparing raw body for Stripe webhook...');
+    console.log('\npreparing raw body for Stripe webhook...');
 
     let data = '';
 
@@ -228,7 +228,7 @@ async function handleWebhook(request: Request, response: Response): Promise<void
         const event     = await stripe.webhooks.constructEventAsync(request.rawBody as string, sigHeader, whSecret);
         const eventData = event.data.object as EventData;
 
-        console.log('event type: ', event.type);
+        console.log('handling webhook request for event type: ', event.type, '...');
 
         switch (event['type']) {
 
@@ -272,7 +272,10 @@ async function handleWebhook(request: Request, response: Response): Promise<void
                 console.log(`Unhandled event type: ${event.type}`);
         }
 
+        
         response.json({ received: true });
+
+        console.log('webhook request handled successfully\n');
 
     } catch (error) { errorHandler(error as Error); }
 
