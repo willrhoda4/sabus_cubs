@@ -50,7 +50,7 @@ const textResources : { [ key: string ] : string }  = {
 
 
     // contact resources       
-    contact  : `We operate out Gonzaga Middle School, at 174 Maple St N in the Point Douglas neighbourhood. We meet most Wednesdays from 5:30 p.m. to 8:00 p.m., and we’d love to see you at our next walk! We recommend reaching out by email or social media before you come out, just to make sure that there isn’t a cancellation this week.`,
+    contact  : `We operate out Gonzaga Middle School, at 174 Maple St N in the Point Douglas neighbourhood. We meet most Wednesdays from 5:45 p.m. to 8:00 p.m., and we’d love to see you at our next walk! We recommend reaching out by email or social media before you come out, just to make sure that there isn’t a cancellation this week.`,
         
     googleMapURL: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2569.5264802138595!2d-97.13338532293551!3d49.90769267149365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x52ea716c75c831ad%3A0x39f5bee041f8da01!2sGonzaga%20Middle%20School!5e0!3m2!1sen!2sca!4v1695846137768!5m2!1sen!2sca',
 
@@ -60,17 +60,19 @@ const textResources : { [ key: string ] : string }  = {
 
 
     // support resources
-    donate          : `For those who can afford it, an online donation is often the easiest way to support the work we do. Whether it's a small, one-time amount or a substantial monthly contribution, we accept all major credit cards and we're always grateful for your generosity.`,
+    donate          : `An online donation is often the easiest way to support the work we do. Whether it's a one-time amount or a monthly contribution, we accept all major credit cards and we're always grateful for your generosity.`,
 
     supplies        : `There's a constant need for supplies to help keep community members safe and comfortable. If you have any of the following items to donate, please contact us to arrange a drop-off time.`,
 
     fundraiser      : `We're always looking for new ways to raise funds for the neighbourhood. Whether it's an event or a supply drive, if you have an idea for a fundraiser, please contact us. We'd love to discuss it.`,
 
-    volunteer       : `If you can can make the time, volunteering with us can be an immensely rewarding way to make an impact in the neighbourhood. All volunteers are required to fill out a registration form and sign a waiver before participating in our walks. If you have access to a printer, links to the documents are available below. If not, we’ll have a hard copy ready for you at our next meeting.`,
+    volunteer       : `If you can can make the time, volunteering with us can be a really rewarding way to make an impact in the community. All volunteers are required to fill out a registration form and sign a waiver before participating in our walks. If you have access to a printer, links to the documents are available below. If not, we’ll have a hard copy ready for you at our next meeting.`,
 
     update          : `If you're trying to update your information or adjust your payments, you're in the right place.`,
 
     login           : `To verify your identity, we'll send a login link to the email you registered with.`,
+
+    receipts        : `Receipts for charitable donations are available upon request, just get in touch with us. We'll be happy to hear from you!`,
 
 
 

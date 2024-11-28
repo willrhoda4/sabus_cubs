@@ -13,9 +13,7 @@ import { Statement } from '../../../types/info';
 
 import   Walks            from '../../../assets/icons/walks.svg?react';
 import   Cleanup          from '../../../assets/icons/cleanup.svg?react';
-import   Sandwich    from '../../../assets/icons/sandwich.svg?react';
-import   Mentorship      from '../../../assets/icons/mentorship.svg?react';
-// import   Counselling      from '../../../assets/icons/counselling.svg?react';
+import   Mentorship       from '../../../assets/icons/mentorship.svg?react';
 import   FamilyMeals      from '../../../assets/icons/familyMeals.svg?react';
 import   OpenGym          from '../../../assets/icons/openGym.svg?react';
 
@@ -33,18 +31,12 @@ export default function Actions () : JSX.Element {
                                     {
                                         title: 'Neighbourhood Cleanups',
                                         icon:   Cleanup,
-                                        copy:  'picking up trash and disposing of dirty needles that are left as litter on the streets',
-                                    },
-                                    
-                                    {
-                                        title: 'Sabu\'s Kitchen',
-                                        icon:   Sandwich,
-                                        copy:  'handing out sandwiches and delivering hot meals to our hungry friends throughout the neighbourhood',
+                                        copy:  'doing our part to make sure our streets and parks have a little less litter on them.',
                                     },
                                     {
                                         title: 'Mentorship',
                                         icon:   Mentorship,
-                                        copy:  'always available for the youth who volunteer with us, whenever they’re ready to receive it',
+                                        copy:  'providing our youth volunteers with support and guidance to help them succeed',
                                     },
                                     {
                                         title: 'Athletics',

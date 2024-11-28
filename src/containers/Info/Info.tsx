@@ -54,7 +54,7 @@ export default function Info (): JSX.Element {
                 <Mission />
             </div>
 
-            <ImageStrip bgClass='bg-brand-brown' ids={ [ 'sandwich_pass', 'past_house', 'double_dunk', ] } />
+            <ImageStrip bgClass='bg-brand-brown' ids={ [ 'soup_stack', 'past_house', 'double_dunk', ] } />
     
             <div id='values'>
                 <Values />

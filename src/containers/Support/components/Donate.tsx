@@ -17,6 +17,7 @@
 // hook inmports
 import { useState,
          useEffect     }     from 'react';
+import { Link          }     from 'react-router-dom';
 
 import   useNewStatus        from '../../../hooks/useNewStatus';
 import   useRenderKey        from '../../../hooks/useRenderKey';
@@ -37,10 +38,12 @@ import { CardElement,
 import   Axios               from 'axios'
 import { v4 as uuidv4  }     from 'uuid';
 
+// util imports
 // component imports
 import   AmountSelector      from './AmountSelector';
 import   Input               from '../../../common/forms/Input'
 import   Button              from '../../../common/buttons/Button';
+import   Card                from '../../../common/cards/Card';
 
 // type imports
 import { MiscState       }   from '../../../types/form';    
@@ -358,6 +361,27 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                 {/* status message */}
                 <p ref={statusRef} className='h-8 py-8 self-center'/>
 
+                <div className='w-full flex justify-center items-center '>
+                    <Card 
+                        wrapClass='max-w-2xl mt-8 mb-20 relative'
+                        headingClass='bg-brand-yellow text-black'
+                        heading='tax receipt memo'
+                    >
+                        { copy('receipts', 'my-8') }
+
+                        <div className='flex justify-center'>
+                            <Link 
+                                   to={{
+                                         pathname: '/contact',
+                                         search:   'subject=tax%20receipt%20for%20charitable%20donations',
+                                      }}
+                                state={{ id:       'email' }} // This will be accessible in `location.state`
+                            >
+                                <Button text="reach out now" styles="m-4" />
+                            </Link>                        
+                        </div>
+                    </Card>
+                </div>
 
         </form>
 

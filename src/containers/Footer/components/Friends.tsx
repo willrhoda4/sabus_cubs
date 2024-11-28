@@ -33,18 +33,15 @@
 import React                from 'react';
 
 import careKits             from '../../../assets/friends/care_kits.jpeg';
-import cropo                from '../../../assets/friends/cropo.jpeg';
 import directFocus          from '../../../assets/friends/direct_focus.svg';
-import fourSacredHearts     from '../../../assets/friends/four_sacred_hearts.jpeg';
 import gonzaga              from '../../../assets/friends/gonzaga.png';
 import OPKMB                from '../../../assets/friends/opk_mb.png';
 import stPauls              from '../../../assets/friends/st_pauls.png';
-import superiorPropane      from '../../../assets/friends/superior_propane.png';
 import takePrideWPG         from '../../../assets/friends/take_pride_wpg.jpeg';
 import timHortons           from '../../../assets/friends/tim_hortons.png';  
 import communityHelpers     from '../../../assets/friends/community_helpers_unite.jpeg';
 import NECRC                from '../../../assets/friends/NECRC.jpeg';
-
+import wiigiishin           from '../../../assets/friends/wiigiishin.jpg';
 
 
 
@@ -55,8 +52,11 @@ export default function Friends () : JSX.Element {
 
     const friends = [
 
+        <div id='placeholder' className='hidden md:block' />,
         OPKMB,
-        fourSacredHearts,
+        <div id='placeholder' className='hidden md:block lg:hidden' />,
+        wiigiishin,
+        <div id='placeholder' className='hidden lg:block' />,
         careKits,
         NECRC,
         communityHelpers,
@@ -64,8 +64,6 @@ export default function Friends () : JSX.Element {
         gonzaga,
         directFocus,
         stPauls,
-        cropo,
-        superiorPropane,
         timHortons
     ]
 

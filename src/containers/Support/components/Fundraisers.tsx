@@ -39,10 +39,15 @@ export default function Fundraisers ( { pStyles } : { pStyles : string } ) : JSX
             
             { copy('fundraiser', pStyles) }
             
-            <Link  to={'/contact?section=email&subject=fundraising%20opportunity'} >
-                <Button text='reach out now' styles='m-4' />
+            <Link 
+                  to={{
+                         pathname: '/contact',
+                         search:   'subject=fundraising%20opportunity',
+                      }}
+                state={{ id:       'email' }} // This will be accessible in `location.state`
+            >
+                <Button text="reach out now" styles="m-4" />
             </Link>
-
 
         </div>
     )

@@ -18,7 +18,7 @@
  * 
  *          const [ locationState, setLocationState ] useLocationState();
  * 
- *  if scrollTo is passed as a string, it will scroll to the element with that id.
+ *  if scrollTo is passed as a string for the second argument, it will scroll to the element with that id.
  * 
  */
 

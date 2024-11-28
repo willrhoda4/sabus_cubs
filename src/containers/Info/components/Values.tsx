@@ -39,12 +39,12 @@ export default function Values () : JSX.Element {
                                     {
                                         title: 'Transparency',
                                         icon:   Transparency,
-                                        copy:  'demanding clarity, honesty, and deliberate openness in all our actions and communications',
+                                        copy:  'always being honest, clear and open with all of our communications.',
                                     },
                                     {
                                         title: 'Inclusion',
                                         icon:   Inclusion,
-                                        copy:  'embracing diversity, celebrating our differences and ensuring everyone among us has a voice that can be heard',
+                                        copy:  'embracing diversity, celebrating inclusion and ensuring everyone among us has a voice that can be heard',
                                     },
                                     
                                     {
@@ -55,12 +55,12 @@ export default function Values () : JSX.Element {
                                     {
                                         title: 'Knowledge',
                                         icon:   Knowledge,
-                                        copy:  'empowering through education, increasing awareness, and preserving cherished wisdom for the future',
+                                        copy:  'empowering through education, increasing awareness, and preserving wisdom for the future',
                                     },
                                     {
                                         title: 'Safety',
                                         icon:   Safety,
-                                        copy:  'prioritizing the well-being and security of everybody who walks with us, or lives in a neighbourhood where we do',
+                                        copy:  'prioritizing the well-being and security of everyone who is part of our community',
                                     },
 
                                 ]

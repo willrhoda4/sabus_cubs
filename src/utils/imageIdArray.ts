@@ -26,7 +26,6 @@ export default function imageIdArray( amount : number ) : string[] {
                               'peace_signs', 
                               'teeter_totter', 
                               'the_boys', 
-                              'sandwich_pass', 
                               'double_dunk', 
                               'past_house', 
                               'loading_cart', 
@@ -46,7 +45,6 @@ export default function imageIdArray( amount : number ) : string[] {
                               'over_fence',
                               'walkie_talkie_left',
                               'walkie_talkie_right',
-                              'pass_up_stairs',
                               'thumbs_up',
                               'in_the_streets',
 
