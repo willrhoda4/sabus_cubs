@@ -31,7 +31,7 @@ export default function Cancel ({ doneeInfo } : { doneeInfo : FormState } )   : 
         function cancel() {
 
             const successMsg          = 'subscription cancelled.';
-            const successNotification = 'We\'re sorry to see you go. Thanks again for everything.';
+            const successNotification = 'Thanks again.';
             const failureMsg          = 'there was a problem cancelling your subscription.'; 
             const failureNotification = 'Please try again, and email us if this keeps up.';
 
@@ -47,7 +47,7 @@ export default function Cancel ({ doneeInfo } : { doneeInfo : FormState } )   : 
                  .catch( () => { newStatus(failureMsg); notification(failureNotification); }            );
         }
 
-        window.confirm('are you sure you want to cancel?') && cancel();
+        window.confirm('Are you sure you want to stop supporting Sabu\'s Cubs?') && cancel();
     }
 
 

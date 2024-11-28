@@ -47,7 +47,7 @@ export default function Amount({ doneeInfo } : { doneeInfo : FormState } ) : JSX
 
         const updateSucceeded = () =>  {
             newStatus('update succeded!');
-            notification('thanks for keeping your information up to date!');
+            notification('thank you for your continued support!');
         }
 
         const reqBody = {
