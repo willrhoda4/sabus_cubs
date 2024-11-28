@@ -112,7 +112,7 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
     const handleSubmit = async (e: React.FormEvent) => {         
 
 
-        // Prevent the browser from refreshing
+        // prevent the browser from refreshing
         e.preventDefault();
 
 
@@ -229,10 +229,13 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                                                             .then( res => { return res.data.clientSecret;                                  } )
                                                             .catch( () => { setIsClicked(false); return donationFailed();                  } );
                 
+                            console.log(clientSecret);
                 
                             // confirm the payment with the client secret from PaymentIntent.
                             const confirmResult = await stripe.confirmCardPayment( clientSecret,  { payment_method: cardId, } );
                 
+                            console.log(confirmResult);
+
                             if (confirmResult.error) {  
                                                         setIsClicked(false); 
                                                         return donationFailed();                           

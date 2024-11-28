@@ -52,7 +52,7 @@ async function oneTimeDonation (request : Request, response : Response) {
         const { name, email, amount, idempotencyKey } = request.body; 
     
 
-        // Create or retrieve a customer
+        // create or retrieve a customer
         let customer;
 
         // check if the customer already exists
@@ -68,7 +68,7 @@ async function oneTimeDonation (request : Request, response : Response) {
                                                                                            });
                                                }
 
-        // Create a PaymentIntent with the order amount and currency,
+        // create a PaymentIntent with the order amount and currency,
         // and return the client secret to the client, if successful.
         const paymentIntent     = await stripe.paymentIntents.create(   {
                                                                             amount:    amount * 100,  // amount must be converted to cents 
