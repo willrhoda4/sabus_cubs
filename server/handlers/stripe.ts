@@ -31,11 +31,6 @@ const stripe = new Stripe( process.env.STRIPE_SECRET_KEY as string, { apiVersion
 
 
 
-
-
-
-
-
 // endpoint for one-time donations.
 // registers a payment intent with stripe,
 // then returns the client secret to the client.
@@ -114,7 +109,7 @@ async function oneTimeDonation (request : Request, response : Response) {
 
 
                          // attempt to retrieve plan info from Stripe.
-                         // if successfu, return the plan.
+                         // if successful, return the plan.
                          // if not, we'll handle it in the catch block.
         try           {  return await stripe.plans.retrieve(planId);  }
         
@@ -132,7 +127,6 @@ async function oneTimeDonation (request : Request, response : Response) {
                                                                                                 });
                                                               } 
             // for other errors, re-throw,
-            // prompting the caller to handle it.
             else {  
                     console.error('Unexpected error setting up a monthly donation:', error);
                     throw error; 
@@ -160,12 +154,13 @@ async function startMonthlyDonations(request: Request, response: Response) {
         const { name, email, token, amount, idempotencyKey } = request.body;
 
 
-        // Retrieve an existing plan or create a new plan, 
+        // retrieve an existing plan or create a new plan, 
         // based on the donation amount
         const plan     = await getOrCreatePlan(amount);
 
 
-        // Create a customer
+        // for the sake of simplicity, we will always create a customer,
+        // even if this user has already made one-time donations in the past.
         const customer = await stripe.customers.create({
                                                             name,
                                                             email,
@@ -173,7 +168,7 @@ async function startMonthlyDonations(request: Request, response: Response) {
                                                             invoice_settings: { default_payment_method: token },
                                                       });
 
-        // Create a subscription
+        // create a subscription
         const subscription = await stripe.subscriptions.create( {         
                                                                     customer:     customer.id,
                                                                     items: [ {  plan: plan.id  } ],
@@ -183,7 +178,7 @@ async function startMonthlyDonations(request: Request, response: Response) {
 
 
        
-        // Return the subscription ID to the client
+        // return the subscription ID to the client
         response.send({ success: true, subscriptionId: subscription.id });
 
 
@@ -230,16 +225,16 @@ async function manageSubscription(request: Request, response: Response) {
 
 
         // Ensure action type is valid
-        const   validAction       = [ 'adjust', 'cancel' ].includes( action );
-               !validAction      && response.status( 400 ).send( { error: 'Invalid action type' } );
+        const   validAction          = [ 'adjust', 'cancel' ].includes( action );
+               !validAction         &&  response.status( 400 ).send( { error: 'Invalid action type' } );
        
         
         // if it is, log a message to the consxole.
         console.log(`\n${action}ing subscription ${subscriptionId}...`)
 
 
-        // Fetch the existing subscription
-        const   subscription       = await stripe.subscriptions.retrieve(subscriptionId);
+        // fetch the existing subscription
+        const   subscription          = await stripe.subscriptions.retrieve(subscriptionId);
         
         
         // Ensure the subscription exists and is active
@@ -268,15 +263,15 @@ async function manageSubscription(request: Request, response: Response) {
                 }
             );
         
-            // Confirm the update
+            // confirm the update
             return response.send( { success: true, updatedSubscription } );
         
         } else {
 
-            // Cancel the subscription                  
+            // cancel the subscription                  
             const cancelledSubscription = await stripe.subscriptions.cancel( subscriptionId );
 
-            // Confirm the cancellation
+            // confirm the cancellation
             return response.send({ success: true, cancelledSubscription });
         }
 
