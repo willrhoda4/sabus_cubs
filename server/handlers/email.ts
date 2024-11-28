@@ -118,18 +118,24 @@ async function updateMail(email: string, token: string, res: Response) {
 
     console.log('\nsending out a subscription-update link...\n');
 
-    const updateURL = `http://localhost:5173/subscription-update?token=${token}`;
+    const updateURL = `${process.env.URL}/subscription-update?token=${token}`;
 
     const message   = `Click the link below to update your subscription preferences:\n\n${updateURL}`;
 
+    const htmlMessage = `
+        <p>You can update your subscription preferences using the link below:</p>
+        <a href="${updateURL}" style="color: #1a73e8; text-decoration: none;">Update Subscription</a>
+        <p>If you did not request this email, you can safely ignore it.</p>
+        <p>Thank you!</p>
+    `;
+
     const options: MailOptions = {
-
-        from:     process.env.EMAIL || '',
-        to:       email,
-        subject: `Subscription update`,
-        text:     message
+        from: process.env.EMAIL || '',
+        to: email,
+        subject: `Subscription Update`,
+        text: message, // Fallback for email clients that don't support HTML
+        html: htmlMessage,
     };
-
 
     try           {
                     await deliverEmail(options);

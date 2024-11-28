@@ -159,10 +159,12 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
         // declare monthly for readability's sake.
         const monthly = formState.monthly as boolean;
 
+        const donationType = monthly ? 'subscription' : 'donation';
+
 
         // if you made it this far, 
         //update the status message to let the user know what's happening.                        
-        newStatus(`processing ${ monthly ? 'subscription' : 'donation' }...`, false);
+        newStatus(`processing ${ donationType }...`, false);
 
 
         // Create a PaymentMethod object with the card details
@@ -185,13 +187,13 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
      
         // notification functions for failed donations                  
         const donationFailed     = () => {
-                                            newStatus('donation error!');
+                                            newStatus(`${ donationType } error!`);
                                             notification('there was a problem recieving you donation...');
                                          }
         
         // notification functions for successful donations                  
         const donationSucceeded = () =>  {
-                                            newStatus('donation succeded!');
+                                            newStatus(`${ donationType } succeded!`);
                                             notification('thank you for your generosity!');
                                          }
 
@@ -229,13 +231,10 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                                                             .then( res => { return res.data.clientSecret;                                  } )
                                                             .catch( () => { setIsClicked(false); return donationFailed();                  } );
                 
-                            console.log(clientSecret);
                 
                             // confirm the payment with the client secret from PaymentIntent.
                             const confirmResult = await stripe.confirmCardPayment( clientSecret,  { payment_method: cardId, } );
                 
-                            console.log(confirmResult);
-
                             if (confirmResult.error) {  
                                                         setIsClicked(false); 
                                                         return donationFailed();                           
@@ -364,6 +363,7 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                 {/* status message */}
                 <p ref={statusRef} className='h-8 py-8 self-center'/>
 
+                {/* Tax receipts card  */}
                 <div className='w-full flex justify-center items-center '>
                     <Card 
                         wrapClass='max-w-2xl mt-8 mb-20 relative'
