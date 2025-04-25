@@ -61,7 +61,7 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
 
         try {
 
-            // start by fetching the names of all existing board members.
+            // start by fetching the names of all existing board members.t
             // this is necessary for calculating the new board member's rank,
             // and also for checking for name conflicts.
             const names = await Axios.post( `${serverURL}public/getData`, [ 'board', null, { columns: 'full_name' } ] );
@@ -118,7 +118,7 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
                                 )
                            .then( res => public_id = `v${res.data.version}/${public_id}` );
                                                         /**
-                                                         * this is an important step^^^.
+                                                         * ^^^^ this is an important step.
                                                          * we need to prepend the version number to the public_id,
                                                          * to enforce cache busting.
                                                          * otherwise, the image will not update immediately on the front end.
@@ -235,7 +235,7 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
                                     type:             'file',
                                     validation:       'jpeg',
                                     errorMsg:         'pick a valid jpeg file (10MB max)',
-                                    control:          'update_headshot',
+                                    control:          [ !update, 'update_headshot' ]
                                   },
                             ];
 

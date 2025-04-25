@@ -85,6 +85,7 @@ export default function Form ({ fields, style, onSubmit, initialValues,  } : For
     // generates and updates image urls for image previews
     // using the useThumbnails hook.
     // we'll render a thumbnailFor every field that has a validation of 'jpeg'.
+    
     useEffect(() => {
 
         fields.forEach(field => {
@@ -149,13 +150,22 @@ export default function Form ({ fields, style, onSubmit, initialValues,  } : For
      *      - no control is specified
      *      - a control is specified and the control state is true
      *      - if the control state is a string, it will be  assumed to be a key in the control state object 
-     *
+     *      - if the control state is an array, at least one of the values in the array must be true
      */
-    const inputIsDisplayed = (field: Field) => {
-                return field.control ===  undefined  
-            || (typeof field.control === 'string'    && controlState[field.control] )
-            || (typeof field.control === 'boolean'   && field.control               );
-    }; 
+    const inputIsDisplayed = (field: Field): boolean => {
+
+        const ctrl = field.control;
+      
+        if ( ctrl === undefined ) return true;
+      
+        if ( Array.isArray( ctrl ) ) {
+
+          return ctrl.some( c => typeof c === 'boolean' ? c : controlState[ c ] );
+        }
+      
+        return typeof ctrl === 'boolean' ? ctrl : Boolean( controlState [ ctrl ] );
+      };
+       
 
 
     return (

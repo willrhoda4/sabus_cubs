@@ -83,6 +83,7 @@ export type ValidationArgs =
 
 
 
+
 // interface for Field objects, which are passed to FormProps in an array
 export interface Field {
 
@@ -93,7 +94,7 @@ export interface Field {
   errorMsg?:        string;                                     // optional error message to display if validation fails
   options?:         Options;                                    // options for select and toggle input     
   isController?:    boolean;                                    // if true, this value will live in controlState, not formState
-  control?:         string | boolean;                           // name of the controlState property that activates this field
+  control?:         boolean | string | Array<boolean | string>; // name of the controlState property that activates this field
                                                                 // note that controlled fields will not be displayed on initial render.
 }
 
