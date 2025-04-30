@@ -10,11 +10,18 @@ import   ejs        from 'ejs';
 
 import { Request,
          Response, 
-         NextFunction } from 'express';
+         NextFunction   } from 'express';
 
 
 
-
+import { execFile       } from 'child_process';
+import { tmpdir         } from 'os';
+import { mkdtempSync, 
+         writeFileSync, 
+         readFileSync, 
+         rmSync         } from 'fs';
+import { join           } from 'path';
+         
 
 // first stop for generateNewsRelease.
 // generates html and passes it to generatePDF
@@ -141,66 +148,54 @@ function generateHTML(request: Request, response: Response, next: NextFunction) 
 
 
 
-/*
-
-
-// second stop for generateNewsRelease.
-// generates a PDF and passes it to the cloudinary upload handler.
-function generatePDF(request: Request, response: Response, next: NextFunction) {
-
-    console.log('generating a PDF with the HTML...')
-
-    pdf.create(response.locals.html).toBuffer( (err: Error, buffer: Buffer ) => {
-
-        if (err) return response.status(500).send('Error generating PDF');
-        
-        else  {
-                        response.locals.buffer = buffer;
-                        next();
-              }   
-    });
-}
-        
-*/
 
 
 
 
 
-// NEW generatePDF using wkhtmltopdf
-import { execFile } from 'child_process';
-import { tmpdir } from 'os';
-import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'fs';
-import { join } from 'path';
-
-function generatePDF(request: Request, response: Response, next: NextFunction) {
+function generatePDF( request: Request, response: Response, next: NextFunction ) {
+  
+  
   console.log('generating a PDF with the HTML...');
 
   try {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'pdfgen-'));
-    const htmlPath = join(tmpDir, 'news-release.html');
-    const pdfPath = join(tmpDir, 'news-release.pdf');
 
-    // Write HTML from previous middleware into temp file
-    writeFileSync(htmlPath, response.locals.html);
+    /*
+    we'll use temporary files to store the HTML and PDF
+    for wkhtmltopdf to work with.
 
-    execFile('wkhtmltopdf', [htmlPath, pdfPath], (err) => {
-      if (err) {
-        console.error('wkhtmltopdf error:', err);
-        return response.status(500).send('Error generating PDF');
-      }
+    ultimately, we'll delete the temp files and us response.locals
+    in accordance with the previous middleware pattern.
+    */
+    const tmpDir   = mkdtempSync( join( tmpdir(), 'pdfgen-' ) );
+    const htmlPath = join( tmpDir, 'news-release.html' );
+    const pdfPath  = join( tmpDir, 'news-release.pdf'  );
 
-      const pdfBuffer = readFileSync(pdfPath);
-      response.locals.buffer = pdfBuffer;
+    // write HTML from previous middleware into temp file
+    writeFileSync( htmlPath, response.locals.html );
 
-      // Clean up temp files
-      rmSync(tmpDir, { recursive: true, force: true });
+    // generate the PDF using wkhtmltopdf:
+    execFile( 'wkhtmltopdf', [ htmlPath, pdfPath ], ( err ) => {
+      
+        if ( err ) {
+            console.error( 'wkhtmltopdf error:', err );
+            return response.status(500).send( 'Error generating PDF' );
+        }
 
+        const pdfBuffer        = readFileSync( pdfPath );
+        response.locals.buffer = pdfBuffer;
+
+      // clean up temp files:
+      rmSync( tmpDir, { recursive: true, force: true } );
+    
+      // keep the party moving:
       next();
-    });
-  } catch (error) {
-    console.error('Unexpected error during PDF generation:', error);
-    return response.status(500).send('Internal Server Error');
+    
+    } );
+  } catch ( error ) {
+
+    console.error( 'Unexpected error during PDF generation:', error );
+    return response.status( 500 ).send( 'Internal Server Error' );
   }
 }
 
