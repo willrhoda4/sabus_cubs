@@ -162,30 +162,22 @@ function generatePDF(request: Request, response: Response, next: NextFunction) {
 }
         
 */
-
-import puppeteer from 'puppeteer';
+import * as pdf from 'html-pdf-node';
 
 async function generatePDF(request: Request, response: Response, next: NextFunction) {
-    console.log('generating a PDF with Puppeteer...');
+  const html = response.locals.html;
+  const file = { content: html };
+  const options = { format: 'A4' };
 
-    try {
-        const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox'], // important for server environments
-        });
-        const page = await browser.newPage();
-        await page.setContent(response.locals.html, { waitUntil: 'load' });
-        const buffer = await page.pdf({ format: 'A4' });
-
-        await browser.close();
-
-        response.locals.buffer = buffer;
-        next();
-    } catch (err) {
-        console.error('Error generating PDF:', err);
-        return response.status(500).send('Error generating PDF');
-    }
+  try {
+    const pdfBuffer = await pdf.generatePdf(file, options);
+    response.locals.buffer = pdfBuffer;
+    next();
+  } catch (err) {
+    console.error('Error generating PDF:', err);
+    return response.status(500).send('PDF generation failed');
+  }
 }
-
 
 
 
