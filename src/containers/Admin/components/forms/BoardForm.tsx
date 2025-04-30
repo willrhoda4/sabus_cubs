@@ -20,7 +20,7 @@ import { Field,
 
 import   Form                from '../../../../common/forms/Form';
 
-
+import   authToken            from '../../../../utils/authToken';
 
 
 
@@ -91,7 +91,11 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
                 newStatus('uploading headshot...', false);
 
                 // Fetch the signature and other signed parameters from your server
-                const   signature   = await Axios.post( `${serverURL}admin/signature`, [ public_id ] )
+                const   signature   = await Axios.post( 
+                                                        `${serverURL}admin/signature`, 
+                                                        [ public_id ],
+                                                         authToken()
+                                                      )
                 const   sigData     = signature.data; 
         
 

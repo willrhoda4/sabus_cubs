@@ -26,6 +26,7 @@ router.post('/getData',               auth.checkTable,
                                       db.getData);                   // General data gopher. Allowed limited access via auth.checkTable
 
 router.get('/getIGtoken',             meta.getIGToken);              // Meta API handler for Instagram token
+router.get('/updateIGtoken',          meta.updateIGToken);           // Meta API handler for Instagram token
 
 // email routes
 router.post('/email',                 email.formMail);               // Email form handler

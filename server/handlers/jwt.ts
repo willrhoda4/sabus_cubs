@@ -35,7 +35,11 @@ function checkToken ( request: Request, response: Response, next: NextFunction )
 
 
     // if there is no token, send a 401 response.
-    if (token == null) return response.sendStatus(401).statusMessage = 'no token';
+    if (token == null) {
+        
+        console.error('No token found in request header');
+        return response.sendStatus(401).statusMessage = 'no token';
+    }
 
 
     // if there is a token, verify it.
@@ -44,11 +48,17 @@ function checkToken ( request: Request, response: Response, next: NextFunction )
         // if the token is invalid, send a 403 response.
         // otherwise, attach the user object to the response.locals object.
         // then pass control to the next middleware.
-        if (err) return response.sendStatus(403);
+        if (err) {
+            
+            console.error('Invalid token:', err);
+            return response.sendStatus(403).statusMessage = 'invalid token';
+        }
 
         response.locals.user = user;
+        
         next();
-    });
+ 
+    } );
 }
 
 
@@ -61,7 +71,12 @@ function checkRole ( role : string ) {
         
         // if the role is not the one specified in the route, send a 403 response.
         // otherwise, pass control to the next middleware.
-        if (response.locals.user.role !== role) return response.sendStatus(403).statusMessage = 'wrong role';
+        if (response.locals.user.role !== role) {
+            
+            console.error(`User role ${response.locals.user.role} does not match required role ${role}`);
+            return response.sendStatus(403).statusMessage = 'wrong role';
+        }
+        
         next();
     };
 }

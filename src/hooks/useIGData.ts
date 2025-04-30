@@ -76,7 +76,7 @@ export default function useIGData () {
     }, []);
 
     // return the array of urls
-    return photoData ? photoData : [];
+    return photoData ?? [];
 
 }
 

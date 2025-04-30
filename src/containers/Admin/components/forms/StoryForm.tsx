@@ -57,7 +57,7 @@ export default function StoryForm( {update, getData, setEditing} : AdminFormPare
                                   name:             'url',
                                   type:             'text',
                                   validation:       'url',
-                                  errorMsg:         'Let\'s keep it under 255 characters.'
+                                  errorMsg:         'provide a valid url'
                                 },
 
                                 
@@ -65,7 +65,7 @@ export default function StoryForm( {update, getData, setEditing} : AdminFormPare
                                   name:             'image_url',
                                   type:             'text',
                                   validation:       'url',
-                                  errorMsg:         'Let\'s keep it under 255 characters.'
+                                  errorMsg:         'provide a valid url'
                                 },
 
                                 
@@ -81,7 +81,7 @@ export default function StoryForm( {update, getData, setEditing} : AdminFormPare
                                   name:             'date',
                                   type:             'date',
                                   validation:       'date',
-                                  errorMsg:         'Let\'s keep it under 255 characters.'
+                                  errorMsg:         'please provide a valid date'
                                 },
 
                               ];

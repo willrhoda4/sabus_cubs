@@ -72,7 +72,7 @@ async function refreshIGToken(currentToken: string): Promise<void> {
     function logEntry ( message : string ) {
 
         // define the path for the log file
-        const logFilePath = path.join(__dirname, '../logs/IGToken.txt')
+        const logFilePath = path.join(__dirname, './logs/IGToken.txt')
         const timestamp   = new Date().toISOString();
         const logMessage  = `${ timestamp } - ${ message }\n`;
 
@@ -86,9 +86,10 @@ async function refreshIGToken(currentToken: string): Promise<void> {
     // helper function to send an email notification
     async function sendEmailNotification ( error : string ) {
 
+        //  
         const mailOptions = {
 
-            from:     process.env.EMAIL || '',
+            from:     `"Sabu's Cubs" ${process.env.EMAIL}` || '',
             to:      'willrhoda4@gmail.com',
             subject: 'Failed to Refresh Instagram Token',
             text:    `An error occurred while refreshing the Instagram token: ${error}`,
@@ -108,30 +109,32 @@ async function refreshIGToken(currentToken: string): Promise<void> {
     
     try {
 
-        const { data }  = await Axios.get(tokenGetter);
+        const { data }  = await Axios.get(tokenGetter);`"Skene Stunts" ${ process.env.EMAIL }`
         const newToken  = data.access_token;
         const newExpiry = data.expires_in;
 
         // Calculate new refresh date, 14 days before actual expiration
         const newRefreshDate = new Date();
-              newRefreshDate.setSeconds(newRefreshDate.getSeconds() + newExpiry - 1209600); // 14 days buffer
+              newRefreshDate.setSeconds( newRefreshDate.getSeconds() + newExpiry - 1209600 ); // 14 days buffer
 
         // Update the token in the database
         const updateQuery = `UPDATE ig_token SET token = $1, refresh_date = $2 WHERE id = 'api_token'`;
-        await pool.query(updateQuery, [newToken, newRefreshDate]);
+        await pool.query( updateQuery, [ newToken, newRefreshDate ] );
 
-        // Log success
-        logEntry('Instagram token refreshed successfully.');
+        // Log successi
+        const        success = `Instagram token refreshed successfully.`;
+        console.log( success );
+        logEntry(    success );
 
-    } catch (error) {
+    } catch ( error ) {
 
         const err = error as Error;
         
-        console.error('Failed to refresh Instagram token:', err);
-        logEntry(`Failed to refresh Instagram token: ${err.message}`);
+        console.error( 'Failed to refresh Instagram token:', err );
+        logEntry( `Failed to refresh Instagram token: ${ err.message }`);
 
         // Send an email notification
-        sendEmailNotification(err.message);  //'err' is of type 'unknown'.ts(18046)
+        sendEmailNotification( err.message ); 
     }
 }
 
