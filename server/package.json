@@ -50,7 +50,7 @@
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.5",
     "pg": "^8.11.3",
-    "puppeteer": "^24.7.2",
+    "puppeteer": "^21.11.0",
     "raw-body": "^2.5.2",
     "stripe": "^13.11.0",
     "ts-node": "latest"
