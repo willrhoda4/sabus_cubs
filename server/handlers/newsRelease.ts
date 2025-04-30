@@ -174,8 +174,17 @@ async function generatePDF(request: Request, response: Response, next: NextFunct
         });
         const page = await browser.newPage();
         await page.setContent(response.locals.html, { waitUntil: 'load' });
-        const buffer = await page.pdf({ format: 'A4' });
-
+        const stream = await page.createPDFStream({ format: 'A4' });
+        const chunks: Uint8Array[] = [];
+        
+        await new Promise<void>((resolve, reject) => {
+          stream.on('data', (chunk : Uint8Array) => chunks.push(chunk));
+          stream.on('end', () => resolve());
+        stream.on('error', (err: Error) => reject(err));
+                });
+        
+        const buffer = Buffer.concat(chunks);
+        
         await browser.close();
 
         response.locals.buffer = buffer;
