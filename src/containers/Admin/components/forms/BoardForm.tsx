@@ -13,7 +13,7 @@ import   Axios               from 'axios';
 
 
 import { AdminFormParentProps    } from '../../../../types/admin'
-
+ 
 import { Field,
          FormState, 
          NewStatusFunction } from '../../../../types/form';
@@ -169,8 +169,8 @@ export default function BoardForm ( { update, getData } : AdminFormParentProps )
 
 
             // add the board member to the database
-            !update ? await Axios.post(`${serverURL}admin/addData`,    reqBody )
-                    : await Axios.put( `${serverURL}admin/updateData`, reqBody );
+            !update ? await Axios.post(`${serverURL}admin/addData`,    reqBody, authToken() )
+                    : await Axios.put( `${serverURL}admin/updateData`, reqBody, authToken() );
 
 
             /**

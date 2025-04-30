@@ -72,7 +72,7 @@ async function refreshIGToken(currentToken: string): Promise<void> {
     function logEntry ( message : string ) {
 
         // define the path for the log file
-        const logFilePath = path.join(__dirname, './logs/IGToken.txt')
+        const logFilePath = path.join(__dirname, '../logs/IGToken.txt')
         const timestamp   = new Date().toISOString();
         const logMessage  = `${ timestamp } - ${ message }\n`;
 
