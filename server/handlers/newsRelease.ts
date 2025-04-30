@@ -162,22 +162,58 @@ function generatePDF(request: Request, response: Response, next: NextFunction) {
 }
         
 */
-import * as pdf from 'html-pdf-node';
 
-async function generatePDF(request: Request, response: Response, next: NextFunction) {
-  const html = response.locals.html;
-  const file = { content: html };
-  const options = { format: 'A4' };
+
+
+
+
+// NEW generatePDF using wkhtmltopdf
+import { execFile } from 'child_process';
+import { tmpdir } from 'os';
+import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'fs';
+import { join } from 'path';
+
+function generatePDF(request: Request, response: Response, next: NextFunction) {
+  console.log('generating a PDF with the HTML...');
 
   try {
-    const pdfBuffer = await pdf.generatePdf(file, options);
-    response.locals.buffer = pdfBuffer;
-    next();
-  } catch (err) {
-    console.error('Error generating PDF:', err);
-    return response.status(500).send('PDF generation failed');
+    const tmpDir = mkdtempSync(join(tmpdir(), 'pdfgen-'));
+    const htmlPath = join(tmpDir, 'news-release.html');
+    const pdfPath = join(tmpDir, 'news-release.pdf');
+
+    // Write HTML from previous middleware into temp file
+    writeFileSync(htmlPath, response.locals.html);
+
+    execFile('wkhtmltopdf', [htmlPath, pdfPath], (err) => {
+      if (err) {
+        console.error('wkhtmltopdf error:', err);
+        return response.status(500).send('Error generating PDF');
+      }
+
+      const pdfBuffer = readFileSync(pdfPath);
+      response.locals.buffer = pdfBuffer;
+
+      // Clean up temp files
+      rmSync(tmpDir, { recursive: true, force: true });
+
+      next();
+    });
+  } catch (error) {
+    console.error('Unexpected error during PDF generation:', error);
+    return response.status(500).send('Internal Server Error');
   }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
