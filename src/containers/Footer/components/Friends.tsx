@@ -33,7 +33,7 @@
 import React                from 'react';
 
 import careKits             from '../../../assets/friends/care_kits.jpeg';
-import directFocus          from '../../../assets/friends/direct_focus.svg';
+import directFocus          from '../../../assets/friends/direct_focus.png';
 import gonzaga              from '../../../assets/friends/gonzaga.png';
 import OPKMB                from '../../../assets/friends/opk_mb.png';
 import stPauls              from '../../../assets/friends/st_pauls.png';
