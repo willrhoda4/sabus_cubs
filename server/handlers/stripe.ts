@@ -321,7 +321,7 @@ async function updateDoneeInfo(request: Request, response: Response) {
     console.log(`\nupdating donee info for ${name}...`)
   
 
-    // the rest is pretty self-explanatory.
+    // the rest is pretty self-explanatory...
     try {
 
         const values          = { name, email };
