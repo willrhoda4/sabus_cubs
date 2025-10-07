@@ -82,7 +82,8 @@ async function formMail(request: Request, response: Response) {
 
 
     const { 
-            email, 
+            name,
+            email,
             message, 
             subject,
 
@@ -93,8 +94,16 @@ async function formMail(request: Request, response: Response) {
 
         from:     email,
         to:       process.env.EMAIL || '',
-        subject: `MSG FROM: ${email} ${subject}`,
-        text:     message
+        subject: `MSG FROM: ${name}`,
+        text:    `
+        name:    ${name}
+        email:   ${email}
+        subject: ${subject}
+
+        message: 
+
+        ${message}  
+        `
     };
 
 
