@@ -78,7 +78,6 @@ async function deliverEmail(options : MailOptions, cleanUp? : () => void): Promi
 async function formMail(request: Request, response: Response) {
 
 
-    console.log('\nreceiving a note from the email form...\n');
 
 
     const { 
@@ -89,6 +88,7 @@ async function formMail(request: Request, response: Response) {
 
           } = request.body;
 
+    console.log(`\nreceiving message from ${name} at ${email}...\n`);
 
     const   options: MailOptions = {
 
