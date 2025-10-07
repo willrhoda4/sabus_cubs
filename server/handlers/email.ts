@@ -93,7 +93,7 @@ async function formMail(request: Request, response: Response) {
 
         from:     email,
         to:       process.env.EMAIL || '',
-        subject: `WEBSITE MSG: ${subject}`,
+        subject: `MSG FROM: ${email} ${subject}`,
         text:     message
     };
 
