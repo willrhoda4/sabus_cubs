@@ -370,7 +370,14 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                         headingClass='bg-brand-yellow text-black'
                         heading='tax receipt memo'
                     >
-                        { copy('receipts', 'my-8') }
+                        { copy('noReceipts', 'my-8') }
+
+
+{/* 
+
+We'll leave this code on ice,
+in case they're able to provide
+tax receipts again in the future.   vvvvvvv
 
                         <div className='flex justify-center'>
                             <Link 
@@ -383,6 +390,9 @@ export default function Donate ( { pStyles } : { pStyles : string } ) : JSX.Elem
                                 <Button text="reach out now" styles="m-4" />
                             </Link>                        
                         </div>
+ */}
+
+
                     </Card>
                 </div>
 

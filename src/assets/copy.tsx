@@ -74,6 +74,8 @@ const textResources : { [ key: string ] : string }  = {
 
     receipts        : `Receipts for charitable donations are available upon request, just get in touch with us. We'll be happy to hear from you!`,
 
+    noReceipts      : `Unfortunately, we're presently unable to provide tax receipts for donations.`,
+
 
 
 
